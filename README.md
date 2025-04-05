@@ -1,1 +1,1 @@
-🍰 큐시즘 31th 밋업 5팀 Backend Repository 🍰
+🍰 큐시즘 31th 5’Cake팀 Backend Repository 🍰
