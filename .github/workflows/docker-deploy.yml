@@ -52,4 +52,4 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/deark:latest
             docker stop deark || true
             docker rm deark || true
-            docker run -d -p 8080:8080 --name springboot-app ${{ secrets.DOCKER_USERNAME }}/springboot-app:latest
+            docker run -d -p 8080:8080 --name deark ${{ secrets.DOCKER_USERNAME }}/springboot-app:latest
