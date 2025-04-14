@@ -1,13 +1,11 @@
-package com.deark.be.store.domain;
+package com.deark.be.order.domain;
 
-import com.deark.be.store.domain.type.BusinessDay;
+import com.deark.be.store.domain.Store;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalTime;
 
 @Table(name = "order_form")
 @Getter

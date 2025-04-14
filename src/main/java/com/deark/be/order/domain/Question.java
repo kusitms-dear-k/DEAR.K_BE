@@ -1,4 +1,4 @@
-package com.deark.be.store.domain;
+package com.deark.be.order.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
