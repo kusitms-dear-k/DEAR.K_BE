@@ -51,10 +51,13 @@ public class Store {
     @Column(name = "chatting_url")
     private String chattingUrl;
 
+    @Column(name = "is_unmanned", nullable = false)
+    private Boolean isUnmanned;
+
     @Builder
     public Store(User user, String name, String description, String phone, String address,
                  String businessNumber, LocalDate establishDate, String imageUrl,
-                 Long averageResponseTime, String chattingUrl) {
+                 Long averageResponseTime, String chattingUrl, Boolean isUnmanned) {
         this.user = user;
         this.name = name;
         this.description = description;
@@ -65,6 +68,7 @@ public class Store {
         this.imageUrl = imageUrl;
         this.averageResponseTime = averageResponseTime;
         this.chattingUrl = chattingUrl;
+        this.isUnmanned = isUnmanned;
     }
 }
 
