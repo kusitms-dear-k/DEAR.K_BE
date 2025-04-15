@@ -6,6 +6,6 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class AlarmNotFoundException extends RuntimeException {
+public class AlarmException extends RuntimeException {
     private final ErrorCode errorCode;
 }

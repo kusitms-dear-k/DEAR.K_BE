@@ -1,15 +1,15 @@
 package com.deark.be.global.exception.handler;
 
-import com.deark.be.alarm.exception.AlarmNotFoundException;
-import com.deark.be.design.exception.DesignNotFoundException;
-import com.deark.be.event.exception.EventNotFoundException;
+import com.deark.be.alarm.exception.AlarmException;
+import com.deark.be.design.exception.DesignException;
+import com.deark.be.event.exception.EventException;
 import com.deark.be.global.exception.FileConvertFailException;
 import com.deark.be.global.exception.errorcode.ErrorCode;
 import com.deark.be.global.exception.errorcode.GlobalErrorCode;
 import com.deark.be.global.exception.response.ErrorResponse;
-import com.deark.be.order.exception.OrderNotFoundException;
-import com.deark.be.store.exception.StoreNotFoundException;
-import com.deark.be.user.exception.UserNotFoundException;
+import com.deark.be.order.exception.OrderException;
+import com.deark.be.store.exception.StoreException;
+import com.deark.be.user.exception.UserException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,33 +68,33 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(e.getErrorCode());
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<Object> handleUserNotFound(final UserNotFoundException e) {
+    @ExceptionHandler(UserException.class)
+    public ResponseEntity<Object> handleUser(final UserException e) {
         return handleExceptionInternal(e.getErrorCode());
     }
 
-    @ExceptionHandler(StoreNotFoundException.class)
-    public ResponseEntity<Object> handleStoreNotFound(final StoreNotFoundException e) {
+    @ExceptionHandler(StoreException.class)
+    public ResponseEntity<Object> handleStore(final StoreException e) {
         return handleExceptionInternal(e.getErrorCode());
     }
 
-    @ExceptionHandler(OrderNotFoundException.class)
-    public ResponseEntity<Object> handleOrderNotFound(final OrderNotFoundException e) {
+    @ExceptionHandler(OrderException.class)
+    public ResponseEntity<Object> handleOrder(final OrderException e) {
         return handleExceptionInternal(e.getErrorCode());
     }
 
-    @ExceptionHandler(EventNotFoundException.class)
-    public ResponseEntity<Object> handleEventNotFound(final EventNotFoundException e) {
+    @ExceptionHandler(EventException.class)
+    public ResponseEntity<Object> handleEvent(final EventException e) {
         return handleExceptionInternal(e.getErrorCode());
     }
 
-    @ExceptionHandler(DesignNotFoundException.class)
-    public ResponseEntity<Object> handleDesignNotFound(final DesignNotFoundException e) {
+    @ExceptionHandler(DesignException.class)
+    public ResponseEntity<Object> handleDesign(final DesignException e) {
         return handleExceptionInternal(e.getErrorCode());
     }
 
-    @ExceptionHandler(AlarmNotFoundException.class)
-    public ResponseEntity<Object> handleAlarmNotFound(final AlarmNotFoundException e) {
+    @ExceptionHandler(AlarmException.class)
+    public ResponseEntity<Object> handleAlarm(final AlarmException e) {
         return handleExceptionInternal(e.getErrorCode());
     }
 

@@ -6,6 +6,6 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class EventNotFoundException extends RuntimeException {
+public class EventException extends RuntimeException {
     private final ErrorCode errorCode;
 }
