@@ -22,7 +22,7 @@ public record ResponseTemplate<T>(
         return ResponseTemplate.builder()
                 .isSuccess(true)
                 .code("REQUEST_OK")
-                .message("request succeeded")
+                .message("요청이 승인되었습니다.")
                 .results(dto)
                 .build();
     }
