@@ -1,5 +1,6 @@
 package com.deark.be.order.domain;
 
+import com.deark.be.global.domain.BaseTimeEntity;
 import com.deark.be.order.domain.type.Status;
 import com.deark.be.store.domain.Store;
 import com.deark.be.user.domain.User;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Message {
+public class Message extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

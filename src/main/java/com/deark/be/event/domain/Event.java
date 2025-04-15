@@ -1,5 +1,6 @@
 package com.deark.be.event.domain;
 
+import com.deark.be.global.domain.BaseTimeEntity;
 import com.deark.be.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Event {
+public class Event extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

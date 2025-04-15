@@ -1,6 +1,7 @@
 package com.deark.be.alarm.domain;
 
 import com.deark.be.alarm.domain.type.Type;
+import com.deark.be.global.domain.BaseTimeEntity;
 import com.deark.be.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Alarm {
+public class Alarm extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

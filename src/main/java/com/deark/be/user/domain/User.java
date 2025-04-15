@@ -1,5 +1,6 @@
 package com.deark.be.user.domain;
 
+import com.deark.be.global.domain.BaseTimeEntity;
 import com.deark.be.user.domain.type.Role;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class User {
+public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
