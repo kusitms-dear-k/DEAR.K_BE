@@ -1,9 +1,14 @@
 package com.deark.be.global.exception.handler;
 
+import com.deark.be.alarm.exception.AlarmNotFoundException;
+import com.deark.be.design.exception.DesignNotFoundException;
+import com.deark.be.event.exception.EventNotFoundException;
 import com.deark.be.global.exception.FileConvertFailException;
 import com.deark.be.global.exception.errorcode.ErrorCode;
 import com.deark.be.global.exception.errorcode.GlobalErrorCode;
 import com.deark.be.global.exception.response.ErrorResponse;
+import com.deark.be.order.exception.OrderNotFoundException;
+import com.deark.be.store.exception.StoreNotFoundException;
 import com.deark.be.user.exception.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -64,7 +69,32 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<Object> handleMemberNotFound(final UserNotFoundException e) {
+    public ResponseEntity<Object> handleUserNotFound(final UserNotFoundException e) {
+        return handleExceptionInternal(e.getErrorCode());
+    }
+
+    @ExceptionHandler(StoreNotFoundException.class)
+    public ResponseEntity<Object> handleStoreNotFound(final StoreNotFoundException e) {
+        return handleExceptionInternal(e.getErrorCode());
+    }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<Object> handleOrderNotFound(final OrderNotFoundException e) {
+        return handleExceptionInternal(e.getErrorCode());
+    }
+
+    @ExceptionHandler(EventNotFoundException.class)
+    public ResponseEntity<Object> handleEventNotFound(final EventNotFoundException e) {
+        return handleExceptionInternal(e.getErrorCode());
+    }
+
+    @ExceptionHandler(DesignNotFoundException.class)
+    public ResponseEntity<Object> handleDesignNotFound(final DesignNotFoundException e) {
+        return handleExceptionInternal(e.getErrorCode());
+    }
+
+    @ExceptionHandler(AlarmNotFoundException.class)
+    public ResponseEntity<Object> handleAlarmNotFound(final AlarmNotFoundException e) {
         return handleExceptionInternal(e.getErrorCode());
     }
 
