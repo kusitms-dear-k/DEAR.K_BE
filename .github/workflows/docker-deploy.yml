@@ -57,7 +57,4 @@ jobs:
             docker rm deark || true
             docker run -d -p 8080:8080 \
               --name deark \
-              -e DB_URL=${{ secrets.DB_URL }} \
-              -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
-              -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
               ${{ secrets.DOCKER_USERNAME }}/deark:latest
