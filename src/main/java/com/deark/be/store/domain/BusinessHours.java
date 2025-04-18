@@ -40,14 +40,18 @@ public class BusinessHours {
     @Column(name = "daily_reservation_limit")
     private Long dailyReservationLimit;
 
+    @Column(name = "is_open_24_hours", nullable = false)
+    private Boolean isOpen24Hours;
+
     @Builder
     public BusinessHours(Store store, BusinessDay businessDay, LocalTime openTime, LocalTime closeTime,
-                         Long dailyReservationLimit) {
+                         Long dailyReservationLimit, Boolean isOpen24Hours) {
         this.store = store;
         this.businessDay = businessDay;
         this.openTime = openTime;
         this.closeTime = closeTime;
         this.dailyReservationLimit = dailyReservationLimit;
+        this.isOpen24Hours = isOpen24Hours;
     }
 }
 
