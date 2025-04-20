@@ -1,5 +1,6 @@
 package com.deark.be.global.dto;
 
+import com.deark.be.global.exception.errorcode.ErrorCode;
 import lombok.Builder;
 
 import java.util.Collections;
@@ -24,6 +25,15 @@ public record ResponseTemplate<T>(
                 .code("REQUEST_OK")
                 .message("요청이 승인되었습니다.")
                 .results(dto)
+                .build();
+    }
+
+    public static <T> ResponseTemplate<Object> from(ErrorCode errorCode) {
+        return ResponseTemplate.builder()
+                .isSuccess(false)
+                .code(errorCode.getCode())
+                .message(errorCode.getMessage())
+                .results(Collections.EMPTY_MAP)
                 .build();
     }
 }
