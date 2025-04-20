@@ -37,14 +37,23 @@ public class User extends BaseTimeEntity {
     @Column(name = "is_blacklist", nullable = false)
     private Boolean isBlacklist;
 
+    @Column(name = "nickname")
+    private String nickname;
+
+    @Column(name = "profile_image_url")
+    private String profileImageUrl;
+
     @Builder
-    public User(String name, String email, String phone, String socialId, Role role, Boolean isBlacklist) {
+    public User(String name, String email, String phone, String socialId, Role role, Boolean isBlacklist,
+                String nickname, String profileImageUrl) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.socialId = socialId;
         this.role = role;
         this.isBlacklist = isBlacklist;
+        this.nickname = nickname;
+        this.profileImageUrl = profileImageUrl;
     }
 }
 
