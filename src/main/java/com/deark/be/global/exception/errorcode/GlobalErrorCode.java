@@ -21,6 +21,7 @@ public enum GlobalErrorCode implements ErrorCode {
     // 인증 관련 에러
     JWT_ROLE_ERROR(HttpStatus.FORBIDDEN, "AUTH400", "가진 권한으로는 실행할 수 없는 기능입니다."),
     JWT_AUTH_ERROR(HttpStatus.UNAUTHORIZED, "AUTH401", "로그인 후 다시 접근해주시기 바랍니다."),
+    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH402", "유효하지 않은 토큰입니다."),
 
     // FILE 관련 에러
     FILE_CONVERT_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "FILE500", "파일 변환 중 에러가 발생했습니다."),
