@@ -27,6 +27,7 @@ public class Alarm extends BaseTimeEntity {
     @Column(name = "content")
     private String content;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
     private Type type;
 

@@ -1,17 +1,13 @@
 package com.deark.be.store.domain;
 
 import com.deark.be.store.domain.type.BusinessDay;
-import com.deark.be.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
 
 @Table(name = "business_hours")
 @Getter
@@ -28,6 +24,7 @@ public class BusinessHours {
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "name", nullable = false)
     private BusinessDay businessDay;
 
