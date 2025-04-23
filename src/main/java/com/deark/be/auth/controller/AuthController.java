@@ -1,7 +1,7 @@
 package com.deark.be.auth.controller;
 
 import com.deark.be.auth.dto.request.OAuthLoginRequest;
-import com.deark.be.auth.dto.response.OAuthInfoResponse;
+import com.deark.be.auth.dto.response.LoginResponse;
 import com.deark.be.auth.service.AuthService;
 import com.deark.be.global.dto.ResponseTemplate;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,16 +23,17 @@ public class AuthController {
     private final AuthService authService;
 
     @Operation(summary = "카카오 로그인 / 회원가입", description = "카카오 로그인 및 회원가입<br>" +
-            "사용자가 로그인 연동 후 받게 되는 Access Token을 넣어주세요.")
+            "사용자가 로그인 연동 후 받게 되는 Access Token을 넣어주세요. <br><br>" +
+            "존재하지 않는 유저라면 GUEST, 존재하는 유저라면 OWNER / CUSTOMER를 반환합니다.")
     @PostMapping("/login")
     public ResponseEntity<ResponseTemplate<Object>> socialLogin(
             @RequestBody OAuthLoginRequest request,
             HttpServletResponse response) {
 
-        OAuthInfoResponse socialResponse = authService.socialLogin(request, response);
+        LoginResponse loginResponse = authService.socialLogin(request, response);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ResponseTemplate.from(socialResponse));
+                .body(ResponseTemplate.from(loginResponse));
     }
 }

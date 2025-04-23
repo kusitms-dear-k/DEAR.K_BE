@@ -11,14 +11,13 @@ import java.util.Collections;
 @Getter
 @RequiredArgsConstructor
 public enum Role {
-    ADMIN("ROLE_ADMIN"),
-    OWNER("ROLE_OWNER"),
-    CUSTOMER("ROLE_CUSTOMER"),
+    ADMIN,
+    OWNER,
+    CUSTOMER,
+    GUEST,
     ;
 
-    private final String authority;
-
     public Collection<? extends GrantedAuthority> getAuthority() {
-        return Collections.singletonList(new SimpleGrantedAuthority(this.authority));
+        return Collections.singletonList(new SimpleGrantedAuthority(this.name()));
     }
 }

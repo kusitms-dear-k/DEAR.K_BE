@@ -1,5 +1,6 @@
 package com.deark.be.user.domain;
 
+import com.deark.be.auth.dto.response.OAuthInfoResponse;
 import com.deark.be.global.domain.BaseTimeEntity;
 import com.deark.be.user.domain.type.Role;
 import jakarta.persistence.*;
@@ -7,6 +8,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
+
+import static com.deark.be.user.domain.type.Role.GUEST;
 
 @Table(name = "users")
 @Getter
@@ -31,6 +35,7 @@ public class User extends BaseTimeEntity {
     @Column(name = "social_id", nullable = false)
     private String socialId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
 
@@ -55,5 +60,29 @@ public class User extends BaseTimeEntity {
         this.nickname = nickname;
         this.profileImageUrl = profileImageUrl;
     }
-}
 
+    public static User of(OAuthInfoResponse oAuthInfoResponse) {
+        return User.builder()
+                .name(oAuthInfoResponse.getName())
+                .email(oAuthInfoResponse.getEmail())
+                .phone(formatPhoneNumber(oAuthInfoResponse.getPhoneNumber()))
+                .socialId(oAuthInfoResponse.getId())
+                .role(GUEST)
+                .isBlacklist(false)
+                .nickname(oAuthInfoResponse.getNickname())
+                .profileImageUrl(oAuthInfoResponse.getProfileImage())
+                .build();
+    }
+
+    private static String formatPhoneNumber(String originalPhoneNumber) {
+        String formattedNumber = originalPhoneNumber;
+
+        if (!StringUtils.hasText(originalPhoneNumber)) {
+            formattedNumber = "";
+        } else if (originalPhoneNumber.startsWith("+82 ")) {
+            formattedNumber = originalPhoneNumber.replace("+82 ", "0");
+        }
+
+        return formattedNumber;
+    }
+}
