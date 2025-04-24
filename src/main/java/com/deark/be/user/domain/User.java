@@ -74,6 +74,10 @@ public class User extends BaseTimeEntity {
                 .build();
     }
 
+    public void updateRole(Role role) {
+        this.role = role;
+    }
+
     private static String formatPhoneNumber(String originalPhoneNumber) {
         String formattedNumber = originalPhoneNumber;
 
