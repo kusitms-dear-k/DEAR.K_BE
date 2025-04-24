@@ -3,6 +3,7 @@ package com.deark.be.auth.util;
 import com.deark.be.auth.service.type.JwtProperties;
 import com.deark.be.auth.service.type.JwtUserDetails;
 import com.deark.be.user.domain.User;
+import com.deark.be.user.exception.UserException;
 import com.deark.be.user.repository.UserRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
 import java.util.Map;
+
+import static com.deark.be.user.exception.errorcode.UserErrorCode.USER_NOT_FOUND;
 
 @Slf4j
 @Component
@@ -96,6 +99,16 @@ public class JwtTokenProvider {
             log.error("Token validation error: ", e);
             return false;
         }
+    }
+
+    public User getUser(String token) {
+        Long id = Long.parseLong(Jwts.parserBuilder().setSigningKey(key).build()
+                .parseClaimsJws(token).getBody().getSubject());
+
+        log.info("in getUser() id: {}", id);
+
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserException(USER_NOT_FOUND));
     }
 
     public JwtUserDetails getJwtUserDetails(String token) {

@@ -3,13 +3,18 @@ package com.deark.be.auth.service;
 import com.deark.be.auth.dto.request.OAuthLoginRequest;
 import com.deark.be.auth.dto.response.LoginResponse;
 import com.deark.be.auth.dto.response.OAuthInfoResponse;
+import com.deark.be.auth.dto.response.ReissueResponse;
 import com.deark.be.auth.util.JwtTokenProvider;
+import com.deark.be.global.exception.GlobalException;
 import com.deark.be.user.domain.User;
 import com.deark.be.user.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import static com.deark.be.global.exception.errorcode.GlobalErrorCode.INVALID_TOKEN;
 
 @Slf4j
 @Service
@@ -25,6 +30,20 @@ public class AuthService {
         return jwtTokenProvider.createAccessToken(user);
     }
 
+    // AccessToken 재발급
+    public ReissueResponse reIssueToken(String refreshToken) {
+        refreshToken = resolveToken(refreshToken);
+
+        if (!jwtTokenProvider.validateToken(refreshToken)) {
+            throw new GlobalException(INVALID_TOKEN);
+        }
+
+        User user = jwtTokenProvider.getUser(refreshToken);
+        String accessToken = jwtTokenProvider.createAccessToken(user);
+
+        return ReissueResponse.from(accessToken);
+    }
+
     public LoginResponse socialLogin(OAuthLoginRequest request, HttpServletResponse response) {
         OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(request);
         User user = userService.findOrGenerateUser(oAuthInfoResponse);
@@ -38,5 +57,13 @@ public class AuthService {
         response.setHeader("Authorization", "Bearer " + accessToken);
 
         return LoginResponse.from(user);
+    }
+
+    private String resolveToken(String token) {
+        if (!StringUtils.hasText(token) && token.startsWith("Bearer ")) {
+            return token.substring(7);
+        }
+
+        throw new GlobalException(INVALID_TOKEN);
     }
 }
