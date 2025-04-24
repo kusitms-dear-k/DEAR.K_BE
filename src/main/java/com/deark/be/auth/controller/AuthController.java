@@ -11,7 +11,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Auth", description = "Auth 관련 API")
 @Slf4j
@@ -24,7 +27,8 @@ public class AuthController {
 
     @Operation(summary = "카카오 로그인 / 회원가입", description = "카카오 로그인 및 회원가입<br>" +
             "사용자가 로그인 연동 후 받게 되는 Access Token을 넣어주세요. <br><br>" +
-            "존재하지 않는 유저라면 GUEST, 존재하는 유저라면 OWNER / CUSTOMER를 반환합니다.")
+            "존재하지 않는 유저라면 GUEST, 존재하는 유저라면 OWNER / CUSTOMER를 반환합니다.<br>" +
+            "Access Token은 헤더로, Refresh Token은 쿠키로 전달됩니다.<br>")
     @PostMapping("/login")
     public ResponseEntity<ResponseTemplate<Object>> socialLogin(
             @RequestBody OAuthLoginRequest request,
