@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class FileDeleteFailException extends RuntimeException {
-
+public class GlobalException extends RuntimeException {
     private final ErrorCode errorCode;
 }
