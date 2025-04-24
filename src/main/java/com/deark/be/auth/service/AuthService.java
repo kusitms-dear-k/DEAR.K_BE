@@ -20,6 +20,11 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final RequestOAuthInfoService requestOAuthInfoService;
 
+    public String getTestToken(Long userId) {
+        User user = userService.findUser(userId);
+        return jwtTokenProvider.createAccessToken(user);
+    }
+
     public LoginResponse socialLogin(OAuthLoginRequest request, HttpServletResponse response) {
         OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(request);
         User user = userService.findOrGenerateUser(oAuthInfoResponse);

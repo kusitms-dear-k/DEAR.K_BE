@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Auth", description = "Auth 관련 API")
 @Slf4j
@@ -24,6 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+
+    @Operation(summary = "테스트용 토큰발급", description = "테스트용 토큰발급")
+    @GetMapping("/test/{userId}")
+    public String testToken(@PathVariable Long userId) {
+        return authService.getTestToken(userId);
+    }
 
     @Operation(summary = "카카오 로그인 / 회원가입", description = "카카오 로그인 및 회원가입<br>" +
             "사용자가 로그인 연동 후 받게 되는 Access Token을 넣어주세요. <br><br>" +

@@ -32,7 +32,7 @@ public class UserService {
         user.updateRole(request.role());
     }
 
-    private User findUser(Long userId) {
+    public User findUser(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new UserException(USER_NOT_FOUND));
     }
