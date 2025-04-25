@@ -60,7 +60,7 @@ public class AuthService {
     }
 
     private String resolveToken(String token) {
-        if (!StringUtils.hasText(token) && token.startsWith("Bearer ")) {
+        if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
             return token.substring(7);
         }
 
