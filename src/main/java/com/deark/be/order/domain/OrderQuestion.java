@@ -27,6 +27,7 @@ public class OrderQuestion {
     @JoinColumn(name = "common_question_id")
     private CommonQuestion commonQuestion;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "question_type", nullable = false)
     private QuestionType questionType;
 

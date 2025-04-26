@@ -4,10 +4,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.deark.be.global.exception.FileConvertFailException;
-import com.deark.be.global.exception.FileDeleteFailException;
-import com.deark.be.global.exception.FileNotImageException;
-import com.deark.be.global.exception.FileUploadFailException;
+import com.deark.be.global.exception.*;
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -87,19 +84,19 @@ public class S3Service {
 
             amazonS3.putObject(new PutObjectRequest(bucket, fileName, inputStream, metadata));
         } catch (IOException e) {
-            throw new FileUploadFailException(FILE_NOT_UPLOADED);
+            throw new GlobalException(FILE_NOT_UPLOADED);
         }
     }
 
     private void validateFile(MultipartFile file) {
         if (file.isEmpty()) {
-            throw new FileConvertFailException(FILE_CONVERT_FAIL);
+            throw new GlobalException(FILE_CONVERT_FAIL);
         }
 
         String contentType = file.getContentType();
 
         if (StringUtils.isEmpty(contentType) || !contentType.startsWith("image/")) {
-            throw new FileNotImageException(FILE_NOT_IMAGE);
+            throw new GlobalException(FILE_NOT_IMAGE);
         }
     }
 
@@ -109,7 +106,7 @@ public class S3Service {
         try{
             amazonS3.deleteObject(new DeleteObjectRequest(bucket, key));
         }catch (Exception e){
-            throw new FileDeleteFailException(FILE_DELETE_FAIL);
+            throw new GlobalException(FILE_DELETE_FAIL);
         }
     }
 
@@ -120,7 +117,7 @@ public class S3Service {
 
             return decodingKey.substring(1); // 맨 앞의 '/' 제거
         } catch (MalformedURLException | UnsupportedEncodingException e){
-            throw new FileDeleteFailException(FILE_DELETE_FAIL);
+            throw new GlobalException(FILE_DELETE_FAIL);
         }
     }
 }

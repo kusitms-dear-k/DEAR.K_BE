@@ -3,7 +3,7 @@ package com.deark.be.global.exception.handler;
 import com.deark.be.alarm.exception.AlarmException;
 import com.deark.be.design.exception.DesignException;
 import com.deark.be.event.exception.EventException;
-import com.deark.be.global.exception.FileConvertFailException;
+import com.deark.be.global.exception.GlobalException;
 import com.deark.be.global.exception.errorcode.ErrorCode;
 import com.deark.be.global.exception.errorcode.GlobalErrorCode;
 import com.deark.be.global.exception.response.ErrorResponse;
@@ -62,8 +62,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .body(makeErrorResponse(errorCode));
     }
 
-    @ExceptionHandler(FileConvertFailException.class)
-    public ResponseEntity<Object> handleFileConvertFail(FileConvertFailException e, HttpServletRequest request) {
+    @ExceptionHandler(GlobalException.class)
+    public ResponseEntity<Object> handleFileConvertFail(GlobalException e, HttpServletRequest request) {
         logInfo(e.getErrorCode(), e, request);
         return handleExceptionInternal(e.getErrorCode());
     }
