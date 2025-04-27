@@ -10,6 +10,7 @@ import com.deark.be.global.exception.response.ErrorResponse;
 import com.deark.be.order.exception.OrderException;
 import com.deark.be.store.exception.StoreException;
 import com.deark.be.user.exception.UserException;
+import feign.FeignException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,6 +28,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.List;
+
+import static com.deark.be.global.exception.errorcode.GlobalErrorCode.INVALID_TOKEN;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -66,6 +71,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleFileConvertFail(GlobalException e, HttpServletRequest request) {
         logInfo(e.getErrorCode(), e, request);
         return handleExceptionInternal(e.getErrorCode());
+    }
+
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<Object> handleFeignStatusException(final FeignException e, HttpServletRequest request) {
+        logError(e, request);
+        return handleExceptionInternal(INVALID_TOKEN);
     }
 
     @ExceptionHandler(UserException.class)
@@ -138,28 +149,22 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private String getUserId() {
-        // 로그인 기능 구현 후 주석 해제
-        /*Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.isAuthenticated()) {
             return authentication.getName(); // 사용자의 id
         } else {
             return "anonymous";
-        }*/
-
-        return "anonymous";
+        }
     }
 
     private String getRole() {
-        // 로그인 기능 구현 후 주석 해제
-        /*Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.isAuthenticated()) {
             return authentication.getAuthorities().toString(); // 사용자의 role
         } else {
             return "anonymous";
-        }*/
-
-        return "anonymous";
+        }
     }
 }
