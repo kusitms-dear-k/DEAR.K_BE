@@ -52,6 +52,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .establishDate(LocalDate.of(2020, 1, 1))
                     .imageUrl(storeImageUrl + "/blueberry.jpg")
                     .isUnmanned(false)
+                    .isSameDayOrder(true)
                     .build();
 
             Store DUMMY_STORE2 = Store.builder()
@@ -64,6 +65,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .establishDate(LocalDate.of(2021, 7, 2))
                     .imageUrl(storeImageUrl + "/birthday.jpg")
                     .isUnmanned(false)
+                    .isSameDayOrder(false)
                     .build();
 
             Store DUMMY_STORE3 = Store.builder()
@@ -76,6 +78,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .establishDate(LocalDate.of(2019, 5, 15))
                     .imageUrl(storeImageUrl + "/yellow.jpg")
                     .isUnmanned(false)
+                    .isSameDayOrder(false)
                     .build();
 
             Store DUMMY_STORE4 = Store.builder()
@@ -88,6 +91,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .establishDate(LocalDate.of(2023, 3, 10))
                     .imageUrl(storeImageUrl + "/star.jpg")
                     .isUnmanned(false)
+                    .isSameDayOrder(true)
                     .build();
 
             Store DUMMY_STORE5 = Store.builder()
@@ -100,6 +104,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .establishDate(LocalDate.of(2024, 8, 20))
                     .imageUrl(storeImageUrl + "/ribbon.jpg")
                     .isUnmanned(false)
+                    .isSameDayOrder(false)
                     .build();
 
             Store DUMMY_STORE6 = Store.builder()
@@ -112,6 +117,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .establishDate(LocalDate.of(2016, 12, 25))
                     .imageUrl(storeImageUrl + "/loopy.png")
                     .isUnmanned(false)
+                    .isSameDayOrder(true)
                     .build();
 
             Store DUMMY_STORE7 = Store.builder()
@@ -124,6 +130,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .establishDate(LocalDate.of(2019, 11, 30))
                     .imageUrl(storeImageUrl + "/blackpink.png")
                     .isUnmanned(false)
+                    .isSameDayOrder(false)
                     .build();
 
             Store DUMMY_STORE8 = Store.builder()
@@ -136,6 +143,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .establishDate(LocalDate.of(2020, 4, 5))
                     .imageUrl(storeImageUrl + "/whiteblack.png")
                     .isUnmanned(false)
+                    .isSameDayOrder(true)
                     .build();
 
             Store DUMMY_STORE9 = Store.builder()
@@ -148,6 +156,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .establishDate(LocalDate.of(2021, 2, 14))
                     .imageUrl(storeImageUrl + "/muffin.png")
                     .isUnmanned(false)
+                    .isSameDayOrder(false)
                     .build();
 
             Store DUMMY_STORE10 = Store.builder()
@@ -160,6 +169,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .establishDate(LocalDate.of(2022, 9, 9))
                     .imageUrl(storeImageUrl + "/pink.png")
                     .isUnmanned(false)
+                    .isSameDayOrder(true)
                     .build();
 
             storeList.add(DUMMY_STORE1);
