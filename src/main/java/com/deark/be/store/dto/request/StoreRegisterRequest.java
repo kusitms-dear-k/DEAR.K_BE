@@ -20,12 +20,6 @@ public record StoreRegisterRequest(
         @Schema(description = "정산용 계좌번호", example = "110-123-456789")
         @NotBlank String settlementAccount,
 
-        @Schema(description = "사업자등록증 파일", type = "string", format = "binary")
-        @NotNull MultipartFile businessLicenseFile,
-
-        @Schema(description = "영업신고증 파일", type = "string", format = "binary")
-        @NotNull MultipartFile businessPermitFile,
-
         @Schema(description = "가게 이름", example = "이쁜케이크")
         @NotBlank String ownerName
 
