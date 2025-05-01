@@ -90,7 +90,7 @@ public class Store extends BaseTimeEntity {
     public Store(User user, String name, String description, String phone, String address,
                  String businessNumber, LocalDate establishDate, String imageUrl,
                  Long averageResponseTime, String chattingUrl, Boolean isUnmanned, Boolean isSameDayOrder
-                 ,String settlementAccount
+                 ,String settlementAccount, String businessLicenseUrl, String businessPermitUrl,String ownerName
     ) {
         this.user = user;
         this.name = name;
@@ -105,22 +105,10 @@ public class Store extends BaseTimeEntity {
         this.isUnmanned = isUnmanned;
         this.isSameDayOrder = isSameDayOrder;
         this.settlementAccount = settlementAccount;
+        this.businessLicenseUrl = businessLicenseUrl;
+        this.businessPermitUrl=businessPermitUrl;
+        this.ownerName=ownerName;
     }
-
-    public static Store createWithUrls(User user, String businessNumber, LocalDate establishDate,
-                                       String businessLicenseUrl, String businessPermitUrl,
-                                       String settlementAccount, String ownerName) {
-        Store store = new Store();
-        store.user = user;
-        store.businessNumber = businessNumber;
-        store.establishDate = establishDate;
-        store.businessLicenseUrl = businessLicenseUrl;
-        store.businessPermitUrl = businessPermitUrl;
-        store.settlementAccount = settlementAccount;
-        store.ownerName = ownerName;
-        return store;
-    }
-
 
     // Store 엔티티 내에 추가할 메서드
     public void updateBasicInfo(String name, String phone, String description, String address,
@@ -135,6 +123,18 @@ public class Store extends BaseTimeEntity {
         this.isUnmanned = isUnmanned;
         this.orderLink = orderLink;
         this.maxDailyOrders = maxDailyOrders;
+    }
+
+    public void addBusinessHour(BusinessHours businessHour) {
+        businessHoursList.add(businessHour);
+        businessHour.assignStore(this); // 역방향 연결
+    }
+
+    public void clearBusinessHours() {
+        for (BusinessHours bh : businessHoursList) {
+            bh.assignStore(null); // 역방향 해제
+        }
+        businessHoursList.clear();
     }
 }
 
