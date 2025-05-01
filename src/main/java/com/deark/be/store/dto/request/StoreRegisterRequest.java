@@ -31,7 +31,14 @@ public record StoreRegisterRequest(
 
 ) {
         public Store toEntity(User user, String businessLicenseUrl, String businessPermitUrl) {
-                return Store.createWithUrls(user, businessNumber, establishDate, businessLicenseUrl, businessPermitUrl,
-                        settlementAccount, ownerName);
+                return Store.builder()
+                        .user(user)
+                        .establishDate(establishDate)
+                        .businessNumber(businessNumber)
+                        .settlementAccount(settlementAccount)
+                        .ownerName(ownerName)
+                        .businessLicenseUrl(businessLicenseUrl)
+                        .businessPermitUrl(businessPermitUrl)
+                        .build();
         }
 }
