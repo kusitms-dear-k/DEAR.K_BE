@@ -1,5 +1,6 @@
 package com.deark.be.store.domain;
 
+import com.deark.be.design.domain.Size;
 import com.deark.be.global.domain.BaseTimeEntity;
 import com.deark.be.user.domain.User;
 import jakarta.persistence.*;
@@ -9,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "store")
 @Getter
@@ -55,10 +58,19 @@ public class Store extends BaseTimeEntity {
     @Column(name = "is_unmanned", nullable = false)
     private Boolean isUnmanned;
 
+    @Column(name = "is_same_day_order", nullable = false)
+    private Boolean isSameDayOrder;
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BusinessHours> businessHoursList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Size> sizeList = new ArrayList<>();
+
     @Builder
     public Store(User user, String name, String description, String phone, String address,
                  String businessNumber, LocalDate establishDate, String imageUrl,
-                 Long averageResponseTime, String chattingUrl, Boolean isUnmanned) {
+                 Long averageResponseTime, String chattingUrl, Boolean isUnmanned, Boolean isSameDayOrder) {
         this.user = user;
         this.name = name;
         this.description = description;
@@ -70,6 +82,7 @@ public class Store extends BaseTimeEntity {
         this.averageResponseTime = averageResponseTime;
         this.chattingUrl = chattingUrl;
         this.isUnmanned = isUnmanned;
+        this.isSameDayOrder = isSameDayOrder;
     }
 }
 

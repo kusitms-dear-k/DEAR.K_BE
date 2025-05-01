@@ -3,6 +3,8 @@ package com.deark.be.store.domain.type;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.time.DayOfWeek;
+
 @Getter
 @RequiredArgsConstructor
 public enum BusinessDay {
@@ -15,4 +17,16 @@ public enum BusinessDay {
     SUNDAY("일요일");
 
     private final String dayName;
+
+    public static BusinessDay fromDayOfWeek(DayOfWeek dayOfWeek) {
+        return switch (dayOfWeek) {
+            case MONDAY -> MONDAY;
+            case TUESDAY -> TUESDAY;
+            case WEDNESDAY -> WEDNESDAY;
+            case THURSDAY -> THURSDAY;
+            case FRIDAY -> FRIDAY;
+            case SATURDAY -> SATURDAY;
+            case SUNDAY -> SUNDAY;
+        };
+    }
 }

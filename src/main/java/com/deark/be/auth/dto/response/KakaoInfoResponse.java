@@ -24,7 +24,7 @@ public record KakaoInfoResponse(
         @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
         public record KakaoUserProfile(
                 String nickname,
-                String profileImage
+                String profileImageUrl
         ) {
         }
     }
@@ -41,7 +41,7 @@ public record KakaoInfoResponse(
 
     @Override
     public String getProfileImage() {
-        return kakaoAccount.profile().profileImage();
+        return kakaoAccount.profile().profileImageUrl();
     }
 
     @Override
