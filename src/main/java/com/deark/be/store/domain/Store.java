@@ -28,7 +28,7 @@ public class Store extends BaseTimeEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
 
     @Column(name = "description")
@@ -55,11 +55,30 @@ public class Store extends BaseTimeEntity {
     @Column(name = "chatting_url")
     private String chattingUrl;
 
-    @Column(name = "is_unmanned", nullable = false)
+    @Column(name = "is_unmanned")
     private Boolean isUnmanned;
 
-    @Column(name = "is_same_day_order", nullable = false)
+    @Column(name = "is_same_day_order")
     private Boolean isSameDayOrder;
+
+    @Column(name = "business_license_url")
+    private String businessLicenseUrl;
+
+    @Column(name = "business_permit_url")
+    private String businessPermitUrl;
+
+
+    @Column(name = "settlement_account")
+    private String settlementAccount;
+
+    @Column(name = "owner_name")
+    private String ownerName;
+
+    @Column(name = "order_link")
+    private String orderLink;
+
+    @Column(name = "max_daily_orders")
+    private Integer maxDailyOrders;
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BusinessHours> businessHoursList = new ArrayList<>();
@@ -70,7 +89,9 @@ public class Store extends BaseTimeEntity {
     @Builder
     public Store(User user, String name, String description, String phone, String address,
                  String businessNumber, LocalDate establishDate, String imageUrl,
-                 Long averageResponseTime, String chattingUrl, Boolean isUnmanned, Boolean isSameDayOrder) {
+                 Long averageResponseTime, String chattingUrl, Boolean isUnmanned, Boolean isSameDayOrder
+                 ,String settlementAccount
+    ) {
         this.user = user;
         this.name = name;
         this.description = description;
@@ -83,6 +104,37 @@ public class Store extends BaseTimeEntity {
         this.chattingUrl = chattingUrl;
         this.isUnmanned = isUnmanned;
         this.isSameDayOrder = isSameDayOrder;
+        this.settlementAccount = settlementAccount;
+    }
+
+    public static Store createWithUrls(User user, String businessNumber, LocalDate establishDate,
+                                       String businessLicenseUrl, String businessPermitUrl,
+                                       String settlementAccount, String ownerName) {
+        Store store = new Store();
+        store.user = user;
+        store.businessNumber = businessNumber;
+        store.establishDate = establishDate;
+        store.businessLicenseUrl = businessLicenseUrl;
+        store.businessPermitUrl = businessPermitUrl;
+        store.settlementAccount = settlementAccount;
+        store.ownerName = ownerName;
+        return store;
+    }
+
+
+    // Store 엔티티 내에 추가할 메서드
+    public void updateBasicInfo(String name, String phone, String description, String address,
+                                String imageUrl, String chattingUrl, Boolean isUnmanned,
+                                String orderLink, Integer maxDailyOrders) {
+        this.name = name;
+        this.phone = phone;
+        this.description = description;
+        this.address = address;
+        this.imageUrl = imageUrl;
+        this.chattingUrl = chattingUrl;
+        this.isUnmanned = isUnmanned;
+        this.orderLink = orderLink;
+        this.maxDailyOrders = maxDailyOrders;
     }
 }
 
