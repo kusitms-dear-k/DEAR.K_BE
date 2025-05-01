@@ -28,7 +28,7 @@ public class DesignController {
 
     @Operation(summary = "디자인 통합 검색", description = "입력받은 값 : keyword / 당일 주문 여부 : isSameDayOrder / 지역 리스트 : locationList <br>" +
             "시작일 : '2025-01-01' 형식으로 startDate / 종료일 : '2025-01-01' 형식으로 endDate (하루만 선택할 경우 시작일과 종료일을 같게 입력해주세요.) <br>" +
-            "가격 범위 : priceList / 도시락 케이크 여부는 isLunchBoxCake 에 입력해주세요.")
+            "최소 금액 : minPrice / 최대 금액 : maxPrice / 도시락 케이크 여부는 isLunchBoxCake 에 입력해주세요.")
     @GetMapping("/search")
     public ResponseEntity<ResponseTemplate<Object>> searchDesign(
             @RequestParam(required = false) String keyword,
@@ -36,12 +36,13 @@ public class DesignController {
             @RequestParam(required = false) List<String> locationList,
             @RequestParam(required = false) LocalDate startDate,
             @RequestParam(required = false) LocalDate endDate,
-            @RequestParam(required = false) List<Long> priceList,
+            @RequestParam(required = false) Long minPrice,
+            @RequestParam(required = false) Long maxPrice,
             @RequestParam(required = false) Boolean isUnmanned,
             @RequestParam(required = false) String isLunchBoxCake) {
 
         List<SearchDesignResponse> designList = designService.getDesignList(
-                keyword, isSameDayOrder, locationList, startDate, endDate, priceList, isUnmanned, isLunchBoxCake);
+                keyword, isSameDayOrder, locationList, startDate, endDate, minPrice, maxPrice, isUnmanned, isLunchBoxCake);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

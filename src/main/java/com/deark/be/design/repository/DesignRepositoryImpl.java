@@ -7,13 +7,11 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.deark.be.design.domain.QDesign.design;
 import static com.deark.be.store.domain.QBusinessHours.businessHours;
@@ -28,11 +26,12 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
 
     @Override
     public List<SearchDesignResponse> findAllDesignByCriteria(String keyword, Boolean isSameDayOrder, List<String> locationList,
-                                                              LocalDate startDate, LocalDate endDate, List<Long> priceList,
+                                                              LocalDate startDate, LocalDate endDate, Long minPrice, Long maxPrice,
                                                               Boolean isUnmanned, String isLunchBoxCake) {
 
         List<BusinessDay> businessDays = null;
-        if (startDate != null && endDate != null) {
+
+        if (!ObjectUtils.isEmpty(startDate) && !ObjectUtils.isEmpty(endDate)) {
             businessDays = getBusinessDaysBetween(startDate, endDate);
         }
 
@@ -54,7 +53,7 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                         keywordSearchExpression(keyword),
                         isSameDayOrder != null ? store.isSameDayOrder.eq(isSameDayOrder) : null,
                         locationList != null && !locationList.isEmpty() ? store.address.in(locationList) : null,
-                        priceList != null && !priceList.isEmpty() ? design.price.in(priceList) : null,
+                        priceBetweenExpression(minPrice, maxPrice),
                         isUnmanned != null ? store.isUnmanned.eq(isUnmanned) : null,
                         businessDays != null && !businessDays.isEmpty()
                                 ? businessHours.businessDay.in(businessDays)
@@ -85,5 +84,16 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
         }
 
         return new ArrayList<>(days);
+    }
+
+    private BooleanExpression priceBetweenExpression(Long minPrice, Long maxPrice) {
+        if (minPrice != null && maxPrice != null) {
+            return design.price.between(minPrice, maxPrice);
+        } else if (minPrice != null) {
+            return design.price.goe(minPrice);
+        } else if (maxPrice != null) {
+            return design.price.loe(maxPrice);
+        }
+        return null;
     }
 }
