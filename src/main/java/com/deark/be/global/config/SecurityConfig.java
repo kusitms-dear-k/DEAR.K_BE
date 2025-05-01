@@ -32,6 +32,7 @@ public class SecurityConfig {
             "/swagger-resources/*",
             "/webjars/**",
             "/auth/**",
+            "/design/**",
             "/global/health-check",
     };
 
