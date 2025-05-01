@@ -44,13 +44,7 @@ public class StoreService {
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new StoreException(STORE_NOT_FOUND));
 
-
-        store.updateBasicInfo(
-                request.name(), request.phone(), request.description(), request.address(),
-                request.imageUrl(), request.chattingUrl(), request.isUnmanned(),
-                request.orderLink(), request.maxDailyOrders()
-        );
-
+        request.updateBasicInfo(store);
         businessHoursService.registerBusinessHours(store, request.businessHours());
     }
 }

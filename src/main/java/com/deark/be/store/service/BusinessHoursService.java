@@ -21,18 +21,13 @@ public class BusinessHoursService {
 
     @Transactional
     public void registerBusinessHours(Store store, List<BusinessHoursRequest> requests) {
-        businessHoursRepository.deleteByStore(store); // ✅ 모든 요일 데이터 삭제하고 재설정
+        store.clearBusinessHours();// 기존 연관관계 제거
 
-        List<BusinessHours> hours = requests.stream()
-                .map(r -> BusinessHours.builder()
-                        .store(store)
-                        .businessDay(r.businessDay())
-                        .openTime(r.openTime())
-                        .closeTime(r.closeTime())
-                        .isOpen24Hours(r.isOpen24Hours())
-                        .build())
-                .toList();
+        for (BusinessHoursRequest request : requests) {
+            BusinessHours bh = request.toEntity(store);
+            store.addBusinessHour(bh); // 양방향 관계 설정
+        }
 
-        businessHoursRepository.saveAll(hours);
+        businessHoursRepository.saveAll(store.getBusinessHoursList());
     }
 }
