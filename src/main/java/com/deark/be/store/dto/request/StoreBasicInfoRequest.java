@@ -1,5 +1,7 @@
 package com.deark.be.store.dto.request;
 
+import com.deark.be.store.domain.Store;
+import com.deark.be.user.domain.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -38,4 +40,8 @@ public record StoreBasicInfoRequest(
         @Schema(description = "영업시간 리스트")
         @NotNull List<BusinessHoursRequest> businessHours
 
-) {}
+) {
+        public void updateBasicInfo(Store store) {
+                store.updateBasicInfo(name,phone,description,address,imageUrl,chattingUrl,isUnmanned,orderLink,maxDailyOrders);
+        }
+}
