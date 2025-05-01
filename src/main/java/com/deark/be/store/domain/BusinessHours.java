@@ -50,5 +50,9 @@ public class BusinessHours {
         this.dailyReservationLimit = dailyReservationLimit;
         this.isOpen24Hours = isOpen24Hours;
     }
+
+    public void assignStore(Store store) {
+        this.store = store;
+    }
 }
 
