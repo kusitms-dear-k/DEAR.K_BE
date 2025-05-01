@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
@@ -29,11 +30,11 @@ public class StoreService {
 
 
     @Transactional
-    public Long registerStore(StoreRegisterRequest request, Long userId) {
+    public Long registerStore(StoreRegisterRequest request, Long userId, MultipartFile businessLicenseFile, MultipartFile businessPermitFile) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserException(USER_NOT_FOUND));
-        String businessLicenseUrl = s3Service.uploadFile(request.businessLicenseFile());
-        String businessPermitUrl = s3Service.uploadFile(request.businessPermitFile());
+        String businessLicenseUrl = s3Service.uploadFile(businessLicenseFile);
+        String businessPermitUrl = s3Service.uploadFile(businessPermitFile);
 
         Store store = request.toEntity(user, businessLicenseUrl, businessPermitUrl);
         return storeRepository.save(store).getId();
