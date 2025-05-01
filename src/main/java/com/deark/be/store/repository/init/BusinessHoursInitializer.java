@@ -84,56 +84,24 @@ public class BusinessHoursInitializer implements ApplicationRunner {
             BusinessHours DUMMY_BUSINESS_HOURS6 = BusinessHours.builder()
                     .store(STORE2)
                     .businessDay(MONDAY)
-                    .openTime(LocalTime.of(10, 0))
-                    .closeTime(LocalTime.of(22, 0))
+                    .openTime(LocalTime.of(12, 0))
+                    .closeTime(LocalTime.of(21, 0))
                     .isOpen24Hours(false)
                     .build();
 
             BusinessHours DUMMY_BUSINESS_HOURS7 = BusinessHours.builder()
                     .store(STORE2)
                     .businessDay(TUESDAY)
-                    .openTime(LocalTime.of(10, 0))
-                    .closeTime(LocalTime.of(22, 0))
+                    .openTime(LocalTime.of(12, 0))
+                    .closeTime(LocalTime.of(21, 0))
                     .isOpen24Hours(false)
                     .build();
 
             BusinessHours DUMMY_BUSINESS_HOURS8 = BusinessHours.builder()
                     .store(STORE2)
                     .businessDay(WEDNESDAY)
-                    .openTime(LocalTime.of(10, 0))
-                    .closeTime(LocalTime.of(22, 0))
-                    .isOpen24Hours(false)
-                    .build();
-
-            BusinessHours DUMMY_BUSINESS_HOURS9 = BusinessHours.builder()
-                    .store(STORE2)
-                    .businessDay(THURSDAY)
-                    .openTime(LocalTime.of(10, 0))
-                    .closeTime(LocalTime.of(22, 0))
-                    .isOpen24Hours(false)
-                    .build();
-
-            BusinessHours DUMMY_BUSINESS_HOURS10 = BusinessHours.builder()
-                    .store(STORE2)
-                    .businessDay(FRIDAY)
-                    .openTime(LocalTime.of(10, 0))
-                    .closeTime(LocalTime.of(22, 0))
-                    .isOpen24Hours(false)
-                    .build();
-
-            BusinessHours DUMMY_BUSINESS_HOURS11 = BusinessHours.builder()
-                    .store(STORE3)
-                    .businessDay(MONDAY)
-                    .openTime(LocalTime.of(10, 0))
-                    .closeTime(LocalTime.of(22, 0))
-                    .isOpen24Hours(false)
-                    .build();
-
-            BusinessHours DUMMY_BUSINESS_HOURS12 = BusinessHours.builder()
-                    .store(STORE3)
-                    .businessDay(TUESDAY)
-                    .openTime(LocalTime.of(10, 0))
-                    .closeTime(LocalTime.of(22, 0))
+                    .openTime(LocalTime.of(12, 0))
+                    .closeTime(LocalTime.of(21, 0))
                     .isOpen24Hours(false)
                     .build();
 
@@ -141,7 +109,7 @@ public class BusinessHoursInitializer implements ApplicationRunner {
                     .store(STORE3)
                     .businessDay(WEDNESDAY)
                     .openTime(LocalTime.of(10, 0))
-                    .closeTime(LocalTime.of(22, 0))
+                    .closeTime(LocalTime.of(20, 0))
                     .isOpen24Hours(false)
                     .build();
 
@@ -149,7 +117,7 @@ public class BusinessHoursInitializer implements ApplicationRunner {
                     .store(STORE3)
                     .businessDay(THURSDAY)
                     .openTime(LocalTime.of(10, 0))
-                    .closeTime(LocalTime.of(22, 0))
+                    .closeTime(LocalTime.of(20, 0))
                     .isOpen24Hours(false)
                     .build();
 
@@ -157,22 +125,14 @@ public class BusinessHoursInitializer implements ApplicationRunner {
                     .store(STORE3)
                     .businessDay(FRIDAY)
                     .openTime(LocalTime.of(10, 0))
-                    .closeTime(LocalTime.of(22, 0))
+                    .closeTime(LocalTime.of(20, 0))
                     .isOpen24Hours(false)
                     .build();
 
             BusinessHours DUMMY_BUSINESS_HOURS16 = BusinessHours.builder()
                     .store(STORE4)
                     .businessDay(MONDAY)
-                    .openTime(LocalTime.of(10, 0))
-                    .closeTime(LocalTime.of(22, 0))
-                    .isOpen24Hours(false)
-                    .build();
-
-            BusinessHours DUMMY_BUSINESS_HOURS17 = BusinessHours.builder()
-                    .store(STORE4)
-                    .businessDay(TUESDAY)
-                    .openTime(LocalTime.of(10, 0))
+                    .openTime(LocalTime.of(13, 0))
                     .closeTime(LocalTime.of(22, 0))
                     .isOpen24Hours(false)
                     .build();
@@ -180,15 +140,7 @@ public class BusinessHoursInitializer implements ApplicationRunner {
             BusinessHours DUMMY_BUSINESS_HOURS18 = BusinessHours.builder()
                     .store(STORE4)
                     .businessDay(WEDNESDAY)
-                    .openTime(LocalTime.of(10, 0))
-                    .closeTime(LocalTime.of(22, 0))
-                    .isOpen24Hours(false)
-                    .build();
-
-            BusinessHours DUMMY_BUSINESS_HOURS19 = BusinessHours.builder()
-                    .store(STORE4)
-                    .businessDay(THURSDAY)
-                    .openTime(LocalTime.of(10, 0))
+                    .openTime(LocalTime.of(13, 0))
                     .closeTime(LocalTime.of(22, 0))
                     .isOpen24Hours(false)
                     .build();
@@ -196,15 +148,7 @@ public class BusinessHoursInitializer implements ApplicationRunner {
             BusinessHours DUMMY_BUSINESS_HOURS20 = BusinessHours.builder()
                     .store(STORE4)
                     .businessDay(FRIDAY)
-                    .openTime(LocalTime.of(10, 0))
-                    .closeTime(LocalTime.of(22, 0))
-                    .isOpen24Hours(false)
-                    .build();
-
-            BusinessHours DUMMY_BUSINESS_HOURS21 = BusinessHours.builder()
-                    .store(STORE5)
-                    .businessDay(MONDAY)
-                    .openTime(LocalTime.of(10, 0))
+                    .openTime(LocalTime.of(13, 0))
                     .closeTime(LocalTime.of(22, 0))
                     .isOpen24Hours(false)
                     .build();
@@ -212,112 +156,64 @@ public class BusinessHoursInitializer implements ApplicationRunner {
             BusinessHours DUMMY_BUSINESS_HOURS22 = BusinessHours.builder()
                     .store(STORE5)
                     .businessDay(TUESDAY)
-                    .openTime(LocalTime.of(10, 0))
-                    .closeTime(LocalTime.of(22, 0))
-                    .isOpen24Hours(false)
-                    .build();
-
-            BusinessHours DUMMY_BUSINESS_HOURS23 = BusinessHours.builder()
-                    .store(STORE5)
-                    .businessDay(WEDNESDAY)
-                    .openTime(LocalTime.of(10, 0))
-                    .closeTime(LocalTime.of(22, 0))
+                    .openTime(LocalTime.of(11, 0))
+                    .closeTime(LocalTime.of(17, 0))
                     .isOpen24Hours(false)
                     .build();
 
             BusinessHours DUMMY_BUSINESS_HOURS24 = BusinessHours.builder()
                     .store(STORE5)
                     .businessDay(THURSDAY)
-                    .openTime(LocalTime.of(10, 0))
-                    .closeTime(LocalTime.of(22, 0))
-                    .isOpen24Hours(false)
-                    .build();
-
-            BusinessHours DUMMY_BUSINESS_HOURS25 = BusinessHours.builder()
-                    .store(STORE5)
-                    .businessDay(FRIDAY)
-                    .openTime(LocalTime.of(10, 0))
-                    .closeTime(LocalTime.of(22, 0))
+                    .openTime(LocalTime.of(11, 0))
+                    .closeTime(LocalTime.of(17, 0))
                     .isOpen24Hours(false)
                     .build();
 
             BusinessHours DUMMY_BUSINESS_HOURS26 = BusinessHours.builder()
                     .store(STORE6)
                     .businessDay(MONDAY)
-                    .openTime(LocalTime.of(10, 0))
-                    .closeTime(LocalTime.of(22, 0))
+                    .openTime(LocalTime.of(13, 0))
+                    .closeTime(LocalTime.of(20, 0))
                     .isOpen24Hours(false)
                     .build();
 
             BusinessHours DUMMY_BUSINESS_HOURS27 = BusinessHours.builder()
                     .store(STORE6)
                     .businessDay(TUESDAY)
-                    .openTime(LocalTime.of(10, 0))
-                    .closeTime(LocalTime.of(22, 0))
-                    .isOpen24Hours(false)
-                    .build();
-
-            BusinessHours DUMMY_BUSINESS_HOURS28 = BusinessHours.builder()
-                    .store(STORE6)
-                    .businessDay(WEDNESDAY)
-                    .openTime(LocalTime.of(10, 0))
-                    .closeTime(LocalTime.of(22, 0))
-                    .isOpen24Hours(false)
-                    .build();
-
-            BusinessHours DUMMY_BUSINESS_HOURS29 = BusinessHours.builder()
-                    .store(STORE6)
-                    .businessDay(THURSDAY)
-                    .openTime(LocalTime.of(10, 0))
-                    .closeTime(LocalTime.of(22, 0))
+                    .openTime(LocalTime.of(13, 0))
+                    .closeTime(LocalTime.of(20, 0))
                     .isOpen24Hours(false)
                     .build();
 
             BusinessHours DUMMY_BUSINESS_HOURS30 = BusinessHours.builder()
                     .store(STORE6)
                     .businessDay(FRIDAY)
-                    .openTime(LocalTime.of(10, 0))
-                    .closeTime(LocalTime.of(22, 0))
-                    .isOpen24Hours(false)
-                    .build();
-
-            BusinessHours DUMMY_BUSINESS_HOURS31 = BusinessHours.builder()
-                    .store(STORE7)
-                    .businessDay(MONDAY)
-                    .openTime(LocalTime.of(10, 0))
-                    .closeTime(LocalTime.of(22, 0))
+                    .openTime(LocalTime.of(13, 0))
+                    .closeTime(LocalTime.of(20, 0))
                     .isOpen24Hours(false)
                     .build();
 
             BusinessHours DUMMY_BUSINESS_HOURS32 = BusinessHours.builder()
                     .store(STORE7)
                     .businessDay(TUESDAY)
-                    .openTime(LocalTime.of(10, 0))
-                    .closeTime(LocalTime.of(22, 0))
+                    .openTime(LocalTime.of(9, 0))
+                    .closeTime(LocalTime.of(23, 0))
                     .isOpen24Hours(false)
                     .build();
 
             BusinessHours DUMMY_BUSINESS_HOURS33 = BusinessHours.builder()
                     .store(STORE7)
                     .businessDay(WEDNESDAY)
-                    .openTime(LocalTime.of(10, 0))
-                    .closeTime(LocalTime.of(22, 0))
-                    .isOpen24Hours(false)
-                    .build();
-
-            BusinessHours DUMMY_BUSINESS_HOURS34 = BusinessHours.builder()
-                    .store(STORE7)
-                    .businessDay(THURSDAY)
-                    .openTime(LocalTime.of(10, 0))
-                    .closeTime(LocalTime.of(22, 0))
+                    .openTime(LocalTime.of(9, 0))
+                    .closeTime(LocalTime.of(23, 0))
                     .isOpen24Hours(false)
                     .build();
 
             BusinessHours DUMMY_BUSINESS_HOURS35 = BusinessHours.builder()
                     .store(STORE7)
                     .businessDay(FRIDAY)
-                    .openTime(LocalTime.of(10, 0))
-                    .closeTime(LocalTime.of(22, 0))
+                    .openTime(LocalTime.of(9, 0))
+                    .closeTime(LocalTime.of(23, 0))
                     .isOpen24Hours(false)
                     .build();
 
@@ -329,32 +225,19 @@ public class BusinessHoursInitializer implements ApplicationRunner {
             businessHoursList.add(DUMMY_BUSINESS_HOURS6);
             businessHoursList.add(DUMMY_BUSINESS_HOURS7);
             businessHoursList.add(DUMMY_BUSINESS_HOURS8);
-            businessHoursList.add(DUMMY_BUSINESS_HOURS9);
-            businessHoursList.add(DUMMY_BUSINESS_HOURS10);
-            businessHoursList.add(DUMMY_BUSINESS_HOURS11);
-            businessHoursList.add(DUMMY_BUSINESS_HOURS12);
             businessHoursList.add(DUMMY_BUSINESS_HOURS13);
             businessHoursList.add(DUMMY_BUSINESS_HOURS14);
             businessHoursList.add(DUMMY_BUSINESS_HOURS15);
             businessHoursList.add(DUMMY_BUSINESS_HOURS16);
-            businessHoursList.add(DUMMY_BUSINESS_HOURS17);
             businessHoursList.add(DUMMY_BUSINESS_HOURS18);
-            businessHoursList.add(DUMMY_BUSINESS_HOURS19);
             businessHoursList.add(DUMMY_BUSINESS_HOURS20);
-            businessHoursList.add(DUMMY_BUSINESS_HOURS21);
             businessHoursList.add(DUMMY_BUSINESS_HOURS22);
-            businessHoursList.add(DUMMY_BUSINESS_HOURS23);
             businessHoursList.add(DUMMY_BUSINESS_HOURS24);
-            businessHoursList.add(DUMMY_BUSINESS_HOURS25);
             businessHoursList.add(DUMMY_BUSINESS_HOURS26);
             businessHoursList.add(DUMMY_BUSINESS_HOURS27);
-            businessHoursList.add(DUMMY_BUSINESS_HOURS28);
-            businessHoursList.add(DUMMY_BUSINESS_HOURS29);
             businessHoursList.add(DUMMY_BUSINESS_HOURS30);
-            businessHoursList.add(DUMMY_BUSINESS_HOURS31);
             businessHoursList.add(DUMMY_BUSINESS_HOURS32);
             businessHoursList.add(DUMMY_BUSINESS_HOURS33);
-            businessHoursList.add(DUMMY_BUSINESS_HOURS34);
             businessHoursList.add(DUMMY_BUSINESS_HOURS35);
 
             businessHoursRepository.saveAll(businessHoursList);
