@@ -1,6 +1,6 @@
 package com.deark.be.design.controller;
 
-import com.deark.be.design.dto.response.SearchDesignResponse;
+import com.deark.be.design.dto.response.SearchDesignResponseList;
 import com.deark.be.design.service.DesignService;
 import com.deark.be.global.dto.ResponseTemplate;
 import com.deark.be.store.domain.type.SortType;
@@ -27,12 +27,13 @@ public class DesignController {
 
     private final DesignService designService;
 
-    @Operation(summary = "디자인 통합 검색", description = "입력받은 값 : keyword / 당일 주문 여부 : isSameDayOrder / 지역 리스트 : locationList <br>" +
+    @Operation(summary = "디자인 통합 검색", description = "page는 0부터 시작합니다. hasNext가 false이면 마지막 페이지입니다.<br><br>" +
+            "입력받은 값 : keyword / 당일 주문 여부 : isSameDayOrder / 지역 리스트 : locationList <br>" +
             "시작일 : '2025-01-01' 형식으로 startDate / 종료일 : '2025-01-01' 형식으로 endDate (하루만 선택할 경우 시작일과 종료일을 같게 입력해주세요.) <br>" +
             "최소 금액 : minPrice / 최대 금액 : maxPrice / 도시락 케이크 여부는 isLunchBoxCake 에 입력해주세요.")
     @GetMapping("/search")
     public ResponseEntity<ResponseTemplate<Object>> searchDesign(
-            @RequestParam Long page,
+            @RequestParam(defaultValue = "0") Long page,
             @RequestParam(defaultValue = "6") Long count,
             @RequestParam(defaultValue = "ACCURACY") SortType sortType,
             @RequestParam(required = false) String keyword,
@@ -44,7 +45,7 @@ public class DesignController {
             @RequestParam(required = false) Long maxPrice,
             @RequestParam(required = false) Boolean isLunchBoxCake) {
 
-        List<SearchDesignResponse> designList = designService.getDesignList(
+        SearchDesignResponseList designList = designService.getDesignList(
                 page, count, sortType,
                 keyword, isSameDayOrder, locationList, startDate, endDate, minPrice, maxPrice, isLunchBoxCake);
 

@@ -1,6 +1,7 @@
 package com.deark.be.design.service;
 
 import com.deark.be.design.dto.response.SearchDesignResponse;
+import com.deark.be.design.dto.response.SearchDesignResponseList;
 import com.deark.be.design.repository.DesignRepository;
 import com.deark.be.store.domain.type.SortType;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,9 @@ public class DesignService {
 
      private final DesignRepository designRepository;
 
-     public List<SearchDesignResponse> getDesignList(Long page, Long count, SortType sortType,
-                                                     String keyword, Boolean isSameDayOrder, List<String> locationList,
-                                                     LocalDate startDate, LocalDate endDate, Long minPrice, Long maxPrice, Boolean isLunchBoxCake) {
+     public SearchDesignResponseList getDesignList(Long page, Long count, SortType sortType,
+                                                   String keyword, Boolean isSameDayOrder, List<String> locationList,
+                                                   LocalDate startDate, LocalDate endDate, Long minPrice, Long maxPrice, Boolean isLunchBoxCake) {
 
             List<SearchDesignResponse> allSearchResult = designRepository.findAllDesignByCriteria(page, count, sortType,
                     keyword, isSameDayOrder, locationList, startDate, endDate, minPrice, maxPrice, isLunchBoxCake);
@@ -32,6 +33,6 @@ public class DesignService {
                 allSearchResult.remove(allSearchResult.size() - 1);
             }
 
-            return allSearchResult;
+            return SearchDesignResponseList.of(page, hasNext, allSearchResult);
      }
 }
