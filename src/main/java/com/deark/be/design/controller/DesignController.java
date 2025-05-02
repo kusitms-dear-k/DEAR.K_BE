@@ -3,6 +3,7 @@ package com.deark.be.design.controller;
 import com.deark.be.design.dto.response.SearchDesignResponse;
 import com.deark.be.design.service.DesignService;
 import com.deark.be.global.dto.ResponseTemplate;
+import com.deark.be.store.domain.type.SortType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,9 @@ public class DesignController {
             "최소 금액 : minPrice / 최대 금액 : maxPrice / 도시락 케이크 여부는 isLunchBoxCake 에 입력해주세요.")
     @GetMapping("/search")
     public ResponseEntity<ResponseTemplate<Object>> searchDesign(
+            @RequestParam Long page,
+            @RequestParam(defaultValue = "6") Long count,
+            @RequestParam(defaultValue = "ACCURACY") SortType sortType,
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) Boolean isSameDayOrder,
             @RequestParam(required = false) List<String> locationList,
@@ -41,6 +45,7 @@ public class DesignController {
             @RequestParam(required = false) Boolean isLunchBoxCake) {
 
         List<SearchDesignResponse> designList = designService.getDesignList(
+                page, count, sortType,
                 keyword, isSameDayOrder, locationList, startDate, endDate, minPrice, maxPrice, isLunchBoxCake);
 
         return ResponseEntity
