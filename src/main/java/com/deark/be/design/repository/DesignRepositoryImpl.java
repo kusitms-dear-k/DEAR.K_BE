@@ -4,6 +4,7 @@ import com.deark.be.design.dto.response.SearchDesignResponse;
 import com.deark.be.store.domain.type.BusinessDay;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -11,12 +12,15 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static com.deark.be.design.domain.QDesign.design;
+import static com.deark.be.design.domain.QSize.size;
 import static com.deark.be.store.domain.QBusinessHours.businessHours;
 import static com.deark.be.store.domain.QStore.store;
-import static com.deark.be.design.domain.QSize.size;
 
 @Repository
 @RequiredArgsConstructor
@@ -26,49 +30,58 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
 
     @Override
     public List<SearchDesignResponse> findAllDesignByCriteria(String keyword, Boolean isSameDayOrder, List<String> locationList,
-                                                              LocalDate startDate, LocalDate endDate, Long minPrice, Long maxPrice,
-                                                              Boolean isUnmanned, String isLunchBoxCake) {
+                                                              LocalDate startDate, LocalDate endDate, Long minPrice, Long maxPrice, Boolean isLunchBoxCake) {
 
+        List<BusinessDay> businessDays = getBusinessDayList(startDate, endDate);
+
+        JPAQuery<SearchDesignResponse> query = jpaQueryFactory
+                .select(Projections.constructor(
+                        SearchDesignResponse.class,
+                        design.id,
+                        design.name,
+                        design.store.name,
+                        design.price,
+                        design.store.address,
+                        design.store.isSameDayOrder
+                ))
+                .from(design)
+                .join(design.store, store)
+                .leftJoin(store.businessHoursList, businessHours);
+
+        if (Boolean.TRUE.equals(isLunchBoxCake)) {
+            query.innerJoin(size)
+                    .on(size.design.eq(design)
+                            .and(size.name.contains("도시락 케이크")));
+        }
+
+        query.where(
+                keywordSearchExpression(keyword),
+                isSameDayOrder != null ? store.isSameDayOrder.eq(isSameDayOrder) : null,
+                locationListExpression(locationList),
+                priceBetweenExpression(minPrice, maxPrice),
+                (businessDays != null && !businessDays.isEmpty())
+                        ? businessHours.businessDay.in(businessDays)
+                        : null
+        );
+
+        return query
+                .distinct()
+                .fetch();
+    }
+
+    private List<BusinessDay> getBusinessDayList(LocalDate startDate, LocalDate endDate) {
         List<BusinessDay> businessDays = null;
 
         if (!ObjectUtils.isEmpty(startDate) && !ObjectUtils.isEmpty(endDate)) {
             businessDays = getBusinessDaysBetween(startDate, endDate);
         }
 
-        return jpaQueryFactory.select(
-                        Projections.constructor(SearchDesignResponse.class,
-                                design.id,
-                                design.name,
-                                design.store.name,
-                                design.price,
-                                design.store.address,
-                                design.store.isSameDayOrder
-                        )
-                )
-                .from(design)
-                .join(design.store, store)
-                .leftJoin(store.businessHoursList, businessHours)
-                .leftJoin(store.sizeList, size)
-                .where(
-                        keywordSearchExpression(keyword),
-                        isSameDayOrder != null ? store.isSameDayOrder.eq(isSameDayOrder) : null,
-                        locationList != null && !locationList.isEmpty() ? store.address.in(locationList) : null,
-                        priceBetweenExpression(minPrice, maxPrice),
-                        isUnmanned != null ? store.isUnmanned.eq(isUnmanned) : null,
-                        businessDays != null && !businessDays.isEmpty()
-                                ? businessHours.businessDay.in(businessDays)
-                                : null,
-                        isLunchBoxCake != null
-                                ? size.name.contains("도시락 케이크")
-                                : null
-                )
-                .distinct()
-                .fetch();
+        return businessDays;
     }
 
     private BooleanExpression keywordSearchExpression(String keyword) {
         if (StringUtils.hasText(keyword)) {
-            return design.description.contains(keyword).or(design.store.address.contains(keyword));
+            return design.name.contains(keyword).or(design.description.contains(keyword)).or(design.store.address.contains(keyword));
         } else {
             return null;
         }
@@ -94,6 +107,22 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
         } else if (maxPrice != null) {
             return design.price.loe(maxPrice);
         }
+
         return null;
+    }
+
+    private BooleanExpression locationListExpression(List<String> locationList) {
+        if (ObjectUtils.isEmpty(locationList)) {
+            return null;
+        }
+
+        BooleanExpression expr = null;
+
+        for (String loc : locationList) {
+            BooleanExpression next = store.address.contains(loc);
+            expr = (expr == null) ? next : expr.or(next);
+        }
+
+        return expr;
     }
 }
