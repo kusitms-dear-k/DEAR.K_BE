@@ -38,11 +38,10 @@ public class DesignController {
             @RequestParam(required = false) LocalDate endDate,
             @RequestParam(required = false) Long minPrice,
             @RequestParam(required = false) Long maxPrice,
-            @RequestParam(required = false) Boolean isUnmanned,
-            @RequestParam(required = false) String isLunchBoxCake) {
+            @RequestParam(required = false) Boolean isLunchBoxCake) {
 
         List<SearchDesignResponse> designList = designService.getDesignList(
-                keyword, isSameDayOrder, locationList, startDate, endDate, minPrice, maxPrice, isUnmanned, isLunchBoxCake);
+                keyword, isSameDayOrder, locationList, startDate, endDate, minPrice, maxPrice, isLunchBoxCake);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

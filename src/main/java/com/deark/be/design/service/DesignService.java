@@ -19,9 +19,8 @@ public class DesignService {
      private final DesignRepository designRepository;
 
      public List<SearchDesignResponse> getDesignList(String keyword, Boolean isSameDayOrder, List<String> locationList,
-                                                     LocalDate startDate, LocalDate endDate, Long minPrice, Long maxPrice,
-                                                     Boolean isUnmanned, String isLunchBoxCake) {
+                                                     LocalDate startDate, LocalDate endDate, Long minPrice, Long maxPrice, Boolean isLunchBoxCake) {
 
-            return designRepository.findAllDesignByCriteria(keyword, isSameDayOrder, locationList, startDate, endDate, minPrice, maxPrice, isUnmanned, isLunchBoxCake);
+            return designRepository.findAllDesignByCriteria(keyword, isSameDayOrder, locationList, startDate, endDate, minPrice, maxPrice, isLunchBoxCake);
      }
 }
