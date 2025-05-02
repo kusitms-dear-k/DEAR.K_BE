@@ -2,6 +2,7 @@ package com.deark.be.design.repository;
 
 import com.deark.be.design.dto.response.SearchDesignResponse;
 import com.deark.be.store.domain.type.BusinessDay;
+import com.deark.be.store.domain.type.SortType;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -29,7 +30,8 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<SearchDesignResponse> findAllDesignByCriteria(String keyword, Boolean isSameDayOrder, List<String> locationList,
+    public List<SearchDesignResponse> findAllDesignByCriteria(Long page, Long count, SortType sortType,
+                                                              String keyword, Boolean isSameDayOrder, List<String> locationList,
                                                               LocalDate startDate, LocalDate endDate, Long minPrice, Long maxPrice, Boolean isLunchBoxCake) {
 
         List<BusinessDay> businessDays = getBusinessDayList(startDate, endDate);
@@ -59,13 +61,19 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                 isSameDayOrder != null ? store.isSameDayOrder.eq(isSameDayOrder) : null,
                 locationListExpression(locationList),
                 priceBetweenExpression(minPrice, maxPrice),
-                (businessDays != null && !businessDays.isEmpty())
+                (!ObjectUtils.isEmpty(businessDays))
                         ? businessHours.businessDay.in(businessDays)
                         : null
         );
 
+        if (SortType.LATEST.equals(sortType)) {
+            query.orderBy(design.id.desc());
+        }
+
         return query
                 .distinct()
+                .offset(page * count)
+                .limit(count + 1)
                 .fetch();
     }
 
@@ -80,11 +88,23 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
     }
 
     private BooleanExpression keywordSearchExpression(String keyword) {
-        if (StringUtils.hasText(keyword)) {
-            return design.name.contains(keyword).or(design.description.contains(keyword)).or(design.store.address.contains(keyword));
-        } else {
+        if (!StringUtils.hasText(keyword)) {
             return null;
         }
+
+        String[] tokens = keyword.trim().split("\\s+");
+
+        BooleanExpression expr = null;
+
+        for (String token : tokens) {
+            BooleanExpression tokenExpr = design.name.contains(token)
+                    .or(design.description.contains(token))
+                    .or(store.address.contains(token));
+
+            expr = (expr == null) ? tokenExpr : expr.or(tokenExpr);
+        }
+
+        return expr;
     }
 
     private List<BusinessDay> getBusinessDaysBetween(LocalDate startDate, LocalDate endDate) {
