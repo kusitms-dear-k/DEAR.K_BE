@@ -46,19 +46,54 @@ public class SizeInitializer implements ApplicationRunner {
 
             Size DUMMY_SIZE2 = Size.builder()
                     .store(STORE1)
-                    .design(DESIGN2)
+                    .design(DESIGN1)
                     .name("1호 케이크")
                     .build();
 
             Size DUMMY_SIZE3 = Size.builder()
                     .store(STORE1)
-                    .design(DESIGN3)
+                    .design(DESIGN1)
                     .name("2호 케이크")
+                    .build();
+
+            Size DUMMY_SIZE4 = Size.builder()
+                    .store(STORE1)
+                    .design(DESIGN2)
+                    .name("도시락 케이크")
+                    .build();
+
+            Size DUMMY_SIZE5 = Size.builder()
+                    .store(STORE1)
+                    .design(DESIGN2)
+                    .name("1호 케이크")
+                    .build();
+
+            Size DUMMY_SIZE6 = Size.builder()
+                    .store(STORE1)
+                    .design(DESIGN2)
+                    .name("2호 케이크")
+                    .build();
+
+            Size DUMMY_SIZE7 = Size.builder()
+                    .store(STORE1)
+                    .design(DESIGN3)
+                    .name("도시락 케이크")
+                    .build();
+
+            Size DUMMY_SIZE8 = Size.builder()
+                    .store(STORE1)
+                    .design(DESIGN3)
+                    .name("1호 케이크")
                     .build();
 
             sizeList.add(DUMMY_SIZE1);
             sizeList.add(DUMMY_SIZE2);
             sizeList.add(DUMMY_SIZE3);
+            sizeList.add(DUMMY_SIZE4);
+            sizeList.add(DUMMY_SIZE5);
+            sizeList.add(DUMMY_SIZE6);
+            sizeList.add(DUMMY_SIZE7);
+            sizeList.add(DUMMY_SIZE8);
 
             sizeRepository.saveAll(sizeList);
         }
