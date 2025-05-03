@@ -1,5 +1,6 @@
 package com.deark.be.event.domain;
 
+import com.deark.be.global.domain.BaseTimeEntity;
 import com.deark.be.store.domain.Store;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class EventStore {
+public class EventStore extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +27,17 @@ public class EventStore {
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
 
+    @Column(name = "memo")
+    private String memo;
+
     @Builder
-    public EventStore(Event event, Store store) {
+    public EventStore(Event event, Store store,String memo) {
         this.event = event;
         this.store = store;
+        this.memo = memo;
+    }
+
+    public void assignEvent(Event event) {
+        this.event = event;
     }
 }
