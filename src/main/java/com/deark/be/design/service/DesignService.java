@@ -1,6 +1,6 @@
 package com.deark.be.design.service;
 
-import com.deark.be.design.dto.response.SearchDesignResponse;
+import com.deark.be.design.dto.response.SearchDesignPagedResult;
 import com.deark.be.design.dto.response.SearchDesignResponseList;
 import com.deark.be.design.repository.DesignRepository;
 import com.deark.be.store.domain.type.SortType;
@@ -24,15 +24,15 @@ public class DesignService {
                                                    String keyword, Boolean isSameDayOrder, List<String> locationList,
                                                    LocalDate startDate, LocalDate endDate, Long minPrice, Long maxPrice, Boolean isLunchBoxCake) {
 
-            List<SearchDesignResponse> allSearchResult = designRepository.findAllDesignByCriteria(page, count, sortType,
+            SearchDesignPagedResult allSearchResult = designRepository.findAllDesignByCriteria(page, count, sortType,
                     keyword, isSameDayOrder, locationList, startDate, endDate, minPrice, maxPrice, isLunchBoxCake);
 
-            boolean hasNext = allSearchResult.size() == count + 1;
+            boolean hasNext = allSearchResult.designList().size() == count + 1;
 
             if (hasNext) {
-                allSearchResult.remove(allSearchResult.size() - 1);
+                allSearchResult.designList().remove(allSearchResult.designList().size() - 1);
             }
 
-            return SearchDesignResponseList.of(page, hasNext, allSearchResult);
+            return SearchDesignResponseList.of(allSearchResult.totalCount(), page, hasNext, allSearchResult.designList());
      }
 }

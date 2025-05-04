@@ -1,5 +1,6 @@
 package com.deark.be.design.repository;
 
+import com.deark.be.design.dto.response.SearchDesignPagedResult;
 import com.deark.be.design.dto.response.SearchDesignResponse;
 import com.deark.be.store.domain.type.BusinessDay;
 import com.deark.be.store.domain.type.SortType;
@@ -13,10 +14,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.deark.be.design.domain.QDesign.design;
 import static com.deark.be.design.domain.QSize.size;
@@ -30,13 +28,24 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<SearchDesignResponse> findAllDesignByCriteria(Long page, Long count, SortType sortType,
-                                                              String keyword, Boolean isSameDayOrder, List<String> locationList,
-                                                              LocalDate startDate, LocalDate endDate, Long minPrice, Long maxPrice, Boolean isLunchBoxCake) {
+    public SearchDesignPagedResult findAllDesignByCriteria(
+            Long page, Long count, SortType sortType,
+            String keyword, Boolean isSameDayOrder, List<String> locationList,
+            LocalDate startDate, LocalDate endDate, Long minPrice, Long maxPrice, Boolean isLunchBoxCake) {
 
-        List<BusinessDay> businessDays = getBusinessDayList(startDate, endDate);
+        BooleanExpression keywordExpr  = keywordSearchExpression(keyword);
+        BooleanExpression sameDayExpr  = (isSameDayOrder != null) ? store.isSameDayOrder.eq(isSameDayOrder) : null;
+        BooleanExpression locationExpr = locationListExpression(locationList);
+        BooleanExpression priceExpr    = priceBetweenExpression(minPrice, maxPrice);
 
-        JPAQuery<SearchDesignResponse> query = jpaQueryFactory
+        List<BusinessDay> businessDays = (startDate != null && endDate != null)
+                ? getBusinessDayList(startDate, endDate)
+                : Collections.emptyList();
+        BooleanExpression businessDayExpr = (!businessDays.isEmpty())
+                ? businessHours.businessDay.in(businessDays)
+                : null;
+
+        JPAQuery<SearchDesignResponse> contentQuery = jpaQueryFactory
                 .select(Projections.constructor(
                         SearchDesignResponse.class,
                         design.id,
@@ -51,30 +60,56 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                 .leftJoin(store.businessHoursList, businessHours);
 
         if (Boolean.TRUE.equals(isLunchBoxCake)) {
-            query.innerJoin(size)
+            contentQuery.innerJoin(size)
                     .on(size.design.eq(design)
                             .and(size.name.contains("도시락 케이크")));
         }
 
-        query.where(
-                keywordSearchExpression(keyword),
-                isSameDayOrder != null ? store.isSameDayOrder.eq(isSameDayOrder) : null,
-                locationListExpression(locationList),
-                priceBetweenExpression(minPrice, maxPrice),
-                (!ObjectUtils.isEmpty(businessDays))
-                        ? businessHours.businessDay.in(businessDays)
-                        : null
+        contentQuery.where(
+                keywordExpr,
+                sameDayExpr,
+                locationExpr,
+                priceExpr,
+                businessDayExpr
         );
 
         if (SortType.LATEST.equals(sortType)) {
-            query.orderBy(design.id.desc());
+            contentQuery.orderBy(design.id.desc());
         }
 
-        return query
+        List<SearchDesignResponse> content = contentQuery
                 .distinct()
                 .offset(page * count)
                 .limit(count + 1)
                 .fetch();
+
+        JPAQuery<Long> countQuery = jpaQueryFactory
+                .select(design.id.countDistinct())
+                .from(design)
+                .join(design.store, store)
+                .leftJoin(store.businessHoursList, businessHours);
+
+        if (Boolean.TRUE.equals(isLunchBoxCake)) {
+            countQuery.innerJoin(size)
+                    .on(size.design.eq(design)
+                            .and(size.name.contains("도시락 케이크")));
+        }
+
+        Long total = countQuery
+                .where(
+                        keywordExpr,
+                        sameDayExpr,
+                        locationExpr,
+                        priceExpr,
+                        businessDayExpr
+                )
+                .fetchOne();
+
+        if (total == null) {
+            total = 0L;
+        }
+
+        return SearchDesignPagedResult.of(total, content);
     }
 
     private List<BusinessDay> getBusinessDayList(LocalDate startDate, LocalDate endDate) {
