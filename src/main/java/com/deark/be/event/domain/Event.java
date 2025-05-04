@@ -38,6 +38,26 @@ public class Event extends BaseTimeEntity {
     @Column(name = "event_date")
     private LocalDate eventDate;
 
+    @Column(name = "thumbnail_url")
+    private String thumbnailUrl;
+
+    // 현재 썸네일의 출처 (DESIGN or STORE)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "thumbnail_source")
+    private ThumbnailSource thumbnailSource; // enum 타입
+
+    // 현재 썸네일이 어떤 디자인/스토어의 ID로부터 왔는지
+    @Column(name = "thumbnail_source_id")
+    private Long thumbnailSourceId;
+
+    public boolean isThumbnailFromDesign(Long designId) {
+        return thumbnailSource == ThumbnailSource.DESIGN && thumbnailSourceId.equals(designId);
+    }
+
+    public boolean isThumbnailFromStore(Long storeId) {
+        return thumbnailSource == ThumbnailSource.STORE && thumbnailSourceId.equals(storeId);
+    }
+
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EventStore> eventStoreList=new ArrayList<>();
 
@@ -75,4 +95,19 @@ public class Event extends BaseTimeEntity {
         this.address = address;
         this.eventDate = eventDate;
     }
+
+    public void updateThumbnailIfAbsent(String url, ThumbnailSource source, Long sourceId) {
+        if (this.thumbnailUrl == null && url != null) {
+            this.thumbnailUrl = url;
+            this.thumbnailSource = source;
+            this.thumbnailSourceId = sourceId;
+        }
+    }
+
+    public void updateThumbnail(String url, ThumbnailSource source, Long sourceId) {
+        this.thumbnailUrl = url;
+        this.thumbnailSource = source;
+        this.thumbnailSourceId = sourceId;
+    }
+
 }
