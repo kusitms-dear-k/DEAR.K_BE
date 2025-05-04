@@ -18,8 +18,7 @@ public record DesignInEventResponse(
         @Schema(description = "해당 디자인에 대한 메모", example = "예쁘게 장식해 주세요")
         String memo
 ) {
-    public static DesignInEventResponse from(EventDesign eventDesign) {
-        Design design = eventDesign.getDesign();
+    public static DesignInEventResponse from(EventDesign eventDesign, Design design) {
     return DesignInEventResponse.builder()
             .designId(design.getId())
             .storeName(design.getStore().getName())

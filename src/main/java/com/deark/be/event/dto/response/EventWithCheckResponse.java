@@ -18,16 +18,16 @@ public record EventWithCheckResponse(
         @Schema(description = "대표 썸네일 이미지 URL", example = "https://cdn.deark.com/thumbnails/event_1.png")
         String thumbnailUrl,
         @Schema(description = "해당 디자인 또는 스토어가 포함되어 있는지 여부", example = "true")
-        boolean checked
+        boolean isChecked
 ) {
-    public static EventWithCheckResponse from(Event event, String thumbnailUrl, boolean checked) {
+    public static EventWithCheckResponse of(Event event, boolean isChecked) {
         return EventWithCheckResponse.builder()
                 .eventId(event.getId())
                 .title(event.getTitle())
                 .address(event.getAddress())
                 .eventDate(event.getEventDate())
-                .thumbnailUrl(thumbnailUrl)
-                .checked(checked)
+                .thumbnailUrl(event.getThumbnailUrl())
+                .isChecked(isChecked)
                 .build();
     }
 }

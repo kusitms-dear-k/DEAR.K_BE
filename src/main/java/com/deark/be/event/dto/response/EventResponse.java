@@ -18,13 +18,13 @@ public record EventResponse(
         @Schema(description = "대표 썸네일 이미지 URL", example = "https://cdn.deark.com/thumbnails/event_1.png")
         String thumbnailUrl
 ) {
-    public static EventResponse from(Event event, String thumbnailUrl) {
+    public static EventResponse of(Event event) {
         return EventResponse.builder()
                 .eventId(event.getId())
                 .title(event.getTitle())
                 .address(event.getAddress())
                 .eventDate(event.getEventDate())
-                .thumbnailUrl(thumbnailUrl)
+                .thumbnailUrl(event.getThumbnailUrl())
                 .build();
     }
 }

@@ -18,8 +18,7 @@ public record StoreInEventResponse(
         @Schema(description = "해당 스토어에 대한 메모", example = "추천받은 가게")
         String memo
 ) {
-    public static StoreInEventResponse from(EventStore eventStore) {
-        Store store=eventStore.getStore();
+    public static StoreInEventResponse from(EventStore eventStore,Store store) {
         return StoreInEventResponse.builder()
                 .storeId(store.getId())
                 .storeName(store.getName())
