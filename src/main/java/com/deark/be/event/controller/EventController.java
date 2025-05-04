@@ -137,18 +137,20 @@ public class EventController {
     @PutMapping("/design/mapping")
     @Operation(summary = "디자인-이벤트 일괄 매핑", description = "특정 디자인이 속한 이벤트들을 재설정합니다.")
     public ResponseEntity<ResponseTemplate<Object>> updateDesignMappings(
-            @RequestBody UpdateDesignMappingRequest request
+            @RequestBody UpdateDesignMappingRequest request,
+            @AuthenticationPrincipal Long userId
     ) {
-        eventDesignService.updateDesignEventMappings(request);
+        eventDesignService.updateDesignEventMappings(request,userId);
         return ResponseEntity.status(HttpStatus.OK).body(EMPTY_RESPONSE);
     }
 
     @PutMapping("/store/mapping")
     @Operation(summary = "스토어-이벤트 일괄 매핑", description = "특정 스토어가 속한 이벤트들을 재설정합니다.")
     public ResponseEntity<ResponseTemplate<Object>> updateStoreMappings(
-            @RequestBody UpdateStoreMappingRequest request
+            @RequestBody UpdateStoreMappingRequest request,
+            @AuthenticationPrincipal Long userId
     ) {
-        eventStoreService.updateStoreEventMappings(request);
+        eventStoreService.updateStoreEventMappings(request,userId);
         return ResponseEntity.status(HttpStatus.OK).body(EMPTY_RESPONSE);
     }
 
