@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,6 +34,7 @@ public class DesignController {
             "최소 금액 : minPrice / 최대 금액 : maxPrice / 도시락 케이크 여부는 isLunchBoxCake 에 입력해주세요.")
     @GetMapping("/search")
     public ResponseEntity<ResponseTemplate<Object>> searchDesign(
+            @AuthenticationPrincipal Long userId,
             @RequestParam(defaultValue = "0") Long page,
             @RequestParam(defaultValue = "6") Long count,
             @RequestParam(defaultValue = "ACCURACY") SortType sortType,
@@ -46,7 +48,7 @@ public class DesignController {
             @RequestParam(required = false) Boolean isLunchBoxCake) {
 
         SearchDesignResponseList designList = designService.getDesignList(
-                page, count, sortType,
+                userId, page, count, sortType,
                 keyword, isSameDayOrder, locationList, startDate, endDate, minPrice, maxPrice, isLunchBoxCake);
 
         return ResponseEntity

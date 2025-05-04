@@ -6,6 +6,8 @@ import com.deark.be.store.domain.type.BusinessDay;
 import com.deark.be.store.domain.type.SortType;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,8 @@ import static com.deark.be.design.domain.QDesign.design;
 import static com.deark.be.design.domain.QSize.size;
 import static com.deark.be.store.domain.QBusinessHours.businessHours;
 import static com.deark.be.store.domain.QStore.store;
+import static com.deark.be.event.domain.QEventDesign.eventDesign;
+import static com.deark.be.event.domain.QEvent.event;
 
 @Repository
 @RequiredArgsConstructor
@@ -29,7 +33,7 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
 
     @Override
     public SearchDesignPagedResult findAllDesignByCriteria(
-            Long page, Long count, SortType sortType,
+            Long userId, Long page, Long count, SortType sortType,
             String keyword, Boolean isSameDayOrder, List<String> locationList,
             LocalDate startDate, LocalDate endDate, Long minPrice, Long maxPrice, Boolean isLunchBoxCake) {
 
@@ -45,6 +49,16 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                 ? businessHours.businessDay.in(businessDays)
                 : null;
 
+        BooleanExpression isLikedExpr = (userId != null && userId != 0L)
+                ? JPAExpressions
+                .selectOne()
+                .from(eventDesign)
+                .join(eventDesign.event, event)
+                .where(event.user.id.eq(userId)
+                        .and(eventDesign.design.eq(design)))
+                .exists()
+                : Expressions.FALSE;
+
         JPAQuery<SearchDesignResponse> contentQuery = jpaQueryFactory
                 .select(Projections.constructor(
                         SearchDesignResponse.class,
@@ -53,7 +67,8 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                         design.store.name,
                         design.price,
                         design.store.address,
-                        design.store.isSameDayOrder
+                        design.store.isSameDayOrder,
+                        isLikedExpr
                 ))
                 .from(design)
                 .join(design.store, store)

@@ -10,7 +10,8 @@ public record SearchDesignResponse(
         String storeName,
         Long price,
         String address,
-        Boolean isSameDayOrder
+        Boolean isSameDayOrder,
+        Boolean isLiked
 ) {
     public static SearchDesignResponse from(Design design) {
         return SearchDesignResponse.builder()
@@ -20,6 +21,7 @@ public record SearchDesignResponse(
                 .price(design.getPrice())
                 .address(design.getStore().getAddress())
                 .isSameDayOrder(design.getStore().getIsSameDayOrder())
+                .isLiked(false)
                 .build();
     }
 }

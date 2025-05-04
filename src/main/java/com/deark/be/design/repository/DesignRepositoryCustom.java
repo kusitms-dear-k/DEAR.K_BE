@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface DesignRepositoryCustom {
     SearchDesignPagedResult findAllDesignByCriteria(
-            Long page, Long count, SortType sortType,
+            Long userId, Long page, Long count, SortType sortType,
             String keyword, Boolean isSameDayOrder, List<String> locationList,
             LocalDate startDate, LocalDate endDate, Long minPrice, Long maxPrice, Boolean isLunchBoxCake);
 }
