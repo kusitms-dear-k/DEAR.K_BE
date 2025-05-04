@@ -7,6 +7,7 @@ import static com.deark.be.user.exception.errorcode.UserErrorCode.USER_NOT_FOUND
 import com.deark.be.event.domain.Event;
 import com.deark.be.event.domain.EventDesign;
 import com.deark.be.event.domain.EventStore;
+import com.deark.be.event.domain.ThumbnailSource;
 import com.deark.be.event.dto.request.EventCreateRequest;
 import com.deark.be.event.dto.request.EventUpdateRequest;
 import com.deark.be.event.dto.response.DesignInEventResponse;
@@ -42,16 +43,13 @@ public class EventService {
         User user=getValidatedUser(userId);
         List<Event> events = user.getEventList();
         return events.stream()
-                .map(event ->{
-                    String thumnailUrl=resolveThumbnail(event);
-                    return EventResponse.from(event, thumnailUrl);
-                })
-                .collect(Collectors.toList());
+                .map(EventResponse::of)
+                .toList();
     }
 
     public EventResponse getEventDetail(Long eventId, Long userId) {
         Event event = getValidatedEvent(eventId,userId);
-        return EventResponse.from(event,resolveThumbnail(event));
+        return EventResponse.of(event);
     }
 
     @Transactional
@@ -77,46 +75,59 @@ public class EventService {
         Event event = getValidatedEvent(eventId, userId);
 
         return event.getEventDesignList().stream()
-                .map(DesignInEventResponse::from)
-                .collect(Collectors.toList());
+                .map(eventDesign -> DesignInEventResponse.from(
+                        eventDesign,
+                        eventDesign.getDesign()
+                )).toList();
     }
 
     public List<StoreInEventResponse> getStoresInEvent(Long eventId, Long userId) {
         Event event = getValidatedEvent(eventId, userId);
 
         return event.getEventStoreList().stream()
-                .map(StoreInEventResponse::from)
-                .collect(Collectors.toList());
+                .map(eventStore -> StoreInEventResponse.from(
+                        eventStore,
+                        eventStore.getStore()
+                )).toList();
     }
 
-    public String resolveThumbnail(Event event) {
+    public void resolveAndUpdateThumbnail(Event event) {
         Optional<EventDesign> firstDesignOpt = eventDesignRepository
                 .findTopByEventIdOrderByCreatedAtAsc(event.getId());
 
         Optional<EventStore> firstStoreOpt = eventStoreRepository
                 .findTopByEventIdOrderByCreatedAtAsc(event.getId());
 
-        // 둘 다 존재하면 비교
+        String imageUrl = null;
+        ThumbnailSource source = null;
+        Long sourceId = null;
+
         if (firstDesignOpt.isPresent() && firstStoreOpt.isPresent()) {
             EventDesign design = firstDesignOpt.get();
             EventStore store = firstStoreOpt.get();
 
-            return design.getCreatedAt().isBefore(store.getCreatedAt())
-                    ? design.getDesign().getImageUrl()
-                    : store.getStore().getImageUrl();
+            if (design.getCreatedAt().isBefore(store.getCreatedAt())) {
+                imageUrl = design.getDesign().getImageUrl();
+                source = ThumbnailSource.DESIGN;
+                sourceId = design.getDesign().getId();
+            } else {
+                imageUrl = store.getStore().getImageUrl();
+                source = ThumbnailSource.STORE;
+                sourceId = store.getStore().getId();
+            }
+        } else if (firstDesignOpt.isPresent()) {
+            EventDesign design = firstDesignOpt.get();
+            imageUrl = design.getDesign().getImageUrl();
+            source = ThumbnailSource.DESIGN;
+            sourceId = design.getDesign().getId();
+        } else if (firstStoreOpt.isPresent()) {
+            EventStore store = firstStoreOpt.get();
+            imageUrl = store.getStore().getImageUrl();
+            source = ThumbnailSource.STORE;
+            sourceId = store.getStore().getId();
         }
 
-        // 하나만 존재하는 경우
-        if (firstDesignOpt.isPresent()) {
-            return firstDesignOpt.get().getDesign().getImageUrl();
-        }
-
-        if (firstStoreOpt.isPresent()) {
-            return firstStoreOpt.get().getStore().getImageUrl();
-        }
-
-        // 아무것도 없으면 기본 이미지 또는 null
-        return null;
+        event.updateThumbnail(imageUrl, source, sourceId);
     }
 
 
@@ -129,8 +140,7 @@ public class EventService {
         return events.stream()
                 .map(event -> {
                     boolean isChecked = eventDesignRepository.existsByEventIdAndDesignId(event.getId(), designId);
-                    String thumbnailUrl = resolveThumbnail(event);
-                    return EventWithCheckResponse.from(event, thumbnailUrl, isChecked);
+                    return EventWithCheckResponse.of(event, isChecked);
                 })
                 .collect(Collectors.toList());
     }
@@ -142,13 +152,12 @@ public class EventService {
         return events.stream()
                 .map(event -> {
                     boolean isChecked = eventStoreRepository.existsByEventIdAndStoreId(event.getId(), storeId);
-                    String thumbnailUrl = resolveThumbnail(event);
-                    return EventWithCheckResponse.from(event, thumbnailUrl, isChecked);
+                    return EventWithCheckResponse.of(event, isChecked);
                 })
                 .collect(Collectors.toList());
     }
 
-    private Event getValidatedEvent(Long eventId, Long userId) {
+    public Event getValidatedEvent(Long eventId, Long userId) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new EventException(EVENT_NOT_FOUND));
 
