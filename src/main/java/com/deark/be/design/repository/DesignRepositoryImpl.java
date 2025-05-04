@@ -64,6 +64,7 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                         SearchDesignResponse.class,
                         design.id,
                         design.name,
+                        design.imageUrl,
                         design.store.name,
                         design.price,
                         design.store.address,

@@ -5,8 +5,9 @@ import lombok.Builder;
 
 @Builder
 public record SearchDesignResponse(
-        Long id,
+        Long designId,
         String designName,
+        String designImageUrl,
         String storeName,
         Long price,
         String address,
@@ -15,7 +16,8 @@ public record SearchDesignResponse(
 ) {
     public static SearchDesignResponse from(Design design) {
         return SearchDesignResponse.builder()
-                .id(design.getId())
+                .designId(design.getId())
+                .designImageUrl(design.getImageUrl())
                 .designName(design.getName())
                 .storeName(design.getStore().getName())
                 .price(design.getPrice())
