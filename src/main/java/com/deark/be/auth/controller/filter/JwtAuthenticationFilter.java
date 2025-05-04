@@ -37,6 +37,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // 가져온 토큰이 유효한지 확인, 유효하면 인증 정보 설정
         if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
             authenticationUtil.setAuthenticationFromRequest(request, token);
+        } else {
+            // 유효하지 않은 경우 더미 인증 정보 설정
+            authenticationUtil.setDummyAuthentication(request);
         }
 
         filterChain.doFilter(request, response);

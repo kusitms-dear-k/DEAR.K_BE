@@ -1,5 +1,6 @@
 package com.deark.be.auth.util;
 
+import com.deark.be.auth.service.type.JwtUserDetails;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -22,5 +23,11 @@ public class AuthenticationUtil {
         UserAuthentication authentication = UserAuthentication.from(jwtTokenProvider.getJwtUserDetails(token));
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         return authentication;
+    }
+
+    public void setDummyAuthentication(HttpServletRequest request) {
+        UserAuthentication authentication = UserAuthentication.from(JwtUserDetails.DUMMY_USER_DETAILS);
+        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }
