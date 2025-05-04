@@ -48,7 +48,7 @@ public class StoreController {
                 .ok(ResponseTemplate.from(storeId));
     }
 
-    @PostMapping("/basic-info")
+    @PostMapping("/basic_info")
     @Operation(summary = "가게 기본 정보 등록", description = "입점 후, 기본정보 및 영업시간을 등록합니다.")
     public ResponseEntity<ResponseTemplate<Object>> registerStoreBasicInfo(
             @RequestParam Long storeId,
