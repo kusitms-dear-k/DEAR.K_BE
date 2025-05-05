@@ -29,8 +29,7 @@ public class EventInitializer implements ApplicationRunner {
         if (eventRepository.count() > 0) {
             log.info("[Event] 더미 데이터 존재");
         } else {
-            User USER1 = userRepository.findById(2L).orElseThrow();
-            User USER2 = userRepository.findById(3L).orElseThrow();
+            User USER1 = userRepository.findById(1L).orElseThrow();
 
             List<Event> eventList = new ArrayList<>();
 
@@ -56,21 +55,21 @@ public class EventInitializer implements ApplicationRunner {
                     .build();
 
             Event BIRTHDAY_PARTY = Event.builder()
-                    .user(USER2)
+                    .user(USER1)
                     .title("아이 생일 파티")
                     .address("서울시 강남구 테헤란로 123")
                     .eventDate(LocalDate.now().plusDays(7))
                     .build();
 
             Event WEDDING = Event.builder()
-                    .user(USER2)
+                    .user(USER1)
                     .title("결혼식")
                     .address("서울시 서초구 서초대로 456")
                     .eventDate(LocalDate.now().plusDays(14))
                     .build();
 
             Event CORPORATE_EVENT = Event.builder()
-                    .user(USER2)
+                    .user(USER1)
                     .title("기업 창립 기념일")
                     .address("서울시 송파구 올림픽로 789")
                     .eventDate(LocalDate.now().plusDays(21))
