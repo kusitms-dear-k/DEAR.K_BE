@@ -78,7 +78,7 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
         if (Boolean.TRUE.equals(isLunchBoxCake)) {
             contentQuery.innerJoin(size)
                     .on(size.design.eq(design)
-                            .and(size.name.contains("도시락 케이크")));
+                            .and(size.name.contains("도시락")));
         }
 
         contentQuery.where(
