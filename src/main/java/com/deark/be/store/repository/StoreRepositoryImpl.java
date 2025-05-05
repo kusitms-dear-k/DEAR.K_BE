@@ -6,6 +6,7 @@ import com.deark.be.store.dto.response.SearchStorePagedResult;
 import com.deark.be.store.dto.response.SearchStoreResponse;
 import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
@@ -39,7 +40,6 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
             LocalDate startDate, LocalDate endDate,
             Long minPrice, Long maxPrice, Boolean isLunchBoxCake) {
 
-        // --- 1) 공통 필터 표현식들 ---
         BooleanExpression keywordExpr  = keywordSearchExpression(keyword);
         BooleanExpression sameDayExpr  = isSameDayOrder != null
                 ? store.isSameDayOrder.eq(isSameDayOrder)
@@ -60,7 +60,7 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
                 .from(size)
                 .join(size.design, design)
                 .where(design.store.eq(store)
-                        .and(size.name.contains("도시락 케이크")))
+                        .and(size.name.contains("도시락")))
                 .exists();
 
         BooleanExpression isLikedExpr = (userId != null && userId != 0L)
@@ -73,8 +73,7 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
                 .exists()
                 : Expressions.FALSE;
 
-        // 통합 필터
-        BooleanExpression filter = (BooleanExpression) ExpressionUtils.allOf(
+        Predicate filter = ExpressionUtils.allOf(
                 keywordExpr,
                 sameDayExpr,
                 locationExpr,
@@ -85,8 +84,6 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
                         : null
         );
 
-
-        // --- 2) 총 개수 조회 ---
         Long total = jpaQueryFactory
                 .select(store.id.countDistinct())
                 .from(store)
@@ -96,9 +93,8 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
 
         if (total == null) total = 0L;
 
-        // --- 3) 페이지용 store.id 목록만 꺼내기 (limit=count) ---
         List<Long> pagedIds = jpaQueryFactory
-                .select(store.id)
+                .selectDistinct(store.id)
                 .from(store)
                 .leftJoin(store.businessHoursList, businessHours)
                 .where(filter)
@@ -113,13 +109,12 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
 
         boolean hasNext = (page + 1) * count < total;
 
-        // --- 4) 그 ID들로 실제 데이터 조회 & GroupBy ---
-        List<SearchStoreResponse> content = jpaQueryFactory
+        Map<Long, SearchStoreResponse> resultMap = jpaQueryFactory
                 .from(store)
                 .leftJoin(store.designList, design)
                 .where(store.id.in(pagedIds))
                 .transform(
-                        GroupBy.groupBy(store.id).list(
+                        GroupBy.groupBy(store.id).as(
                                 Projections.constructor(
                                         SearchStoreResponse.class,
                                         store.id,
@@ -135,10 +130,10 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
                         )
                 );
 
-        // --- 5) 요청한 순서대로 정렬 복원 ---
-        content.sort(Comparator.comparingInt(r -> pagedIds.indexOf(r.storeId())));
+        List<SearchStoreResponse> content = pagedIds.stream()
+                .map(resultMap::get)
+                .toList();
 
-        // --- 6) 결과 리턴 ---
         return SearchStorePagedResult.of(total, hasNext, content);
     }
 
@@ -163,9 +158,10 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
         BooleanExpression expr = null;
 
         for (String token : tokens) {
-            BooleanExpression tokenExpr = design.name.contains(token)
-                    .or(design.description.contains(token))
-                    .or(store.address.contains(token));
+            BooleanExpression tokenExpr = store.name.contains(token)
+                    .or(store.description.contains(token))
+                    .or(store.address.contains(token))
+                    .or(store.designList.any().description.contains(token));
 
             expr = (expr == null) ? tokenExpr : expr.or(tokenExpr);
         }
@@ -187,11 +183,11 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
 
     private BooleanExpression priceBetweenExpression(Long minPrice, Long maxPrice) {
         if (minPrice != null && maxPrice != null) {
-            return design.price.between(minPrice, maxPrice);
+            return store.designList.any().price.between(minPrice, maxPrice);
         } else if (minPrice != null) {
-            return design.price.goe(minPrice);
+            return store.designList.any().price.goe(minPrice);
         } else if (maxPrice != null) {
-            return design.price.loe(maxPrice);
+            return store.designList.any().price.loe(maxPrice);
         }
 
         return null;
