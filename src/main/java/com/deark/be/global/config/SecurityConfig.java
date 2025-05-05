@@ -45,7 +45,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth // 요청에 대한 인증 설정
                         .requestMatchers(WHITE_LIST).permitAll()
-                        .requestMatchers("/event/**").hasAnyRole("OWNER", "CUSTOMER") // OWNER, CUSTOMER 권한이 있어야 접근 가능
+                        .requestMatchers("/event/**").hasAnyAuthority("OWNER", "CUSTOMER") // OWNER, CUSTOMER 권한이 있어야 접근 가능
                         .anyRequest().authenticated())  //이외의 요청은 전부 인증 필요
                 .exceptionHandling(exceptionHandling -> {
                     exceptionHandling
