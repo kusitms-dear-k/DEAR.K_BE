@@ -29,58 +29,59 @@ public class EventInitializer implements ApplicationRunner {
         if (eventRepository.count() > 0) {
             log.info("[Event] 더미 데이터 존재");
         } else {
-            User DUMMY_USER = userRepository.findById(1L).orElseThrow();
+            User USER1 = userRepository.findById(2L).orElseThrow();
+            User USER2 = userRepository.findById(3L).orElseThrow();
 
             List<Event> eventList = new ArrayList<>();
 
-            Event BIRTHDAY_PARTY = Event.builder()
-                    .user(DUMMY_USER)
-                    .title("아이 생일 파티")
-                    .address("서울시 강남구 테헤란로 123")
-                    .eventDate(LocalDate.now().plusDays(7))
-                    .build();
-
-            Event WEDDING = Event.builder()
-                    .user(DUMMY_USER)
-                    .title("결혼식")
-                    .address("서울시 서초구 서초대로 456")
-                    .eventDate(LocalDate.now().plusDays(14))
-                    .build();
-
-            Event CORPORATE_EVENT = Event.builder()
-                    .user(DUMMY_USER)
-                    .title("기업 창립 기념일")
-                    .address("서울시 송파구 올림픽로 789")
-                    .eventDate(LocalDate.now().plusDays(21))
-                    .build();
-
             Event DUMMY_EVENT0 = Event.builder()
-                    .user(DUMMY_USER)
+                    .user(USER1)
                     .title("남자친구 생일")
                     .address("서울특별시 송파구 백제고분로 123")
                     .eventDate(LocalDate.now().plusDays(3))
                     .build();
 
             Event DUMMY_EVENT1 = Event.builder()
-                    .user(DUMMY_USER)
+                    .user(USER1)
                     .title("친구 결혼 축하")
                     .address("서울특별시 강남구 논현로 508")
                     .eventDate(LocalDate.now().plusWeeks(2))
                     .build();
 
             Event DUMMY_EVENT2 = Event.builder()
-                    .user(DUMMY_USER)
+                    .user(USER1)
                     .title("전역 축하")
                     .address("서울특별시 중랑구 망우로 300")
                     .eventDate(LocalDate.now().plusMonths(1))
                     .build();
 
-            eventList.add(BIRTHDAY_PARTY);
-            eventList.add(WEDDING);
-            eventList.add(CORPORATE_EVENT);
+            Event BIRTHDAY_PARTY = Event.builder()
+                    .user(USER2)
+                    .title("아이 생일 파티")
+                    .address("서울시 강남구 테헤란로 123")
+                    .eventDate(LocalDate.now().plusDays(7))
+                    .build();
+
+            Event WEDDING = Event.builder()
+                    .user(USER2)
+                    .title("결혼식")
+                    .address("서울시 서초구 서초대로 456")
+                    .eventDate(LocalDate.now().plusDays(14))
+                    .build();
+
+            Event CORPORATE_EVENT = Event.builder()
+                    .user(USER2)
+                    .title("기업 창립 기념일")
+                    .address("서울시 송파구 올림픽로 789")
+                    .eventDate(LocalDate.now().plusDays(21))
+                    .build();
+
             eventList.add(DUMMY_EVENT0);
             eventList.add(DUMMY_EVENT1);
             eventList.add(DUMMY_EVENT2);
+            eventList.add(BIRTHDAY_PARTY);
+            eventList.add(WEDDING);
+            eventList.add(CORPORATE_EVENT);
 
             eventRepository.saveAll(eventList);
         }
