@@ -1,5 +1,6 @@
 package com.deark.be.design.controller;
 
+import com.deark.be.design.dto.response.RecommendDesignResponseList;
 import com.deark.be.design.dto.response.SearchDesignResponseList;
 import com.deark.be.design.service.DesignService;
 import com.deark.be.global.dto.ResponseTemplate;
@@ -54,5 +55,18 @@ public class DesignController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ResponseTemplate.from(designList));
+    }
+
+    @Operation(summary = "디자인 추천 리스트", description = "통합 검색 결과가 없을 때 디자인을 추천합니다.")
+    @GetMapping("/recommend")
+    public ResponseEntity<ResponseTemplate<Object>> recommendDesign(
+            @AuthenticationPrincipal Long userId,
+            @RequestParam(defaultValue = "4") Long count) {
+
+        RecommendDesignResponseList recommendDesignList = designService.getRecommendDesignList(userId, count);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseTemplate.from(recommendDesignList));
     }
 }
