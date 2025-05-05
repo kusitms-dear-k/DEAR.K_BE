@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import lombok.Builder;
 
 @Builder
-public record EventResponse(
+public record EventWithCheckResponse(
         @Schema(description = "이벤트 ID", example = "1")
         Long eventId,
         @Schema(description = "이벤트 제목", example = "생일 파티")
@@ -16,15 +16,18 @@ public record EventResponse(
         @Schema(description = "이벤트 날짜", example = "2025-06-01")
         LocalDate eventDate,
         @Schema(description = "대표 썸네일 이미지 URL", example = "https://cdn.deark.com/thumbnails/event_1.png")
-        String thumbnailUrl
+        String thumbnailUrl,
+        @Schema(description = "해당 디자인 또는 스토어가 포함되어 있는지 여부", example = "true")
+        boolean isChecked
 ) {
-    public static EventResponse of(Event event) {
-        return EventResponse.builder()
+    public static EventWithCheckResponse of(Event event, boolean isChecked) {
+        return EventWithCheckResponse.builder()
                 .eventId(event.getId())
                 .title(event.getTitle())
                 .address(event.getAddress())
                 .eventDate(event.getEventDate())
                 .thumbnailUrl(event.getThumbnailUrl())
+                .isChecked(isChecked)
                 .build();
     }
 }

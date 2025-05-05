@@ -1,9 +1,12 @@
 package com.deark.be.user.domain;
 
 import com.deark.be.auth.dto.response.OAuthInfoResponse;
+import com.deark.be.event.domain.Event;
 import com.deark.be.global.domain.BaseTimeEntity;
 import com.deark.be.user.domain.type.Role;
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,6 +50,9 @@ public class User extends BaseTimeEntity {
 
     @Column(name = "profile_image_url")
     private String profileImageUrl;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Event> eventList=new ArrayList<>();
 
     @Builder
     public User(String name, String email, String phone, String socialId, Role role, Boolean isBlacklist,
