@@ -8,6 +8,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 import static com.deark.be.design.domain.QDesign.design;
+import static com.deark.be.design.domain.QSize.size;
 import static com.deark.be.event.domain.QEvent.event;
 import static com.deark.be.event.domain.QEventDesign.eventDesign;
 import static com.deark.be.store.domain.QBusinessHours.businessHours;
@@ -51,6 +53,14 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                 ? businessHours.businessDay.in(businessDays)
                 : null;
 
+        BooleanExpression hasLunchBoxCakeSizeExpr = JPAExpressions
+                .selectOne()
+                .from(size)
+                .join(size.design, design)
+                .where(design.store.eq(store)
+                        .and(size.name.contains("도시락")))
+                .exists();
+
         NumberExpression<Long> likeCount = eventDesign.id.countDistinct().coalesce(0L);
 
         NumberExpression<Long> likedSum = Expressions.numberTemplate(
@@ -59,7 +69,7 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                 event.user.id.eq(userId).and(eventDesign.design.eq(design))
         );
 
-        BooleanExpression isLikedAgg = likedSum.gt(0L);
+        BooleanExpression isLikedExpr = likedSum.gt(0L);
 
         JPAQuery<SearchDesignResponse> contentQuery = jpaQueryFactory
                 .select(Projections.constructor(
@@ -71,7 +81,7 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                         design.price,
                         store.address,
                         store.isSameDayOrder,
-                        isLikedAgg,
+                        isLikedExpr,
                         likeCount
                 ))
                 .from(design)
@@ -84,7 +94,10 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                         sameDayExpr,
                         locationExpr,
                         priceExpr,
-                        businessDayExpr
+                        businessDayExpr,
+                        Boolean.TRUE.equals(isLunchBoxCake)
+                                ? hasLunchBoxCakeSizeExpr
+                                : null
                 )
                 .groupBy(
                         design.id,
@@ -116,8 +129,12 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                         sameDayExpr,
                         locationExpr,
                         priceExpr,
-                        businessDayExpr
+                        businessDayExpr,
+                        Boolean.TRUE.equals(isLunchBoxCake)
+                                ? hasLunchBoxCakeSizeExpr
+                                : null
                 );
+
         Long total = ofNullable(countQuery.fetchOne()).orElse(0L);
 
         return SearchDesignPagedResult.of(total, content);
