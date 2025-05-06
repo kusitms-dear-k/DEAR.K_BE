@@ -1,7 +1,7 @@
 package com.deark.be.event.domain;
 
+import com.deark.be.event.domain.type.ThumbnailSource;
 import com.deark.be.global.domain.BaseTimeEntity;
-import com.deark.be.store.domain.BusinessHours;
 import com.deark.be.user.domain.User;
 import jakarta.persistence.*;
 import java.time.LocalDate;
@@ -11,8 +11,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Table(name = "event")
 @Getter
@@ -50,26 +48,24 @@ public class Event extends BaseTimeEntity {
     @Column(name = "thumbnail_source_id")
     private Long thumbnailSourceId;
 
-    public boolean isThumbnailFromDesign(Long designId) {
-        return thumbnailSource == ThumbnailSource.DESIGN && thumbnailSourceId.equals(designId);
-    }
-
-    public boolean isThumbnailFromStore(Long storeId) {
-        return thumbnailSource == ThumbnailSource.STORE && thumbnailSourceId.equals(storeId);
-    }
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EventStore> eventStoreList = new ArrayList<>();
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<EventStore> eventStoreList=new ArrayList<>();
-
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<EventDesign> eventDesignList=new ArrayList<>();
+    private List<EventDesign> eventDesignList = new ArrayList<>();
 
     @Builder
-    public Event(User user, String title, String address, LocalDate eventDate) {
+    public Event(User user, String title, String address, LocalDate eventDate, String thumbnailUrl,
+                 ThumbnailSource thumbnailSource, Long thumbnailSourceId, List<EventStore> eventStoreList, List<EventDesign> eventDesignList) {
         this.user = user;
         this.title = title;
         this.address = address;
         this.eventDate = eventDate;
+        this.thumbnailUrl = thumbnailUrl;
+        this.thumbnailSource = thumbnailSource;
+        this.thumbnailSourceId = thumbnailSourceId;
+        this.eventStoreList = eventStoreList;
+        this.eventDesignList = eventDesignList;
     }
 
     public void addEventStore(EventStore eventStore) {
@@ -110,4 +106,11 @@ public class Event extends BaseTimeEntity {
         this.thumbnailSourceId = sourceId;
     }
 
+    public boolean isThumbnailFromDesign(Long designId) {
+        return thumbnailSource == ThumbnailSource.DESIGN && thumbnailSourceId.equals(designId);
+    }
+
+    public boolean isThumbnailFromStore(Long storeId) {
+        return thumbnailSource == ThumbnailSource.STORE && thumbnailSourceId.equals(storeId);
+    }
 }

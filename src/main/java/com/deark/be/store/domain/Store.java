@@ -93,7 +93,8 @@ public class Store extends BaseTimeEntity {
     public Store(User user, String name, String description, String phone, String address,
                  String businessNumber, LocalDate establishDate, String imageUrl,
                  Long averageResponseTime, String chattingUrl, Boolean isUnmanned, Boolean isSameDayOrder,
-                 String settlementAccount, String businessLicenseUrl, String businessPermitUrl, String ownerName) {
+                 String settlementAccount, String businessLicenseUrl, String businessPermitUrl, String ownerName,
+                 String orderLink, Integer maxDailyOrders, List<BusinessHours> businessHoursList, List<Size> sizeList, List<Design> designList) {
         this.user = user;
         this.name = name;
         this.description = description;
@@ -110,6 +111,11 @@ public class Store extends BaseTimeEntity {
         this.businessLicenseUrl = businessLicenseUrl;
         this.businessPermitUrl = businessPermitUrl;
         this.ownerName = ownerName;
+        this.orderLink = orderLink;
+        this.maxDailyOrders = maxDailyOrders;
+        this.businessHoursList = businessHoursList;
+        this.sizeList = sizeList;
+        this.designList = designList;
     }
 
     // Store 엔티티 내에 추가할 메서드
@@ -136,6 +142,7 @@ public class Store extends BaseTimeEntity {
         for (BusinessHours bh : businessHoursList) {
             bh.assignStore(null); // 역방향 해제
         }
+
         businessHoursList.clear();
     }
 }

@@ -31,7 +31,7 @@ public class EventStore extends BaseTimeEntity {
     private String memo;
 
     @Builder
-    public EventStore(Event event, Store store,String memo) {
+    public EventStore(Event event, Store store, String memo) {
         this.event = event;
         this.store = store;
         this.memo = memo;

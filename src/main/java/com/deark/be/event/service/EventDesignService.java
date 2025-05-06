@@ -10,7 +10,7 @@ import com.deark.be.design.exception.DesignException;
 import com.deark.be.design.repository.DesignRepository;
 import com.deark.be.event.domain.Event;
 import com.deark.be.event.domain.EventDesign;
-import com.deark.be.event.domain.ThumbnailSource;
+import com.deark.be.event.domain.type.ThumbnailSource;
 import com.deark.be.event.dto.request.UpdateDesignMappingRequest;
 import com.deark.be.event.exception.EventException;
 import com.deark.be.event.repository.EventDesignRepository;
@@ -29,11 +29,11 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class EventDesignService {
+
     private final EventDesignRepository eventDesignRepository;
     private final EventRepository eventRepository;
     private final DesignRepository designRepository;
     private final EventService eventService;
-
 
     @Transactional
     public void updateDesignEventMappings(UpdateDesignMappingRequest request, Long userId) {
@@ -48,8 +48,6 @@ public class EventDesignService {
         removeObsoleteDesignMappings(currentMappings, requestedEventIds, design);
         addNewDesignMappings(requestedEventIds, currentEventIds, design, userId);
     }
-
-
 
     private Design getDesignOrThrow(Long designId) {
         return designRepository.findById(designId)
@@ -104,7 +102,7 @@ public class EventDesignService {
     @Transactional
     public void removeDesignFromEvent(Long eventId, Long designId, Long userId) {
 
-        Event event=eventService.getValidatedEvent(eventId,userId);
+        Event event = eventService.getValidatedEvent(eventId,userId);
 
         EventDesign eventDesign = eventDesignRepository.findByEventIdAndDesignId(eventId, designId)
                 .orElseThrow(() -> new EventException(EVENT_DESIGN_NOT_FOUND));

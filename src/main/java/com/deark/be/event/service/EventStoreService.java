@@ -7,7 +7,7 @@ import static com.deark.be.store.exception.errorcode.StoreErrorCode.STORE_NOT_FO
 
 import com.deark.be.event.domain.Event;
 import com.deark.be.event.domain.EventStore;
-import com.deark.be.event.domain.ThumbnailSource;
+import com.deark.be.event.domain.type.ThumbnailSource;
 import com.deark.be.event.dto.request.UpdateStoreMappingRequest;
 import com.deark.be.event.exception.EventException;
 import com.deark.be.event.repository.EventRepository;
