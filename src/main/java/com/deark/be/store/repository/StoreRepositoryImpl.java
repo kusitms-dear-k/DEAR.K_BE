@@ -10,6 +10,7 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ import static com.deark.be.event.domain.QEvent.event;
 import static com.deark.be.event.domain.QEventStore.eventStore;
 import static com.deark.be.store.domain.QBusinessHours.businessHours;
 import static com.deark.be.store.domain.QStore.store;
+import static com.querydsl.core.types.dsl.Expressions.numberTemplate;
 
 @Repository
 @RequiredArgsConstructor
@@ -72,6 +74,12 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
                         .and(eventStore.store.eq(store)))
                 .exists()
                 : Expressions.FALSE;
+
+        NumberExpression<Long> likeCountExpr = numberTemplate(
+                Long.class,
+                "(select count(es) from EventStore es where es.store = {0})",
+                store
+        );
 
         Predicate filter = ExpressionUtils.allOf(
                 keywordExpr,
@@ -125,6 +133,7 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
                                         store.isUnmanned,
                                         hasLunchBoxCakeSizeExpr,
                                         isLikedExpr,
+                                        likeCountExpr,
                                         GroupBy.list(design.imageUrl)
                                 )
                         )

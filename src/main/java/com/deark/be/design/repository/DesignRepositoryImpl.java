@@ -7,6 +7,7 @@ import com.deark.be.store.domain.type.SortType;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -20,10 +21,11 @@ import java.util.*;
 
 import static com.deark.be.design.domain.QDesign.design;
 import static com.deark.be.design.domain.QSize.size;
+import static com.deark.be.event.domain.QEvent.event;
+import static com.deark.be.event.domain.QEventDesign.eventDesign;
 import static com.deark.be.store.domain.QBusinessHours.businessHours;
 import static com.deark.be.store.domain.QStore.store;
-import static com.deark.be.event.domain.QEventDesign.eventDesign;
-import static com.deark.be.event.domain.QEvent.event;
+import static com.querydsl.core.types.dsl.Expressions.numberTemplate;
 
 @Repository
 @RequiredArgsConstructor
@@ -59,6 +61,12 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                 .exists()
                 : Expressions.FALSE;
 
+        NumberExpression<Long> likeCountExpr = numberTemplate(
+                Long.class,
+                "(select count(ed) from EventDesign ed where ed.design = {0})",
+                design
+        );
+
         JPAQuery<SearchDesignResponse> contentQuery = jpaQueryFactory
                 .select(Projections.constructor(
                         SearchDesignResponse.class,
@@ -69,7 +77,8 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                         design.price,
                         design.store.address,
                         design.store.isSameDayOrder,
-                        isLikedExpr
+                        isLikedExpr,
+                        likeCountExpr
                 ))
                 .from(design)
                 .join(design.store, store)

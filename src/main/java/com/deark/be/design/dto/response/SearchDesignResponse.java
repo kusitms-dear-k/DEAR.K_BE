@@ -11,6 +11,7 @@ public record SearchDesignResponse(
         Long price,
         String address,
         Boolean isSameDayOrder,
-        Boolean isLiked
+        Boolean isLiked,
+        Long likeCount
 ) {
 }

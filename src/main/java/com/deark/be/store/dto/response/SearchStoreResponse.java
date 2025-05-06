@@ -14,6 +14,7 @@ public record SearchStoreResponse(
         Boolean isUnmanned,
         Boolean isLunchBoxCake,
         Boolean isLiked,
+        Long likeCount,
         List<String> designImageUrlList
 ) {
 }
