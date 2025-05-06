@@ -7,7 +7,6 @@ import com.deark.be.store.domain.type.SortType;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -25,7 +24,6 @@ import static com.deark.be.event.domain.QEvent.event;
 import static com.deark.be.event.domain.QEventDesign.eventDesign;
 import static com.deark.be.store.domain.QBusinessHours.businessHours;
 import static com.deark.be.store.domain.QStore.store;
-import static com.querydsl.core.types.dsl.Expressions.numberTemplate;
 
 @Repository
 @RequiredArgsConstructor
@@ -61,52 +59,41 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                 .exists()
                 : Expressions.FALSE;
 
-        NumberExpression<Long> likeCountExpr = numberTemplate(
-                Long.class,
-                "(select count(ed) from EventDesign ed where ed.design = {0})",
-                design
-        );
-
         JPAQuery<SearchDesignResponse> contentQuery = jpaQueryFactory
                 .select(Projections.constructor(
                         SearchDesignResponse.class,
                         design.id,
                         design.name,
                         design.imageUrl,
-                        design.store.name,
+                        store.name,
                         design.price,
-                        design.store.address,
-                        design.store.isSameDayOrder,
+                        store.address,
+                        store.isSameDayOrder,
                         isLikedExpr,
-                        likeCountExpr
+                        eventDesign.id.count().coalesce(0L)
                 ))
                 .from(design)
                 .join(design.store, store)
-                .leftJoin(store.businessHoursList, businessHours);
-
-        if (Boolean.TRUE.equals(isLunchBoxCake)) {
-            contentQuery.innerJoin(size)
-                    .on(size.design.eq(design)
-                            .and(size.name.contains("도시락")));
-        }
-
-        contentQuery.where(
-                keywordExpr,
-                sameDayExpr,
-                locationExpr,
-                priceExpr,
-                businessDayExpr
-        );
+                .leftJoin(eventDesign).on(eventDesign.design.eq(design))
+                .on(Boolean.TRUE.equals(isLunchBoxCake)
+                        ? size.design.eq(design).and(size.name.contains("도시락"))
+                        : Expressions.TRUE)
+                .where(keywordExpr, sameDayExpr, locationExpr, priceExpr, businessDayExpr)
+                .groupBy(
+                        design.id, design.name, design.imageUrl,
+                        store.name, design.price, store.address, store.isSameDayOrder,
+                        isLikedExpr
+                )
+                .offset(page * count)
+                .limit(count + 1);
 
         if (SortType.LATEST.equals(sortType)) {
             contentQuery.orderBy(design.id.desc());
+        } else {
+            contentQuery.orderBy(eventDesign.id.count().desc());
         }
 
-        List<SearchDesignResponse> content = contentQuery
-                .distinct()
-                .offset(page * count)
-                .limit(count + 1)
-                .fetch();
+        List<SearchDesignResponse> content = contentQuery.fetch();
 
         JPAQuery<Long> countQuery = jpaQueryFactory
                 .select(design.id.countDistinct())
