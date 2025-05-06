@@ -7,7 +7,7 @@ import com.deark.be.store.domain.type.SortType;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +19,11 @@ import java.time.LocalDate;
 import java.util.*;
 
 import static com.deark.be.design.domain.QDesign.design;
-import static com.deark.be.design.domain.QSize.size;
 import static com.deark.be.event.domain.QEvent.event;
 import static com.deark.be.event.domain.QEventDesign.eventDesign;
 import static com.deark.be.store.domain.QBusinessHours.businessHours;
 import static com.deark.be.store.domain.QStore.store;
+import static java.util.Optional.ofNullable;
 
 @Repository
 @RequiredArgsConstructor
@@ -37,27 +37,29 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
             String keyword, Boolean isSameDayOrder, List<String> locationList,
             LocalDate startDate, LocalDate endDate, Long minPrice, Long maxPrice, Boolean isLunchBoxCake) {
 
+        // --- 1) 공통 표현식들 ---
         BooleanExpression keywordExpr  = keywordSearchExpression(keyword);
         BooleanExpression sameDayExpr  = (isSameDayOrder != null) ? store.isSameDayOrder.eq(isSameDayOrder) : null;
         BooleanExpression locationExpr = locationListExpression(locationList);
         BooleanExpression priceExpr    = priceBetweenExpression(minPrice, maxPrice);
 
-        List<BusinessDay> businessDays = (startDate != null && endDate != null)
-                ? getBusinessDayList(startDate, endDate)
-                : Collections.emptyList();
+        List<BusinessDay> businessDays =
+                (startDate != null && endDate != null)
+                        ? getBusinessDayList(startDate, endDate)
+                        : Collections.emptyList();
         BooleanExpression businessDayExpr = (!businessDays.isEmpty())
                 ? businessHours.businessDay.in(businessDays)
                 : null;
 
-        BooleanExpression isLikedExpr = (userId != null && userId != 0L)
-                ? JPAExpressions
-                .selectOne()
-                .from(eventDesign)
-                .join(eventDesign.event, event)
-                .where(event.user.id.eq(userId)
-                        .and(eventDesign.design.eq(design)))
-                .exists()
-                : Expressions.FALSE;
+        NumberExpression<Long> likeCount = eventDesign.id.countDistinct().coalesce(0L);
+
+        NumberExpression<Long> likedSum = Expressions.numberTemplate(
+                Long.class,
+                "SUM(CASE WHEN {0} THEN 1 ELSE 0 END)",
+                event.user.id.eq(userId).and(eventDesign.design.eq(design))
+        );
+
+        BooleanExpression isLikedAgg = likedSum.gt(0L);
 
         JPAQuery<SearchDesignResponse> contentQuery = jpaQueryFactory
                 .select(Projections.constructor(
@@ -69,20 +71,29 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                         design.price,
                         store.address,
                         store.isSameDayOrder,
-                        isLikedExpr,
-                        eventDesign.id.count().coalesce(0L)
+                        isLikedAgg,
+                        likeCount
                 ))
                 .from(design)
                 .join(design.store, store)
-                .leftJoin(eventDesign).on(eventDesign.design.eq(design))
-                .on(Boolean.TRUE.equals(isLunchBoxCake)
-                        ? size.design.eq(design).and(size.name.contains("도시락"))
-                        : Expressions.TRUE)
-                .where(keywordExpr, sameDayExpr, locationExpr, priceExpr, businessDayExpr)
+                .leftJoin(design.eventDesigns, eventDesign)
+                .leftJoin(eventDesign.event, event)
+                .leftJoin(store.businessHoursList, businessHours)
+                .where(
+                        keywordExpr,
+                        sameDayExpr,
+                        locationExpr,
+                        priceExpr,
+                        businessDayExpr
+                )
                 .groupBy(
-                        design.id, design.name, design.imageUrl,
-                        store.name, design.price, store.address, store.isSameDayOrder,
-                        isLikedExpr
+                        design.id,
+                        design.name,
+                        design.imageUrl,
+                        store.name,
+                        design.price,
+                        store.address,
+                        store.isSameDayOrder
                 )
                 .offset(page * count)
                 .limit(count + 1);
@@ -90,7 +101,7 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
         if (SortType.LATEST.equals(sortType)) {
             contentQuery.orderBy(design.id.desc());
         } else if (SortType.POPULARITY.equals(sortType)) {
-            contentQuery.orderBy(eventDesign.id.count().desc());
+            contentQuery.orderBy(likeCount.desc());
         }
 
         List<SearchDesignResponse> content = contentQuery.fetch();
@@ -99,30 +110,19 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                 .select(design.id.countDistinct())
                 .from(design)
                 .join(design.store, store)
-                .leftJoin(store.businessHoursList, businessHours);
-
-        if (Boolean.TRUE.equals(isLunchBoxCake)) {
-            countQuery.innerJoin(size)
-                    .on(size.design.eq(design)
-                            .and(size.name.contains("도시락")));
-        }
-
-        Long total = countQuery
+                .leftJoin(store.businessHoursList, businessHours)
                 .where(
                         keywordExpr,
                         sameDayExpr,
                         locationExpr,
                         priceExpr,
                         businessDayExpr
-                )
-                .fetchOne();
-
-        if (total == null) {
-            total = 0L;
-        }
+                );
+        Long total = ofNullable(countQuery.fetchOne()).orElse(0L);
 
         return SearchDesignPagedResult.of(total, content);
     }
+
 
     private List<BusinessDay> getBusinessDayList(LocalDate startDate, LocalDate endDate) {
         List<BusinessDay> businessDays = null;
