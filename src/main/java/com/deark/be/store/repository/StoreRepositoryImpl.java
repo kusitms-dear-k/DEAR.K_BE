@@ -4,6 +4,7 @@ import com.deark.be.store.domain.type.BusinessDay;
 import com.deark.be.store.domain.type.SortType;
 import com.deark.be.store.dto.response.SearchStorePagedResult;
 import com.deark.be.store.dto.response.SearchStoreResponse;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
@@ -12,6 +13,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -49,10 +51,9 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
         BooleanExpression locationExpr = locationListExpression(locationList);
         BooleanExpression priceExpr    = priceBetweenExpression(minPrice, maxPrice);
 
-        List<BusinessDay> businessDays =
-                (startDate != null && endDate != null)
-                        ? getBusinessDayList(startDate, endDate)
-                        : Collections.emptyList();
+        List<BusinessDay> businessDays = (startDate != null && endDate != null)
+                ? getBusinessDayList(startDate, endDate)
+                : Collections.emptyList();
         BooleanExpression businessDayExpr = !businessDays.isEmpty()
                 ? businessHours.businessDay.in(businessDays)
                 : null;
@@ -75,11 +76,7 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
                 .exists()
                 : Expressions.FALSE;
 
-        NumberExpression<Long> likeCountExpr = numberTemplate(
-                Long.class,
-                "(select count(es) from EventStore es where es.store = {0})",
-                store
-        );
+        NumberExpression<Long> likeCount = eventStore.id.count().coalesce(0L);
 
         Predicate filter = ExpressionUtils.allOf(
                 keywordExpr,
@@ -98,22 +95,27 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
                 .leftJoin(store.businessHoursList, businessHours)
                 .where(filter)
                 .fetchOne();
-
         if (total == null) total = 0L;
 
-        List<Long> pagedIds = jpaQueryFactory
-                .selectDistinct(store.id)
+        JPAQuery<Tuple> tuplesQuery = jpaQueryFactory
+                .select(store.id, likeCount)
                 .from(store)
                 .leftJoin(store.businessHoursList, businessHours)
+                .leftJoin(eventStore).on(eventStore.store.eq(store))
                 .where(filter)
-                .orderBy(
-                        SortType.LATEST.equals(sortType)
-                                ? store.id.desc()
-                                : store.id.asc()
-                )
+                .groupBy(store.id)
                 .offset(page * count)
-                .limit(count)
-                .fetch();
+                .limit(count);
+
+        if (SortType.LATEST.equals(sortType)) {
+            tuplesQuery.orderBy(store.id.desc());
+        } else if (SortType.POPULARITY.equals(sortType)) {
+            tuplesQuery.orderBy(likeCount.desc());
+        }
+
+        List<Long> pagedIds = tuplesQuery.stream()
+                .map(t -> t.get(store.id))
+                .toList();
 
         boolean hasNext = (page + 1) * count < total;
 
@@ -133,7 +135,11 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
                                         store.isUnmanned,
                                         hasLunchBoxCakeSizeExpr,
                                         isLikedExpr,
-                                        likeCountExpr,
+                                        numberTemplate(
+                                                Long.class,
+                                                "(select count(es) from EventStore es where es.store = {0})",
+                                                store
+                                        ),
                                         GroupBy.list(design.imageUrl)
                                 )
                         )
@@ -145,7 +151,6 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
 
         return SearchStorePagedResult.of(total, hasNext, content);
     }
-
 
     private List<BusinessDay> getBusinessDayList(LocalDate startDate, LocalDate endDate) {
         List<BusinessDay> businessDays = null;

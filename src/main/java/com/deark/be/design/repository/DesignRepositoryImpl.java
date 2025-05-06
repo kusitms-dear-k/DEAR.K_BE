@@ -89,7 +89,7 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
 
         if (SortType.LATEST.equals(sortType)) {
             contentQuery.orderBy(design.id.desc());
-        } else {
+        } else if (SortType.POPULARITY.equals(sortType)) {
             contentQuery.orderBy(eventDesign.id.count().desc());
         }
 
