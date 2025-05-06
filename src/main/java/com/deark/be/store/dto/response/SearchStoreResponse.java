@@ -1,6 +1,5 @@
 package com.deark.be.store.dto.response;
 
-import com.deark.be.store.domain.Store;
 import lombok.Builder;
 
 import java.util.List;
@@ -17,17 +16,4 @@ public record SearchStoreResponse(
         Boolean isLiked,
         List<String> designImageUrlList
 ) {
-    public static SearchStoreResponse of(Store store, List<String> designImageUrlList, Boolean isLiked) {
-        return SearchStoreResponse.builder()
-                .storeId(store.getId())
-                .storeName(store.getName())
-                .storeImageUrl(store.getImageUrl())
-                .address(store.getAddress())
-                .isSameDayOrder(store.getIsSameDayOrder())
-                .isUnmanned(store.getIsUnmanned())
-                .isLunchBoxCake(true)
-                .isLiked(isLiked)
-                .designImageUrlList(designImageUrlList)
-                .build();
-    }
 }
