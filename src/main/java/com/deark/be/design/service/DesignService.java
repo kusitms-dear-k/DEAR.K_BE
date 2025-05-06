@@ -10,14 +10,15 @@ import com.deark.be.event.repository.EventDesignRepository;
 import com.deark.be.store.domain.type.SortType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -32,27 +33,32 @@ public class DesignService {
                                                    String keyword, Boolean isSameDayOrder, List<String> locationList,
                                                    LocalDate startDate, LocalDate endDate, Long minPrice, Long maxPrice, Boolean isLunchBoxCake) {
 
-            SearchDesignPagedResult allSearchResult = designRepository.findAllDesignByCriteria(userId, page, count, sortType,
-                    keyword, isSameDayOrder, locationList, startDate, endDate, minPrice, maxPrice, isLunchBoxCake);
+        SearchDesignPagedResult allSearchResult = designRepository.findAllDesignByCriteria(userId, page, count, sortType,
+                keyword, isSameDayOrder, locationList, startDate, endDate, minPrice, maxPrice, isLunchBoxCake);
 
-            boolean hasNext = allSearchResult.designList().size() == count + 1;
+        boolean hasNext = allSearchResult.designList().size() == count + 1;
 
-            if (hasNext) {
-                allSearchResult.designList().remove(allSearchResult.designList().size() - 1);
-            }
+        if (hasNext) {
+            allSearchResult.designList().remove(allSearchResult.designList().size() - 1);
+        }
 
-            return SearchDesignResponseList.of(allSearchResult.totalCount(), page, hasNext, allSearchResult.designList());
+        return SearchDesignResponseList.of(allSearchResult.totalCount(), page, hasNext, allSearchResult.designList());
      }
 
     public RecommendDesignResponseList getRecommendDesignList(Long userId, Long count) {
-        List<Design> randomDesigns = designRepository.findRandomDesigns(count);
+        Pageable topN = PageRequest.of(0, count.intValue());
+        List<Long> popularDesignIds = designRepository.findTopDesignIds(topN);
 
-        Set<Long> likedSet = (userId == 0L)
-                ? Collections.emptySet()
-                : new HashSet<>(eventDesignRepository.findDesignIdsByUserId(userId));
+        List<Design> designList = designRepository.findAllById(popularDesignIds);
 
-        List<RecommendDesignResponse> recommendDesigns = randomDesigns.stream()
-                .map(design -> RecommendDesignResponse.of(design, likedSet.contains(design.getId())))
+        Map<Long, Design> designMap = designList.stream()
+                .collect(Collectors.toUnmodifiableMap(Design::getId, Function.identity()));
+
+        List<RecommendDesignResponse> recommendDesigns = popularDesignIds.stream()
+                .map(designMap::get)
+                .map(design -> {
+                    boolean isLiked = eventDesignRepository.existsByEventUserIdAndDesignId(userId, design.getId());
+                    return RecommendDesignResponse.of(design, isLiked);})
                 .toList();
 
         return RecommendDesignResponseList.from(recommendDesigns);

@@ -57,7 +57,7 @@ public class DesignController {
                 .body(ResponseTemplate.from(designList));
     }
 
-    @Operation(summary = "디자인 추천 리스트", description = "통합 검색 결과가 없을 때 디자인을 추천합니다.")
+    @Operation(summary = "디자인 추천 리스트", description = "통합 검색 결과가 없을 때 디자인을 인기순으로 추천합니다.")
     @GetMapping("/recommend")
     public ResponseEntity<ResponseTemplate<Object>> recommendDesign(
             @AuthenticationPrincipal Long userId,
