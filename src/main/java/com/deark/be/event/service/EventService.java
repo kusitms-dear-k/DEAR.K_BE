@@ -7,7 +7,7 @@ import static com.deark.be.user.exception.errorcode.UserErrorCode.USER_NOT_FOUND
 import com.deark.be.event.domain.Event;
 import com.deark.be.event.domain.EventDesign;
 import com.deark.be.event.domain.EventStore;
-import com.deark.be.event.domain.ThumbnailSource;
+import com.deark.be.event.domain.type.ThumbnailSource;
 import com.deark.be.event.dto.request.EventCreateRequest;
 import com.deark.be.event.dto.request.EventUpdateRequest;
 import com.deark.be.event.dto.response.DesignInEventResponse;

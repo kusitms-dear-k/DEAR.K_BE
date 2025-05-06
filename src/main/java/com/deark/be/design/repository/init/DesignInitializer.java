@@ -98,6 +98,14 @@ public class DesignInitializer implements ApplicationRunner {
                     .imageUrl(designImageUrl + "/mint.jpg")
                     .build();
 
+            Design DUMMY_DESIGN8 = Design.builder()
+                    .store(STORE1)
+                    .name("레인보우 케이크")
+                    .description("다양한 색상의 레인보우 케이크입니다. 색상은 자유롭게 변경 가능합니다.")
+                    .price(35000L)
+                    .imageUrl(designImageUrl + "/rainbow.jpg")
+                    .build();
+
             designList.add(DUMMY_DESIGN1);
             designList.add(DUMMY_DESIGN2);
             designList.add(DUMMY_DESIGN3);
@@ -105,6 +113,7 @@ public class DesignInitializer implements ApplicationRunner {
             designList.add(DUMMY_DESIGN5);
             designList.add(DUMMY_DESIGN6);
             designList.add(DUMMY_DESIGN7);
+            designList.add(DUMMY_DESIGN8);
 
             designRepository.saveAll(designList);
         }

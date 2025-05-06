@@ -1,5 +1,6 @@
 package com.deark.be.store.domain;
 
+import com.deark.be.design.domain.Design;
 import com.deark.be.design.domain.Size;
 import com.deark.be.global.domain.BaseTimeEntity;
 import com.deark.be.user.domain.User;
@@ -67,7 +68,6 @@ public class Store extends BaseTimeEntity {
     @Column(name = "business_permit_url")
     private String businessPermitUrl;
 
-
     @Column(name = "settlement_account")
     private String settlementAccount;
 
@@ -86,12 +86,15 @@ public class Store extends BaseTimeEntity {
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Size> sizeList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Design> designList = new ArrayList<>();
+
     @Builder
     public Store(User user, String name, String description, String phone, String address,
                  String businessNumber, LocalDate establishDate, String imageUrl,
-                 Long averageResponseTime, String chattingUrl, Boolean isUnmanned, Boolean isSameDayOrder
-                 ,String settlementAccount, String businessLicenseUrl, String businessPermitUrl,String ownerName
-    ) {
+                 Long averageResponseTime, String chattingUrl, Boolean isUnmanned, Boolean isSameDayOrder,
+                 String settlementAccount, String businessLicenseUrl, String businessPermitUrl, String ownerName,
+                 String orderLink, Integer maxDailyOrders, List<BusinessHours> businessHoursList, List<Size> sizeList, List<Design> designList) {
         this.user = user;
         this.name = name;
         this.description = description;
@@ -106,8 +109,13 @@ public class Store extends BaseTimeEntity {
         this.isSameDayOrder = isSameDayOrder;
         this.settlementAccount = settlementAccount;
         this.businessLicenseUrl = businessLicenseUrl;
-        this.businessPermitUrl=businessPermitUrl;
-        this.ownerName=ownerName;
+        this.businessPermitUrl = businessPermitUrl;
+        this.ownerName = ownerName;
+        this.orderLink = orderLink;
+        this.maxDailyOrders = maxDailyOrders;
+        this.businessHoursList = businessHoursList;
+        this.sizeList = sizeList;
+        this.designList = designList;
     }
 
     // Store 엔티티 내에 추가할 메서드
@@ -134,6 +142,7 @@ public class Store extends BaseTimeEntity {
         for (BusinessHours bh : businessHoursList) {
             bh.assignStore(null); // 역방향 해제
         }
+
         businessHoursList.clear();
     }
 }

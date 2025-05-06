@@ -1,11 +1,14 @@
 package com.deark.be.design.domain;
 
+import com.deark.be.event.domain.EventDesign;
 import com.deark.be.store.domain.Store;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Table(name = "design")
 @Getter
@@ -34,12 +37,16 @@ public class Design {
     @Column(name = "image_url")
     private String imageUrl;
 
+    @OneToMany(mappedBy = "design", fetch = FetchType.LAZY)
+    private List<EventDesign> eventDesigns;
+
     @Builder
-    public Design(Store store, String name, String description, Long price, String imageUrl) {
+    public Design(Store store, String name, String description, Long price, String imageUrl, List<EventDesign> eventDesigns) {
         this.store = store;
         this.name = name;
         this.description = description;
         this.price = price;
         this.imageUrl = imageUrl;
+        this.eventDesigns = eventDesigns;
     }
 }
