@@ -33,7 +33,12 @@ public class SizeInitializer implements ApplicationRunner {
         } else {
             Store STORE1 = storeRepository.findById(1L).orElseThrow();
             Design DESIGN1 = designRepository.findById(1L).orElseThrow();
+            Design DESIGN4 = designRepository.findById(8L).orElseThrow();
+
+            Store STORE2 = storeRepository.findById(2L).orElseThrow();
             Design DESIGN2 = designRepository.findById(2L).orElseThrow();
+
+            Store STORE3 = storeRepository.findById(3L).orElseThrow();
             Design DESIGN3 = designRepository.findById(3L).orElseThrow();
 
             List<Size> sizeList = new ArrayList<>();
@@ -57,32 +62,44 @@ public class SizeInitializer implements ApplicationRunner {
                     .build();
 
             Size DUMMY_SIZE4 = Size.builder()
-                    .store(STORE1)
+                    .store(STORE2)
                     .design(DESIGN2)
                     .name("도시락 케이크")
                     .build();
 
             Size DUMMY_SIZE5 = Size.builder()
-                    .store(STORE1)
+                    .store(STORE2)
                     .design(DESIGN2)
                     .name("1호 케이크")
                     .build();
 
             Size DUMMY_SIZE6 = Size.builder()
-                    .store(STORE1)
+                    .store(STORE2)
                     .design(DESIGN2)
                     .name("2호 케이크")
                     .build();
 
             Size DUMMY_SIZE7 = Size.builder()
-                    .store(STORE1)
+                    .store(STORE3)
                     .design(DESIGN3)
                     .name("도시락 케이크")
                     .build();
 
             Size DUMMY_SIZE8 = Size.builder()
-                    .store(STORE1)
+                    .store(STORE3)
                     .design(DESIGN3)
+                    .name("1호 케이크")
+                    .build();
+
+            Size DUMMY_SIZE9 = Size.builder()
+                    .store(STORE1)
+                    .design(DESIGN4)
+                    .name("도시락 케이크")
+                    .build();
+
+            Size DUMMY_SIZE10 = Size.builder()
+                    .store(STORE1)
+                    .design(DESIGN4)
                     .name("1호 케이크")
                     .build();
 
@@ -94,6 +111,8 @@ public class SizeInitializer implements ApplicationRunner {
             sizeList.add(DUMMY_SIZE6);
             sizeList.add(DUMMY_SIZE7);
             sizeList.add(DUMMY_SIZE8);
+            sizeList.add(DUMMY_SIZE9);
+            sizeList.add(DUMMY_SIZE10);
 
             sizeRepository.saveAll(sizeList);
         }
