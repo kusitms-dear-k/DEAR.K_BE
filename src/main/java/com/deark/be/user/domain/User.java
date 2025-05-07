@@ -62,12 +62,19 @@ public class User extends BaseTimeEntity {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
+    @Column(name = "is_marketing_agreement")
+    private Boolean isMarketingAgreement;
+
+    @Column(name = "is_push_agreement")
+    private Boolean isThirdPartyAgreement;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Event> eventList = new ArrayList<>();
 
     @Builder
     public User(String name, String email, String phone, String socialId, Role role, Boolean isBlacklist,
-                String nickname, String profileImageUrl, Gender gender, LocalDate birthDate, List<Event> eventList) {
+                String nickname, String profileImageUrl, Gender gender, LocalDate birthDate, List<Event> eventList,
+                Boolean isMarketingAgreement, Boolean isThirdPartyAgreement) {
         this.name = name;
         this.email = email;
         this.phone = phone;
@@ -78,10 +85,12 @@ public class User extends BaseTimeEntity {
         this.profileImageUrl = profileImageUrl;
         this.gender = gender;
         this.birthDate = birthDate;
+        this.isMarketingAgreement = isMarketingAgreement;
+        this.isThirdPartyAgreement = isThirdPartyAgreement;
         this.eventList = eventList;
     }
 
-    public static User of(OAuthInfoResponse oAuthInfoResponse) {
+    public static User from(OAuthInfoResponse oAuthInfoResponse) {
         return User.builder()
                 .name(oAuthInfoResponse.getName())
                 .email(oAuthInfoResponse.getEmail())
@@ -102,6 +111,8 @@ public class User extends BaseTimeEntity {
         this.nickname = request.nickname();
         this.gender = request.gender();
         this.birthDate = request.birthDate();
+        this.isMarketingAgreement = request.isMarketingAgreement();
+        this.isThirdPartyAgreement = request.isThridPartyAgreement();
 
         if (!profileImageUrl.isEmpty()) {
             this.profileImageUrl = profileImageUrl;

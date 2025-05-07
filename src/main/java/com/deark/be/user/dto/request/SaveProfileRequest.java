@@ -7,6 +7,8 @@ import java.time.LocalDate;
 public record SaveProfileRequest(
         String nickname,
         Gender gender,
-        LocalDate birthDate
+        LocalDate birthDate,
+        Boolean isMarketingAgreement,
+        Boolean isThridPartyAgreement
 ) {
 }

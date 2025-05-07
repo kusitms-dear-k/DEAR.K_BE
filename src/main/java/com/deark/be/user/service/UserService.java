@@ -54,7 +54,7 @@ public class UserService {
     }
 
     private User saveUser(OAuthInfoResponse oAuthInfoResponse) {
-        return userRepository.save(User.of(oAuthInfoResponse));
+        return userRepository.save(User.from(oAuthInfoResponse));
     }
 
     private String uploadProfileImage(MultipartFile file) {

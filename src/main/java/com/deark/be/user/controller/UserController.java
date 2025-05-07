@@ -53,7 +53,8 @@ public class UserController {
                 .body(ResponseTemplate.from(response));
     }
 
-    @Operation(summary = "프로필 등록", description = "회원가입 후 프로필 사진, 닉네임, 성별, 생년월일을 등록합니다")
+    @Operation(summary = "프로필 등록", description = "회원가입 후 프로필 사진, 닉네임, 성별, 생년월일을 등록합니다 <br>" +
+            "마케팅 수신 동의 여부는 isMarketingAgreement에, 제3자 제공 동의 여부는 isThirdPartyAgreement에 입력해주세요.")
     @PostMapping(value = "/profile", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ResponseTemplate<Object>> saveProfile(
             @AuthenticationPrincipal Long userId,
