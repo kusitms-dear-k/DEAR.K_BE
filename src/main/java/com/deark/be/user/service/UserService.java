@@ -1,14 +1,18 @@
 package com.deark.be.user.service;
 
 import com.deark.be.auth.dto.response.OAuthInfoResponse;
+import com.deark.be.global.service.S3Service;
 import com.deark.be.user.domain.User;
+import com.deark.be.user.dto.request.SaveProfileRequest;
 import com.deark.be.user.dto.request.UpdateRoleRequest;
 import com.deark.be.user.exception.UserException;
 import com.deark.be.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import static com.deark.be.user.exception.errorcode.UserErrorCode.USER_NOT_FOUND;
 
@@ -19,6 +23,7 @@ import static com.deark.be.user.exception.errorcode.UserErrorCode.USER_NOT_FOUND
 public class UserService {
 
     private final UserRepository userRepository;
+    private final S3Service s3Service;
 
     @Transactional
     public User findOrGenerateUser(OAuthInfoResponse oAuthInfoResponse) {
@@ -36,6 +41,13 @@ public class UserService {
         return userRepository.existsByNickname(nickname);
     }
 
+    @Transactional
+    public void saveProfile(Long userId, SaveProfileRequest request, MultipartFile file) {
+        User user = findUser(userId);
+        String profileImageUrl = uploadProfileImage(file);
+        user.saveProfile(request, profileImageUrl);
+    }
+
     public User findUser(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new UserException(USER_NOT_FOUND));
@@ -43,5 +55,9 @@ public class UserService {
 
     private User saveUser(OAuthInfoResponse oAuthInfoResponse) {
         return userRepository.save(User.of(oAuthInfoResponse));
+    }
+
+    private String uploadProfileImage(MultipartFile file) {
+        return ObjectUtils.isEmpty(file) ? "" : s3Service.uploadFile(file);
     }
 }

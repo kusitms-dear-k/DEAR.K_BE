@@ -1,6 +1,7 @@
 package com.deark.be.user.controller;
 
 import com.deark.be.global.dto.ResponseTemplate;
+import com.deark.be.user.dto.request.SaveProfileRequest;
 import com.deark.be.user.dto.request.UpdateRoleRequest;
 import com.deark.be.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,9 +10,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import static com.deark.be.global.dto.ResponseTemplate.EMPTY_RESPONSE;
 
@@ -48,5 +51,19 @@ public class UserController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ResponseTemplate.from(response));
+    }
+
+    @Operation(summary = "프로필 등록", description = "회원가입 후 닉네임, 프로필 사진, 토큰을 등록합니다")
+    @PostMapping(value = "/profile", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<ResponseTemplate<Object>> saveProfile(
+            @AuthenticationPrincipal Long userId,
+            @Valid @RequestPart SaveProfileRequest request,
+            @RequestPart(required = false) MultipartFile file) {
+
+        userService.saveProfile(userId, request, file);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(EMPTY_RESPONSE);
     }
 }

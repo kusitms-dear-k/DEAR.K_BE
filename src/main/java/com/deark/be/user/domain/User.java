@@ -3,8 +3,12 @@ package com.deark.be.user.domain;
 import com.deark.be.auth.dto.response.OAuthInfoResponse;
 import com.deark.be.event.domain.Event;
 import com.deark.be.global.domain.BaseTimeEntity;
+import com.deark.be.user.domain.type.Gender;
 import com.deark.be.user.domain.type.Role;
+import com.deark.be.user.dto.request.SaveProfileRequest;
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -51,12 +55,19 @@ public class User extends BaseTimeEntity {
     @Column(name = "profile_image_url")
     private String profileImageUrl;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gender")
+    private Gender gender;
+
+    @Column(name = "birth_date")
+    private LocalDate birthDate;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Event> eventList=new ArrayList<>();
+    private List<Event> eventList = new ArrayList<>();
 
     @Builder
     public User(String name, String email, String phone, String socialId, Role role, Boolean isBlacklist,
-                String nickname, String profileImageUrl) {
+                String nickname, String profileImageUrl, Gender gender, LocalDate birthDate, List<Event> eventList) {
         this.name = name;
         this.email = email;
         this.phone = phone;
@@ -65,6 +76,9 @@ public class User extends BaseTimeEntity {
         this.isBlacklist = isBlacklist;
         this.nickname = nickname;
         this.profileImageUrl = profileImageUrl;
+        this.gender = gender;
+        this.birthDate = birthDate;
+        this.eventList = eventList;
     }
 
     public static User of(OAuthInfoResponse oAuthInfoResponse) {
@@ -82,6 +96,16 @@ public class User extends BaseTimeEntity {
 
     public void updateRole(Role role) {
         this.role = role;
+    }
+
+    public void saveProfile(SaveProfileRequest request, String profileImageUrl) {
+        this.nickname = request.nickname();
+        this.gender = request.gender();
+        this.birthDate = request.birthDate();
+
+        if (!profileImageUrl.isEmpty()) {
+            this.profileImageUrl = profileImageUrl;
+        }
     }
 
     private static String formatPhoneNumber(String originalPhoneNumber) {
