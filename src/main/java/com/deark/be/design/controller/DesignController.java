@@ -2,6 +2,8 @@ package com.deark.be.design.controller;
 
 import com.deark.be.design.dto.response.RecommendDesignResponseList;
 import com.deark.be.design.dto.response.SearchDesignResponseList;
+import com.deark.be.design.dto.response.StoreDesignResponse;
+import com.deark.be.design.dto.response.StoreDesignResponseList;
 import com.deark.be.design.service.DesignService;
 import com.deark.be.global.dto.ResponseTemplate;
 import com.deark.be.store.domain.type.SortType;
@@ -12,10 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -68,5 +67,21 @@ public class DesignController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ResponseTemplate.from(recommendDesignList));
+    }
+
+    @Operation(summary = "가게의 모든 케이크 디자인 조회", description = "가게의 모든 케이크 디자인을 조회합니다.")
+    @GetMapping("/{storeId}")
+    public ResponseEntity<ResponseTemplate<Object>> getDesignDetail(
+            @AuthenticationPrincipal Long userId,
+            @RequestParam(defaultValue = "0") Long page,
+            @RequestParam(defaultValue = "2") Long count,
+            @PathVariable Long storeId,
+            @RequestParam(required = false) String sizeName){
+
+        StoreDesignResponseList designList = designService.getStoreDesignList(userId, page, count, storeId, sizeName);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseTemplate.from(designList));
     }
 }

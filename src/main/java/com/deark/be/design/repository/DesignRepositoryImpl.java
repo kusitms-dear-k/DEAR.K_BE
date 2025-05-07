@@ -2,6 +2,7 @@ package com.deark.be.design.repository;
 
 import com.deark.be.design.dto.response.SearchDesignPagedResult;
 import com.deark.be.design.dto.response.SearchDesignResponse;
+import com.deark.be.design.dto.response.StoreDesignResponse;
 import com.deark.be.store.domain.type.BusinessDay;
 import com.deark.be.store.domain.type.SortType;
 import com.querydsl.core.types.Projections;
@@ -140,6 +141,51 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
         return SearchDesignPagedResult.of(total, content);
     }
 
+    @Override
+    public List<StoreDesignResponse> findAllDesignBySizeAndStoreId(Long userId, Long page, Long count, Long storeId, String sizeName) {
+        NumberExpression<Long> likedSum = Expressions.numberTemplate(
+                Long.class,
+                "SUM(CASE WHEN {0} THEN 1 ELSE 0 END)",
+                event.user.id.eq(userId).and(eventDesign.design.eq(design))
+        );
+
+        BooleanExpression isLikedExpr = likedSum.gt(0L);
+
+        BooleanExpression sizeFilter = (sizeName != null && !sizeName.isBlank())
+                ? design.sizeList.any().name.eq(sizeName)
+                : null;
+
+        return jpaQueryFactory
+                .select(Projections.constructor(
+                        StoreDesignResponse.class,
+                        design.id,
+                        design.name,
+                        design.imageUrl,
+                        store.name,
+                        design.price,
+                        isLikedExpr
+                ))
+                .from(design)
+                .join(design.store, store)
+                .leftJoin(design.eventDesigns, eventDesign)
+                .leftJoin(eventDesign.event, event)
+                .where(
+                        design.store.id.eq(storeId),
+                        sizeFilter
+                )
+                .groupBy(
+                        design.id,
+                        design.name,
+                        design.imageUrl,
+                        store.name,
+                        design.price,
+                        store.address,
+                        store.isSameDayOrder
+                )
+                .offset(page * count)
+                .limit(count + 1)
+                .fetch();
+    }
 
     private List<BusinessDay> getBusinessDayList(LocalDate startDate, LocalDate endDate) {
         List<BusinessDay> businessDays = null;
