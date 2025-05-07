@@ -5,15 +5,13 @@ import com.deark.be.user.dto.request.UpdateRoleRequest;
 import com.deark.be.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.deark.be.global.dto.ResponseTemplate.EMPTY_RESPONSE;
 
@@ -38,5 +36,17 @@ public class UserController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(EMPTY_RESPONSE);
+    }
+
+    @Operation(summary = "닉네임 중복 검사", description = "닉네임이 존재하면 true, 존재하지 않으면 false를 반환합니다")
+    @GetMapping("/nickname/validation")
+    public ResponseEntity<ResponseTemplate<Object>> validateNickname(
+            @Valid @RequestParam String nickname) {
+
+        Boolean response = userService.validateNickname(nickname);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseTemplate.from(response));
     }
 }

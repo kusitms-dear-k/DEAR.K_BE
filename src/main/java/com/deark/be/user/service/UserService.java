@@ -32,6 +32,10 @@ public class UserService {
         user.updateRole(request.role());
     }
 
+    public Boolean validateNickname(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
+
     public User findUser(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new UserException(USER_NOT_FOUND));
