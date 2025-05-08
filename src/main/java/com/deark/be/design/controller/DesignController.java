@@ -1,9 +1,6 @@
 package com.deark.be.design.controller;
 
-import com.deark.be.design.dto.response.RecommendDesignResponseList;
-import com.deark.be.design.dto.response.SearchDesignResponseList;
-import com.deark.be.design.dto.response.StoreDesignResponse;
-import com.deark.be.design.dto.response.StoreDesignResponseList;
+import com.deark.be.design.dto.response.*;
 import com.deark.be.design.service.DesignService;
 import com.deark.be.global.dto.ResponseTemplate;
 import com.deark.be.store.domain.type.SortType;
@@ -70,7 +67,7 @@ public class DesignController {
     }
 
     @Operation(summary = "가게의 모든 케이크 디자인 조회", description = "가게의 모든 케이크 디자인을 조회합니다.")
-    @GetMapping("/{storeId}")
+    @GetMapping("/store/{storeId}")
     public ResponseEntity<ResponseTemplate<Object>> getDesignDetail(
             @AuthenticationPrincipal Long userId,
             @RequestParam(defaultValue = "0") Long page,
@@ -83,5 +80,18 @@ public class DesignController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ResponseTemplate.from(designList));
+    }
+
+    @Operation(summary = "디자인 상세 조회", description = "디자인 상세 정보를 조회합니다.")
+    @GetMapping("/detail/{designId}")
+    public ResponseEntity<ResponseTemplate<Object>> getDesignDetail(
+            @AuthenticationPrincipal Long userId,
+            @PathVariable Long designId) {
+
+        DesignDetailResponse designDetail = designService.getDesignDetail(userId, designId);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseTemplate.from(designDetail));
     }
 }

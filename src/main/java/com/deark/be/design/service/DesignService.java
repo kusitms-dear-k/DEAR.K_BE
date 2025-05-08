@@ -68,4 +68,8 @@ public class DesignService {
          List<StoreDesignResponse> responseList = designRepository.findAllDesignBySizeAndStoreId(userId, page, count, storeId, sizeName);
          return StoreDesignResponseList.from(responseList);
     }
+
+    public DesignDetailResponse getDesignDetail(Long userId, Long designId) {
+        return designRepository.findDesignDetailById(userId, designId);
+    }
 }

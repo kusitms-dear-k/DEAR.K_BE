@@ -1,10 +1,12 @@
 package com.deark.be.design.repository;
 
+import com.deark.be.design.dto.response.DesignDetailResponse;
 import com.deark.be.design.dto.response.SearchDesignPagedResult;
 import com.deark.be.design.dto.response.SearchDesignResponse;
 import com.deark.be.design.dto.response.StoreDesignResponse;
 import com.deark.be.store.domain.type.BusinessDay;
 import com.deark.be.store.domain.type.SortType;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
@@ -20,7 +22,9 @@ import org.springframework.util.StringUtils;
 import java.time.LocalDate;
 import java.util.*;
 
+import static com.deark.be.design.domain.QCream.cream;
 import static com.deark.be.design.domain.QDesign.design;
+import static com.deark.be.design.domain.QSheet.sheet;
 import static com.deark.be.design.domain.QSize.size;
 import static com.deark.be.event.domain.QEvent.event;
 import static com.deark.be.event.domain.QEventDesign.eventDesign;
@@ -185,6 +189,72 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                 .offset(page * count)
                 .limit(count + 1)
                 .fetch();
+    }
+
+    @Override
+    public DesignDetailResponse findDesignDetailById(Long userId, Long designId) {
+        Boolean isLiked = jpaQueryFactory
+                .selectOne()
+                .from(eventDesign)
+                .join(eventDesign.event, event)
+                .where(
+                        event.user.id.eq(userId),
+                        eventDesign.design.id.eq(designId)
+                )
+                .fetchFirst() != null;
+
+        Long likeCount = jpaQueryFactory
+                .select(eventDesign.count())
+                .from(eventDesign)
+                .where(eventDesign.design.id.eq(designId))
+                .fetchOne();
+
+        Tuple result = jpaQueryFactory
+                .select(
+                        design.store.name,
+                        design.name,
+                        design.imageUrl,
+                        design.description,
+                        design.price
+                )
+                .from(design)
+                .where(design.id.eq(designId))
+                .fetchOne();
+
+        if (result == null) {
+            return null;
+        }
+
+        List<String> sizeList = jpaQueryFactory
+                .select(size.name)
+                .from(size)
+                .where(size.design.id.eq(designId))
+                .fetch();
+
+        List<String> creamList = jpaQueryFactory
+                .select(cream.name)
+                .from(cream)
+                .where(cream.design.id.eq(designId))
+                .fetch();
+
+        List<String> sheetList = jpaQueryFactory
+                .select(sheet.name)
+                .from(sheet)
+                .where(sheet.design.id.eq(designId))
+                .fetch();
+
+        return DesignDetailResponse.builder()
+                .storeName(result.get(design.store.name))
+                .designName(result.get(design.name))
+                .designImageUrl(result.get(design.imageUrl))
+                .description(result.get(design.description))
+                .price(result.get(design.price))
+                .isLiked(isLiked)
+                .likeCount(likeCount)
+                .sizeList(sizeList)
+                .creamList(creamList)
+                .sheetList(sheetList)
+                .build();
     }
 
     private List<BusinessDay> getBusinessDayList(LocalDate startDate, LocalDate endDate) {
