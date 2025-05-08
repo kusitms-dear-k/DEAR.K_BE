@@ -182,9 +182,7 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                         design.name,
                         design.imageUrl,
                         store.name,
-                        design.price,
-                        store.address,
-                        store.isSameDayOrder
+                        design.price
                 )
                 .offset(page * count)
                 .limit(count + 1)
