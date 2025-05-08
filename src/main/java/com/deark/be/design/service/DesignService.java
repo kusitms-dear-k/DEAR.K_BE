@@ -66,7 +66,14 @@ public class DesignService {
 
     public StoreDesignResponseList getStoreDesignList(Long userId, Long page, Long count, Long storeId, String sizeName) {
          List<StoreDesignResponse> responseList = designRepository.findAllDesignBySizeAndStoreId(userId, page, count, storeId, sizeName);
-         return StoreDesignResponseList.from(responseList);
+
+        boolean hasNext = responseList.size() == count + 1;
+
+        if (hasNext) {
+            responseList.remove(responseList.size() - 1);
+        }
+
+         return StoreDesignResponseList.of(page, hasNext, responseList);
     }
 
     public DesignDetailResponse getDesignDetail(Long userId, Long designId) {

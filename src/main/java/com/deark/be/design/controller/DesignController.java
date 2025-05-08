@@ -66,7 +66,9 @@ public class DesignController {
                 .body(ResponseTemplate.from(recommendDesignList));
     }
 
-    @Operation(summary = "가게의 모든 케이크 디자인 조회", description = "가게의 모든 케이크 디자인을 조회합니다.")
+    @Operation(summary = "가게의 모든 케이크 디자인 조회", description = "가게의 모든 케이크 디자인 및 사이즈 별 디자인을 조회합니다. <br>" +
+            "가게의 전체 디자인을 조회할 경우 sizeName을 입력하지 않아도 됩니다. <br>" +
+            "사이즈 별 디자인을 조회할 경우 sizeName은 가게 정보 조회에서 받아온 가게 별 사이즈를 입력해주세요.")
     @GetMapping("/store/{storeId}")
     public ResponseEntity<ResponseTemplate<Object>> getDesignDetail(
             @AuthenticationPrincipal Long userId,
