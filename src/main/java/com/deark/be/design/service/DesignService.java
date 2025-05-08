@@ -1,11 +1,9 @@
 package com.deark.be.design.service;
 
 import com.deark.be.design.domain.Design;
-import com.deark.be.design.dto.response.RecommendDesignResponse;
-import com.deark.be.design.dto.response.RecommendDesignResponseList;
-import com.deark.be.design.dto.response.SearchDesignPagedResult;
-import com.deark.be.design.dto.response.SearchDesignResponseList;
+import com.deark.be.design.dto.response.*;
 import com.deark.be.design.repository.DesignRepository;
+import com.deark.be.design.repository.SizeRepository;
 import com.deark.be.event.repository.EventDesignRepository;
 import com.deark.be.store.domain.type.SortType;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -28,6 +27,7 @@ public class DesignService {
 
      private final DesignRepository designRepository;
      private final EventDesignRepository eventDesignRepository;
+     private final SizeRepository sizeRepository;
 
      public SearchDesignResponseList getDesignList(Long userId, Long page, Long count, SortType sortType,
                                                    String keyword, Boolean isSameDayOrder, List<String> locationList,
@@ -62,5 +62,21 @@ public class DesignService {
                 .toList();
 
         return RecommendDesignResponseList.from(recommendDesigns);
+    }
+
+    public StoreDesignResponseList getStoreDesignList(Long userId, Long page, Long count, Long storeId, String sizeName) {
+         List<StoreDesignResponse> responseList = designRepository.findAllDesignBySizeAndStoreId(userId, page, count, storeId, sizeName);
+
+        boolean hasNext = responseList.size() == count + 1;
+
+        if (hasNext) {
+            responseList.remove(responseList.size() - 1);
+        }
+
+         return StoreDesignResponseList.of(page, hasNext, responseList);
+    }
+
+    public DesignDetailResponse getDesignDetail(Long userId, Long designId) {
+        return designRepository.findDesignDetailById(userId, designId);
     }
 }
