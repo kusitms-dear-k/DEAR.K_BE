@@ -33,7 +33,11 @@ public class SheetInitializer implements ApplicationRunner {
         } else {
             Store STORE1 = storeRepository.findById(1L).orElseThrow();
             Design DESIGN1 = designRepository.findById(1L).orElseThrow();
+
+            Store STORE2 = storeRepository.findById(2L).orElseThrow();
             Design DESIGN2 = designRepository.findById(2L).orElseThrow();
+
+            Store STORE3 = storeRepository.findById(3L).orElseThrow();
             Design DESIGN3 = designRepository.findById(3L).orElseThrow();
 
             List<Sheet> sheetList = new ArrayList<>();
@@ -41,24 +45,52 @@ public class SheetInitializer implements ApplicationRunner {
             Sheet DUMMY_SHEET = Sheet.builder()
                     .store(STORE1)
                     .design(DESIGN1)
-                    .name("바닐라 시트")
+                    .name("바닐라")
                     .build();
 
             Sheet DUMMY_SHEET2 = Sheet.builder()
                     .store(STORE1)
-                    .design(DESIGN2)
-                    .name("초코 시트")
+                    .design(DESIGN1)
+                    .name("초코")
                     .build();
 
             Sheet DUMMY_SHEET3 = Sheet.builder()
                     .store(STORE1)
+                    .design(DESIGN1)
+                    .name("딸기")
+                    .build();
+
+            Sheet DUMMY_SHEET4 = Sheet.builder()
+                    .store(STORE2)
+                    .design(DESIGN2)
+                    .name("바닐라")
+                    .build();
+
+            Sheet DUMMY_SHEET5 = Sheet.builder()
+                    .store(STORE2)
+                    .design(DESIGN2)
+                    .name("바나나")
+                    .build();
+
+            Sheet DUMMY_SHEET6 = Sheet.builder()
+                    .store(STORE3)
                     .design(DESIGN3)
-                    .name("딸기 시트")
+                    .name("초코")
+                    .build();
+
+            Sheet DUMMY_SHEET7 = Sheet.builder()
+                    .store(STORE3)
+                    .design(DESIGN3)
+                    .name("얼그레이")
                     .build();
 
             sheetList.add(DUMMY_SHEET);
             sheetList.add(DUMMY_SHEET2);
             sheetList.add(DUMMY_SHEET3);
+            sheetList.add(DUMMY_SHEET4);
+            sheetList.add(DUMMY_SHEET5);
+            sheetList.add(DUMMY_SHEET6);
+            sheetList.add(DUMMY_SHEET7);
 
             sheetRepository.saveAll(sheetList);
         }

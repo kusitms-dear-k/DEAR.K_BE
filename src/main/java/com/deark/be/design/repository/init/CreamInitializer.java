@@ -33,7 +33,11 @@ public class CreamInitializer implements ApplicationRunner {
         } else {
             Store STORE1 = storeRepository.findById(1L).orElseThrow();
             Design DESIGN1 = designRepository.findById(1L).orElseThrow();
+
+            Store STORE2 = storeRepository.findById(2L).orElseThrow();
             Design DESIGN2 = designRepository.findById(2L).orElseThrow();
+
+            Store STORE3 = storeRepository.findById(3L).orElseThrow();
             Design DESIGN3 = designRepository.findById(3L).orElseThrow();
 
             List<Cream> creamList = new ArrayList<>();
@@ -46,19 +50,54 @@ public class CreamInitializer implements ApplicationRunner {
 
             Cream DUMMY_CREAM2 = Cream.builder()
                     .store(STORE1)
-                    .design(DESIGN2)
+                    .design(DESIGN1)
                     .name("초코 크림")
                     .build();
 
             Cream DUMMY_CREAM3 = Cream.builder()
                     .store(STORE1)
+                    .design(DESIGN1)
+                    .name("딸기 크림")
+                    .build();
+
+            Cream DUMMY_CREAM4 = Cream.builder()
+                    .store(STORE2)
+                    .design(DESIGN2)
+                    .name("생크림")
+                    .build();
+
+            Cream DUMMY_CREAM5 = Cream.builder()
+                    .store(STORE2)
+                    .design(DESIGN2)
+                    .name("초코 크림")
+                    .build();
+
+            Cream DUMMY_CREAM6 = Cream.builder()
+                    .store(STORE2)
+                    .design(DESIGN2)
+                    .name("블루베리 크림")
+                    .build();
+
+            Cream DUMMY_CREAM7 = Cream.builder()
+                    .store(STORE3)
                     .design(DESIGN3)
                     .name("딸기 크림")
+                    .build();
+
+            Cream DUMMY_CREAM8 = Cream.builder()
+                    .store(STORE3)
+                    .design(DESIGN3)
+                    .name("초코 크림")
                     .build();
 
             creamList.add(DUMMY_CREAM1);
             creamList.add(DUMMY_CREAM2);
             creamList.add(DUMMY_CREAM3);
+            creamList.add(DUMMY_CREAM4);
+            creamList.add(DUMMY_CREAM5);
+            creamList.add(DUMMY_CREAM6);
+            creamList.add(DUMMY_CREAM7);
+            creamList.add(DUMMY_CREAM8);
 
             creamRepository.saveAll(creamList);
         }
