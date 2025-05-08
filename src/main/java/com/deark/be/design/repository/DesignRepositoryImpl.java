@@ -91,7 +91,7 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                 ))
                 .from(design)
                 .join(design.store, store)
-                .leftJoin(design.eventDesigns, eventDesign)
+                .leftJoin(design.eventDesignList, eventDesign)
                 .leftJoin(eventDesign.event, event)
                 .leftJoin(store.businessHoursList, businessHours)
                 .where(
@@ -171,7 +171,7 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                 ))
                 .from(design)
                 .join(design.store, store)
-                .leftJoin(design.eventDesigns, eventDesign)
+                .leftJoin(design.eventDesignList, eventDesign)
                 .leftJoin(eventDesign.event, event)
                 .where(
                         design.store.id.eq(storeId),

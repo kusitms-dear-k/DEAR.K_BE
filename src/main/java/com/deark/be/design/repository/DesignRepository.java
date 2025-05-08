@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface DesignRepository extends JpaRepository<Design, Long>, DesignRepositoryCustom {
 
-    @Query("SELECT d.id FROM Design d LEFT JOIN d.eventDesigns ed GROUP BY d.id ORDER BY COUNT(ed) DESC")
+    @Query("SELECT d.id FROM Design d LEFT JOIN d.eventDesignList ed GROUP BY d.id ORDER BY COUNT(ed) DESC")
     List<Long> findTopDesignIds(Pageable pageable);
 }

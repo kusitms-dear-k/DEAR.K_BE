@@ -39,20 +39,20 @@ public class Design {
     private String imageUrl;
 
     @OneToMany(mappedBy = "design", fetch = FetchType.LAZY)
-    private List<EventDesign> eventDesigns = new ArrayList<>();
+    private List<EventDesign> eventDesignList = new ArrayList<>();
 
     @OneToMany(mappedBy = "design", fetch = FetchType.LAZY)
     private List<Size> sizeList = new ArrayList<>();
 
     @Builder
     public Design(Store store, String name, String description, Long price, String imageUrl,
-                  List<EventDesign> eventDesigns, List<Size> sizeList) {
+                  List<EventDesign> eventDesignList, List<Size> sizeList) {
         this.store = store;
         this.name = name;
         this.description = description;
         this.price = price;
         this.imageUrl = imageUrl;
-        this.eventDesigns = eventDesigns;
+        this.eventDesignList = eventDesignList;
         this.sizeList = sizeList;
     }
 }
