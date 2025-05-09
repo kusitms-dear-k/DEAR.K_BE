@@ -56,9 +56,6 @@ public class Store extends BaseTimeEntity {
     @Column(name = "chatting_url")
     private String chattingUrl;
 
-    @Column(name = "is_unmanned")
-    private Boolean isUnmanned;
-
     @Column(name = "is_same_day_order")
     private Boolean isSameDayOrder;
 
@@ -80,6 +77,9 @@ public class Store extends BaseTimeEntity {
     @Column(name = "max_daily_orders")
     private Integer maxDailyOrders;
 
+    @Column(name = "is_self_service")
+    private Boolean isSelfService;
+
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BusinessHours> businessHoursList = new ArrayList<>();
 
@@ -92,9 +92,9 @@ public class Store extends BaseTimeEntity {
     @Builder
     public Store(User user, String name, String description, String phone, String address,
                  String businessNumber, LocalDate establishDate, String imageUrl,
-                 Long averageResponseTime, String chattingUrl, Boolean isUnmanned, Boolean isSameDayOrder,
+                 Long averageResponseTime, String chattingUrl,  Boolean isSameDayOrder,
                  String settlementAccount, String businessLicenseUrl, String businessPermitUrl, String ownerName,
-                 String orderLink, Integer maxDailyOrders, List<BusinessHours> businessHoursList, List<Size> sizeList, List<Design> designList) {
+                 String orderLink, Integer maxDailyOrders, Boolean isSelfService, List<BusinessHours> businessHoursList, List<Size> sizeList, List<Design> designList) {
         this.user = user;
         this.name = name;
         this.description = description;
@@ -105,7 +105,6 @@ public class Store extends BaseTimeEntity {
         this.imageUrl = imageUrl;
         this.averageResponseTime = averageResponseTime;
         this.chattingUrl = chattingUrl;
-        this.isUnmanned = isUnmanned;
         this.isSameDayOrder = isSameDayOrder;
         this.settlementAccount = settlementAccount;
         this.businessLicenseUrl = businessLicenseUrl;
@@ -113,6 +112,7 @@ public class Store extends BaseTimeEntity {
         this.ownerName = ownerName;
         this.orderLink = orderLink;
         this.maxDailyOrders = maxDailyOrders;
+        this.isSelfService=isSelfService;
         this.businessHoursList = businessHoursList;
         this.sizeList = sizeList;
         this.designList = designList;
@@ -120,7 +120,7 @@ public class Store extends BaseTimeEntity {
 
     // Store 엔티티 내에 추가할 메서드
     public void updateBasicInfo(String name, String phone, String description, String address,
-                                String imageUrl, String chattingUrl, Boolean isUnmanned,
+                                String imageUrl, String chattingUrl, Boolean isSelfService,
                                 String orderLink, Integer maxDailyOrders) {
         this.name = name;
         this.phone = phone;
@@ -128,7 +128,7 @@ public class Store extends BaseTimeEntity {
         this.address = address;
         this.imageUrl = imageUrl;
         this.chattingUrl = chattingUrl;
-        this.isUnmanned = isUnmanned;
+        this.isSelfService = isSelfService;
         this.orderLink = orderLink;
         this.maxDailyOrders = maxDailyOrders;
     }
