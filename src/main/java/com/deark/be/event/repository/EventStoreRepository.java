@@ -14,4 +14,5 @@ public interface EventStoreRepository extends JpaRepository<EventStore,Long> {
     Optional<EventStore> findByEventIdAndStoreId(Long eventId, Long storeId);;
     List<EventStore> findAllByStore(Store store);
     Long countByStoreId(Long storeId);
+    boolean existsByEventUserIdAndStoreId(Long userId, Long storeId);
 }
