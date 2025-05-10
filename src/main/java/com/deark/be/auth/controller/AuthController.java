@@ -32,7 +32,7 @@ public class AuthController {
 
     @Operation(summary = "Access Token 재발급", description = "토큰 재발급시 Refresh Token을 입력해주세요")
     @PostMapping("/reissue")
-    public ResponseEntity<ResponseTemplate<Object>> reIssueToken(
+    public ResponseEntity<ResponseTemplate<ReissueResponse>> reIssueToken(
             @RequestHeader(value = HttpHeaders.AUTHORIZATION) String refreshToken) {
 
         ReissueResponse response = authService.reIssueToken(refreshToken);
@@ -47,7 +47,7 @@ public class AuthController {
             "존재하지 않는 유저라면 GUEST, 존재하는 유저라면 OWNER / CUSTOMER를 반환합니다.<br>" +
             "Access Token은 헤더로, Refresh Token은 쿠키로 전달됩니다.<br>")
     @PostMapping("/login")
-    public ResponseEntity<ResponseTemplate<Object>> socialLogin(
+    public ResponseEntity<ResponseTemplate<LoginResponse>> socialLogin(
             @RequestBody OAuthLoginRequest request,
             HttpServletResponse response) {
 

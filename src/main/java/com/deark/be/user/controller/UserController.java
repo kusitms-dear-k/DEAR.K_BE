@@ -43,7 +43,7 @@ public class UserController {
 
     @Operation(summary = "닉네임 중복 검사", description = "닉네임이 존재하면 true, 존재하지 않으면 false를 반환합니다")
     @GetMapping("/nickname/validation")
-    public ResponseEntity<ResponseTemplate<Object>> validateNickname(
+    public ResponseEntity<ResponseTemplate<Boolean>> validateNickname(
             @Valid @RequestParam String nickname) {
 
         Boolean response = userService.validateNickname(nickname);

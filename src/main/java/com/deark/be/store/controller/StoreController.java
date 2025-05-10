@@ -36,7 +36,7 @@ public class StoreController {
     @Operation(summary = "가게 입점 등록", description = """
         S3에 미리 업로드된 파일 URL을 기반으로 가게 입점 정보를 등록합니다.
         """)
-    public ResponseEntity<ResponseTemplate<Object>> registerStore(
+    public ResponseEntity<ResponseTemplate<Long>> registerStore(
             @RequestPart("request") @Valid StoreRegisterRequest request,
             @RequestPart("businessLicenseFile") MultipartFile businessLicenseFile,
             @RequestPart("businessPermitFile") MultipartFile businessPermitFile,
@@ -64,7 +64,7 @@ public class StoreController {
             "시작일 : '2025-01-01' 형식으로 startDate / 종료일 : '2025-01-01' 형식으로 endDate (하루만 선택할 경우 시작일과 종료일을 같게 입력해주세요.) <br>" +
             "최소 금액 : minPrice / 최대 금액 : maxPrice / 도시락 케이크 여부는 isLunchBoxCake 에 입력해주세요.")
     @GetMapping("/search")
-    public ResponseEntity<ResponseTemplate<Object>> searchStore(
+    public ResponseEntity<ResponseTemplate<SearchStoreResponseList>> searchStore(
             @AuthenticationPrincipal Long userId,
             @RequestParam(defaultValue = "0") Long page,
             @RequestParam(defaultValue = "6") Long count,
