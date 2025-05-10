@@ -14,37 +14,40 @@ public record StoreDetailResponse(
         Boolean isSameDayOrder,
         Boolean is24hSelfService,
         Boolean isLunchBoxCake,
-        List<BusinessHourResponse>businessHours,
-        List<PickUpHourResponse>pickUpHours,
+        Boolean isBookmarkedInEvent,
+        List<BusinessHourResponse> businessHours,
+        List<PickUpHourResponse> pickUpHours,
         String ownerName,
         Long likeCount,
         String businessNumber,
-        List<String>sizeNameList
+        List<String> sizeNameList
 ) {
-    public static StoreDetailResponse from(
+    public static StoreDetailResponse of(
             Store store,
             boolean is24hSelfService,
             boolean isLunchBoxCake,
+            boolean isBookmarkedInEvent,
             List<BusinessHourResponse> businessHours,
             List<PickUpHourResponse> pickupHours,
             Long likeCount,
             List<String> sizeNameList
     ) {
-        return new StoreDetailResponse(
-                store.getId(),
-                store.getName(),
-                store.getDescription(),
-                store.getImageUrl(),
-                store.getAddress(),
-                store.getIsSameDayOrder(),
-                is24hSelfService,
-                isLunchBoxCake,
-                businessHours,
-                pickupHours,
-                store.getOwnerName(),
-                likeCount,
-                store.getBusinessNumber(),
-                sizeNameList
-        );
+        return StoreDetailResponse.builder()
+                .storeId(store.getId())
+                .storeName(store.getName())
+                .storeDescription(store.getDescription())
+                .storeImageUrl(store.getImageUrl())
+                .storeAddress(store.getAddress())
+                .isSameDayOrder(store.getIsSameDayOrder())
+                .is24hSelfService(is24hSelfService)
+                .isLunchBoxCake(isLunchBoxCake)
+                .isBookmarkedInEvent(isBookmarkedInEvent)
+                .businessHours(businessHours)
+                .pickUpHours(pickupHours)
+                .ownerName(store.getOwnerName())
+                .likeCount(likeCount)
+                .businessNumber(store.getBusinessNumber())
+                .sizeNameList(sizeNameList)
+                .build();
     }
 }
