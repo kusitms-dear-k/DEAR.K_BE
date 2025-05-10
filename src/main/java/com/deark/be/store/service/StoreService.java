@@ -44,7 +44,8 @@ public class StoreService {
     private final EventStoreRepository eventStoreRepository;
 
     @Transactional
-    public Long registerStore(StoreRegisterRequest request, Long userId, MultipartFile businessLicenseFile, MultipartFile businessPermitFile) {
+    public Long registerStore(StoreRegisterRequest request, Long userId, MultipartFile businessLicenseFile,
+                              MultipartFile businessPermitFile) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserException(USER_NOT_FOUND));
         String businessLicenseUrl = s3Service.uploadFile(businessLicenseFile);
@@ -64,18 +65,20 @@ public class StoreService {
     }
 
     public SearchStoreResponseList getStoreList(Long userId, Long page, Long count, SortType sortType,
-                                                 String keyword, Boolean isSameDayOrder, List<String> locationList,
-                                                 LocalDate startDate, LocalDate endDate, Long minPrice, Long maxPrice, Boolean isLunchBoxCake) {
+                                                String keyword, Boolean isSameDayOrder, List<String> locationList,
+                                                LocalDate startDate, LocalDate endDate, Long minPrice, Long maxPrice,
+                                                Boolean isLunchBoxCake) {
 
         SearchStorePagedResult allSearchResult = storeRepository.findAllStoreByCriteria(userId, page, count, sortType,
                 keyword, isSameDayOrder, locationList, startDate, endDate, minPrice, maxPrice, isLunchBoxCake);
 
-        return SearchStoreResponseList.of(allSearchResult.totalCount(), page, allSearchResult.hasNext(), allSearchResult.storeList());
+        return SearchStoreResponseList.of(allSearchResult.totalCount(), page, allSearchResult.hasNext(),
+                allSearchResult.storeList());
     }
 
-    public StoreDetailResponse getstoreDetail(Long storeId) {
-        List <String> sizeNameList=sizeRepository.findSizeNamesByStoreId(storeId);
-        Long likeCount=eventStoreRepository.countByStoreId(storeId);
+    public StoreDetailResponse getStoreDetail(Long storeId, Long userId) {
+        List<String> sizeNameList = sizeRepository.findSizeNamesByStoreId(storeId);
+        Long likeCount = eventStoreRepository.countByStoreId(storeId);
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new StoreException(STORE_NOT_FOUND));
 
@@ -84,21 +87,20 @@ public class StoreService {
                         .anyMatch(BusinessHours::getIsOpen24Hours);
 
         boolean isLunchBoxCake = sizeRepository.existsByStoreIdAndNameContaining(storeId, "도시락");
-
-        List<PickUpHourResponse> pickupHours  = store.getBusinessHoursList().stream()
+        boolean isBookmarkedInEvent = eventStoreRepository.existsByEventUserIdAndStoreId(userId, storeId);
+        List<PickUpHourResponse> pickupHours = store.getBusinessHoursList().stream()
                 .map(PickUpHourResponse::from)
                 .toList();
 
-        List<BusinessHourResponse> businessHours=pickupHours.stream()
-                .map(p->new BusinessHourResponse(p.dayName(),p.startTime(),p.endTime()))
+        List<BusinessHourResponse> businessHours = pickupHours.stream()
+                .map(p -> new BusinessHourResponse(p.dayName(), p.startTime(), p.endTime()))
                 .toList();
 
-
-
-        return  StoreDetailResponse.from(
+        return StoreDetailResponse.of(
                 store,
                 is24hSelfService,
                 isLunchBoxCake,
+                isBookmarkedInEvent,
                 businessHours,
                 pickupHours,
                 likeCount,
