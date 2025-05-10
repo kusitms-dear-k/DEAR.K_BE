@@ -92,9 +92,10 @@ public class Store extends BaseTimeEntity {
     @Builder
     public Store(User user, String name, String description, String phone, String address,
                  String businessNumber, LocalDate establishDate, String imageUrl,
-                 Long averageResponseTime, String chattingUrl,  Boolean isSameDayOrder,
+                 Long averageResponseTime, String chattingUrl, Boolean isSameDayOrder,
                  String settlementAccount, String businessLicenseUrl, String businessPermitUrl, String ownerName,
-                 String orderLink, Integer maxDailyOrders, Boolean isSelfService, List<BusinessHours> businessHoursList, List<Size> sizeList, List<Design> designList) {
+                 String orderLink, Integer maxDailyOrders, Boolean isSelfService, List<BusinessHours> businessHoursList,
+                 List<Size> sizeList, List<Design> designList) {
         this.user = user;
         this.name = name;
         this.description = description;
@@ -112,7 +113,7 @@ public class Store extends BaseTimeEntity {
         this.ownerName = ownerName;
         this.orderLink = orderLink;
         this.maxDailyOrders = maxDailyOrders;
-        this.isSelfService=isSelfService;
+        this.isSelfService = isSelfService;
         this.businessHoursList = businessHoursList;
         this.sizeList = sizeList;
         this.designList = designList;
