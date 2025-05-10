@@ -45,7 +45,7 @@ public class EventController {
 
     @GetMapping("/my_events")
     @Operation(summary = "내 이벤트 전체목록 조회", description = "로그인한 사용자가 생성한 이벤트 전체목록을 조회합니다.")
-    public ResponseEntity<ResponseTemplate<Object>> getMyEvents(
+    public ResponseEntity<ResponseTemplate<List<EventResponse>>> getMyEvents(
             @AuthenticationPrincipal Long userId
     ) {
         List<EventResponse> events = eventService.getMyEvents(userId);
@@ -54,7 +54,7 @@ public class EventController {
 
     @GetMapping("/{eventId}")
     @Operation(summary = "이벤트 상세 조회", description = "이벤트 ID로 해당 이벤트의 상세 정보(제목, 날짜, 주소)를 조회합니다.")
-    public ResponseEntity<ResponseTemplate<Object>> getEventDetail(
+    public ResponseEntity<ResponseTemplate<EventResponse>> getEventDetail(
             @PathVariable Long eventId,
             @AuthenticationPrincipal Long userId
     ) {
@@ -64,7 +64,7 @@ public class EventController {
 
     @GetMapping("/my_events/with-check/design")
     @Operation(summary = "디자인 포함 여부와 함께 내 이벤트 목록 조회", description = "디자인이 포함되어 있는 이벤트를 표시합니다.")
-    public ResponseEntity<ResponseTemplate<Object>> getMyEventsWithCheckForDesign(
+    public ResponseEntity<ResponseTemplate<List<EventWithCheckResponse>>> getMyEventsWithCheckForDesign(
             @AuthenticationPrincipal Long userId,
             @RequestParam Long designId
     ) {
@@ -74,7 +74,7 @@ public class EventController {
 
     @GetMapping("/my_events/with-check/store")
     @Operation(summary = "스토어 포함 여부와 함께 내 이벤트 목록 조회", description = "스토어가 포함되어 있는 이벤트를 표시합니다.")
-    public ResponseEntity<ResponseTemplate<Object>> getMyEventsWithCheckForStore(
+    public ResponseEntity<ResponseTemplate<List<EventWithCheckResponse>>> getMyEventsWithCheckForStore(
             @AuthenticationPrincipal Long userId,
             @RequestParam Long storeId
     ) {
@@ -84,7 +84,7 @@ public class EventController {
 
     @PostMapping("")
     @Operation(summary = "새 이벤트 생성", description = "새로운 이벤트를 생성합니다.")
-    public ResponseEntity<ResponseTemplate<Object>> createEvent(
+    public ResponseEntity<ResponseTemplate<Long>> createEvent(
             @Valid @RequestBody EventCreateRequest request,
             @AuthenticationPrincipal Long userId
     ){
@@ -116,7 +116,7 @@ public class EventController {
 
     @GetMapping("/{eventId}/designs")
     @Operation(summary = "이벤트 내 디자인 목록 조회", description = "특정 이벤트에 포함된 모든 디자인 목록을 조회합니다.")
-    public ResponseEntity<ResponseTemplate<Object>> getDesignsInEvent(
+    public ResponseEntity<ResponseTemplate<List<DesignInEventResponse>>> getDesignsInEvent(
             @PathVariable Long eventId,
             @AuthenticationPrincipal Long userId
     ) {
@@ -126,7 +126,7 @@ public class EventController {
 
     @GetMapping("/{eventId}/stores")
     @Operation(summary = "이벤트 내 스토어 목록 조회", description = "특정 이벤트에 포함된 모든 스토어 목록을 조회합니다.")
-    public ResponseEntity<ResponseTemplate<Object>> getStoresInEvent(
+    public ResponseEntity<ResponseTemplate<List<StoreInEventResponse>>> getStoresInEvent(
             @PathVariable Long eventId,
             @AuthenticationPrincipal Long userId
     ) {

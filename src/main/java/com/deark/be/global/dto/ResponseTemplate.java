@@ -12,15 +12,15 @@ public record ResponseTemplate<T>(
         String message,
         T results
 ) {
-    public static final ResponseTemplate<Object> EMPTY_RESPONSE = ResponseTemplate.builder()
+    public static final ResponseTemplate<Object> EMPTY_RESPONSE = ResponseTemplate.<Object>builder()
             .isSuccess(true)
             .code("REQUEST_OK")
             .message("요청이 승인되었습니다.")
-            .results(Collections.EMPTY_MAP)
+            .results(Collections.emptyList())
             .build();
 
-    public static <T> ResponseTemplate<Object> from(T dto) {
-        return ResponseTemplate.builder()
+    public static <T> ResponseTemplate<T> from(T dto) {
+        return ResponseTemplate.<T>builder()
                 .isSuccess(true)
                 .code("REQUEST_OK")
                 .message("요청이 승인되었습니다.")
@@ -28,12 +28,12 @@ public record ResponseTemplate<T>(
                 .build();
     }
 
-    public static <T> ResponseTemplate<Object> from(ErrorCode errorCode) {
-        return ResponseTemplate.builder()
+    public static <T> ResponseTemplate<T> from(ErrorCode errorCode) {
+        return ResponseTemplate.<T>builder()
                 .isSuccess(false)
                 .code(errorCode.getCode())
                 .message(errorCode.getMessage())
-                .results(Collections.EMPTY_MAP)
+                .results(null)
                 .build();
     }
 }

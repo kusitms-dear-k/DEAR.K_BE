@@ -30,7 +30,7 @@ public class DesignController {
             "시작일 : '2025-01-01' 형식으로 startDate / 종료일 : '2025-01-01' 형식으로 endDate (하루만 선택할 경우 시작일과 종료일을 같게 입력해주세요.) <br>" +
             "최소 금액 : minPrice / 최대 금액 : maxPrice / 도시락 케이크 여부는 isLunchBoxCake 에 입력해주세요.")
     @GetMapping("/search")
-    public ResponseEntity<ResponseTemplate<Object>> searchDesign(
+    public ResponseEntity<ResponseTemplate<SearchDesignResponseList>> searchDesign(
             @AuthenticationPrincipal Long userId,
             @RequestParam(defaultValue = "0") Long page,
             @RequestParam(defaultValue = "6") Long count,
@@ -55,7 +55,7 @@ public class DesignController {
 
     @Operation(summary = "디자인 추천 리스트", description = "통합 검색 결과가 없을 때 디자인을 인기순으로 추천합니다.")
     @GetMapping("/recommend")
-    public ResponseEntity<ResponseTemplate<Object>> recommendDesign(
+    public ResponseEntity<ResponseTemplate<RecommendDesignResponseList>> recommendDesign(
             @AuthenticationPrincipal Long userId,
             @RequestParam(defaultValue = "4") Long count) {
 
@@ -70,7 +70,7 @@ public class DesignController {
             "가게의 전체 디자인을 조회할 경우 sizeName을 입력하지 않아도 됩니다. <br>" +
             "사이즈 별 디자인을 조회할 경우 sizeName은 가게 정보 조회에서 받아온 가게 별 사이즈를 입력해주세요.")
     @GetMapping("/store/{storeId}")
-    public ResponseEntity<ResponseTemplate<Object>> getDesignDetail(
+    public ResponseEntity<ResponseTemplate<StoreDesignResponseList>> getDesignDetail(
             @AuthenticationPrincipal Long userId,
             @RequestParam(defaultValue = "0") Long page,
             @RequestParam(defaultValue = "2") Long count,
@@ -86,7 +86,7 @@ public class DesignController {
 
     @Operation(summary = "디자인 상세 조회", description = "디자인 상세 정보를 조회합니다.")
     @GetMapping("/detail/{designId}")
-    public ResponseEntity<ResponseTemplate<Object>> getDesignDetail(
+    public ResponseEntity<ResponseTemplate<DesignDetailResponse>> getDesignDetail(
             @AuthenticationPrincipal Long userId,
             @PathVariable Long designId) {
 
