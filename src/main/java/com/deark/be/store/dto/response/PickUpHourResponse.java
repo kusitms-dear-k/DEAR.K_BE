@@ -2,7 +2,9 @@ package com.deark.be.store.dto.response;
 
 import com.deark.be.store.domain.BusinessHours;
 import java.time.format.DateTimeFormatter;
+import lombok.Builder;
 
+@Builder
 public record PickUpHourResponse(
         String dayName,
         String startTime,
@@ -10,10 +12,10 @@ public record PickUpHourResponse(
 ) {
     public static PickUpHourResponse from(BusinessHours businessHours) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        return new PickUpHourResponse(
-                businessHours.getBusinessDay().getDayName(),
-                businessHours.getOpenTime().format(formatter),
-                businessHours.getCloseTime().format(formatter)
-        );
+        return PickUpHourResponse.builder()
+                .dayName(businessHours.getBusinessDay().getDayName())
+                .startTime(businessHours.getOpenTime().format(formatter))
+                .endTime(businessHours.getCloseTime().format(formatter))
+                .build();
     }
 }
