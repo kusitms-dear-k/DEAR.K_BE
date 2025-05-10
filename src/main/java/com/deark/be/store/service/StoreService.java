@@ -1,12 +1,18 @@
 package com.deark.be.store.service;
 
+import com.deark.be.design.repository.SizeRepository;
+import com.deark.be.event.repository.EventStoreRepository;
 import com.deark.be.global.service.S3Service;
+import com.deark.be.store.domain.BusinessHours;
 import com.deark.be.store.domain.Store;
 import com.deark.be.store.domain.type.SortType;
 import com.deark.be.store.dto.request.StoreBasicInfoRequest;
 import com.deark.be.store.dto.request.StoreRegisterRequest;
+import com.deark.be.store.dto.response.BusinessHourResponse;
+import com.deark.be.store.dto.response.PickUpHourResponse;
 import com.deark.be.store.dto.response.SearchStorePagedResult;
 import com.deark.be.store.dto.response.SearchStoreResponseList;
+import com.deark.be.store.dto.response.StoreDetailResponse;
 import com.deark.be.store.exception.StoreException;
 import com.deark.be.store.repository.StoreRepository;
 import com.deark.be.user.domain.User;
@@ -33,10 +39,13 @@ public class StoreService {
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
     private final BusinessHoursService businessHoursService;
+    private final SizeRepository sizeRepository;
     private final S3Service s3Service;
+    private final EventStoreRepository eventStoreRepository;
 
     @Transactional
-    public Long registerStore(StoreRegisterRequest request, Long userId, MultipartFile businessLicenseFile, MultipartFile businessPermitFile) {
+    public Long registerStore(StoreRegisterRequest request, Long userId, MultipartFile businessLicenseFile,
+                              MultipartFile businessPermitFile) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserException(USER_NOT_FOUND));
         String businessLicenseUrl = s3Service.uploadFile(businessLicenseFile);
@@ -56,12 +65,46 @@ public class StoreService {
     }
 
     public SearchStoreResponseList getStoreList(Long userId, Long page, Long count, SortType sortType,
-                                                 String keyword, Boolean isSameDayOrder, List<String> locationList,
-                                                 LocalDate startDate, LocalDate endDate, Long minPrice, Long maxPrice, Boolean isLunchBoxCake) {
+                                                String keyword, Boolean isSameDayOrder, List<String> locationList,
+                                                LocalDate startDate, LocalDate endDate, Long minPrice, Long maxPrice,
+                                                Boolean isLunchBoxCake) {
 
         SearchStorePagedResult allSearchResult = storeRepository.findAllStoreByCriteria(userId, page, count, sortType,
                 keyword, isSameDayOrder, locationList, startDate, endDate, minPrice, maxPrice, isLunchBoxCake);
 
-        return SearchStoreResponseList.of(allSearchResult.totalCount(), page, allSearchResult.hasNext(), allSearchResult.storeList());
+        return SearchStoreResponseList.of(allSearchResult.totalCount(), page, allSearchResult.hasNext(),
+                allSearchResult.storeList());
+    }
+
+    public StoreDetailResponse getStoreDetail(Long storeId, Long userId) {
+        List<String> sizeNameList = sizeRepository.findSizeNamesByStoreId(storeId);
+        Long likeCount = eventStoreRepository.countByStoreId(storeId);
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new StoreException(STORE_NOT_FOUND));
+
+        boolean is24hSelfService = Boolean.TRUE.equals(store.getIsSelfService()) &&
+                store.getBusinessHoursList().stream()
+                        .anyMatch(BusinessHours::getIsOpen24Hours);
+
+        boolean isLunchBoxCake = sizeRepository.existsByStoreIdAndNameContaining(storeId, "도시락");
+        boolean isBookmarkedInEvent = eventStoreRepository.existsByEventUserIdAndStoreId(userId, storeId);
+        List<PickUpHourResponse> pickupHours = store.getBusinessHoursList().stream()
+                .map(PickUpHourResponse::from)
+                .toList();
+
+        List<BusinessHourResponse> businessHours = pickupHours.stream()
+                .map(p -> new BusinessHourResponse(p.dayName(), p.startTime(), p.endTime()))
+                .toList();
+
+        return StoreDetailResponse.of(
+                store,
+                is24hSelfService,
+                isLunchBoxCake,
+                isBookmarkedInEvent,
+                businessHours,
+                pickupHours,
+                likeCount,
+                sizeNameList
+        );
     }
 }

@@ -51,7 +51,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .businessNumber("123-45-67890")
                     .establishDate(LocalDate.of(2020, 1, 1))
                     .imageUrl(storeImageUrl + "/blueberry.jpg")
-                    .isUnmanned(false)
+                    .isSelfService(false)
                     .isSameDayOrder(true)
                     .build();
 
@@ -64,7 +64,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .businessNumber("234-56-78901")
                     .establishDate(LocalDate.of(2021, 7, 2))
                     .imageUrl(storeImageUrl + "/birthday.jpg")
-                    .isUnmanned(false)
+                    .isSelfService(false)
                     .isSameDayOrder(false)
                     .build();
 
@@ -77,7 +77,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .businessNumber("345-67-89012")
                     .establishDate(LocalDate.of(2019, 5, 15))
                     .imageUrl(storeImageUrl + "/yellow.jpg")
-                    .isUnmanned(false)
+                    .isSelfService(false)
                     .isSameDayOrder(false)
                     .build();
 
@@ -90,7 +90,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .businessNumber("456-78-90123")
                     .establishDate(LocalDate.of(2023, 3, 10))
                     .imageUrl(storeImageUrl + "/star.jpg")
-                    .isUnmanned(false)
+                    .isSelfService(false)
                     .isSameDayOrder(true)
                     .build();
 
@@ -103,7 +103,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .businessNumber("567-89-01234")
                     .establishDate(LocalDate.of(2024, 8, 20))
                     .imageUrl(storeImageUrl + "/ribbon.jpg")
-                    .isUnmanned(false)
+                    .isSelfService(false)
                     .isSameDayOrder(false)
                     .build();
 
@@ -116,7 +116,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .businessNumber("678-90-12345")
                     .establishDate(LocalDate.of(2016, 12, 25))
                     .imageUrl(storeImageUrl + "/loopy.png")
-                    .isUnmanned(false)
+                    .isSelfService(false)
                     .isSameDayOrder(true)
                     .build();
 
@@ -129,7 +129,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .businessNumber("789-01-23456")
                     .establishDate(LocalDate.of(2019, 11, 30))
                     .imageUrl(storeImageUrl + "/blackpink.png")
-                    .isUnmanned(false)
+                    .isSelfService(false)
                     .isSameDayOrder(false)
                     .build();
 
@@ -142,7 +142,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .businessNumber("791-02-34567")
                     .establishDate(LocalDate.of(2020, 4, 5))
                     .imageUrl(storeImageUrl + "/whiteblack.png")
-                    .isUnmanned(false)
+                    .isSelfService(false)
                     .isSameDayOrder(true)
                     .build();
 
@@ -155,7 +155,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .businessNumber("792-03-45678")
                     .establishDate(LocalDate.of(2021, 2, 14))
                     .imageUrl(storeImageUrl + "/muffin.png")
-                    .isUnmanned(false)
+                    .isSelfService(false)
                     .isSameDayOrder(false)
                     .build();
 
@@ -168,7 +168,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .businessNumber("793-04-56789")
                     .establishDate(LocalDate.of(2022, 9, 9))
                     .imageUrl(storeImageUrl + "/pink.png")
-                    .isUnmanned(false)
+                    .isSelfService(false)
                     .isSameDayOrder(true)
                     .build();
 
