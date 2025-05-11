@@ -132,7 +132,7 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
                                         store.imageUrl,
                                         store.address,
                                         store.isSameDayOrder,
-                                        store.isUnmanned,
+                                        store.isSelfService,
                                         hasLunchBoxCakeSizeExpr,
                                         isLikedExpr,
                                         numberTemplate(

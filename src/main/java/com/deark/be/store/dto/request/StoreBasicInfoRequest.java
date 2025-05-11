@@ -29,7 +29,7 @@ public record StoreBasicInfoRequest(
         @NotBlank String chattingUrl,
 
         @Schema(description = "무인 운영 여부", example = "false")
-        @NotNull Boolean isUnmanned,
+        @NotNull Boolean isSelfService,
 
         @Schema(description = "주문 링크", example = "https://order.example.com")
         @NotBlank String orderLink,
@@ -42,6 +42,6 @@ public record StoreBasicInfoRequest(
 
 ) {
         public void updateBasicInfo(Store store) {
-                store.updateBasicInfo(name,phone,description,address,imageUrl,chattingUrl,isUnmanned,orderLink,maxDailyOrders);
+                store.updateBasicInfo(name,phone,description,address,imageUrl,chattingUrl,isSelfService,orderLink,maxDailyOrders);
         }
 }
