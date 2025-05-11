@@ -1,0 +1,106 @@
+package com.deark.be.order.repository.init;
+
+import com.deark.be.global.util.DummyDataInit;
+import com.deark.be.order.domain.Message;
+import com.deark.be.order.repository.MessageRepository;
+import com.deark.be.store.domain.Store;
+import com.deark.be.store.repository.StoreRepository;
+import com.deark.be.user.domain.User;
+import com.deark.be.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.deark.be.order.domain.type.Status.*;
+
+@Slf4j
+@RequiredArgsConstructor
+@Order(3)
+@DummyDataInit
+public class MessageInitializer implements ApplicationRunner {
+
+    private final MessageRepository messageRepository;
+    private final UserRepository userRepository;
+    private final StoreRepository storeRepository;
+
+    @Override
+    public void run(ApplicationArguments args) {
+        if (messageRepository.count() > 0) {
+            log.info("[Message] 더미 데이터 존재");
+        } else {
+            User USER1 = userRepository.findById(1L).orElseThrow();
+            User USER2 = userRepository.findById(2L).orElseThrow();
+            User USER3 = userRepository.findById(3L).orElseThrow();
+
+            Store STORE1 = storeRepository.findById(1L).orElseThrow();
+            Store STORE2 = storeRepository.findById(2L).orElseThrow();
+            Store STORE3 = storeRepository.findById(3L).orElseThrow();
+
+            List<Message> messageList = new ArrayList<>();
+
+            Message DUMMY_MESSAGE1 = Message.builder()
+                    .user(USER1)
+                    .store(STORE1)
+                    .status(PENDING)
+                    .build();
+
+            Message DUMMY_MESSAGE2 = Message.builder()
+                    .user(USER1)
+                    .store(STORE1)
+                    .status(ACCEPTED)
+                    .build();
+
+            Message DUMMY_MESSAGE3 = Message.builder()
+                    .user(USER1)
+                    .store(STORE1)
+                    .status(REJECTED)
+                    .build();
+
+            Message DUMMY_MESSAGE4 = Message.builder()
+                    .user(USER2)
+                    .store(STORE2)
+                    .status(PENDING)
+                    .build();
+
+            Message DUMMY_MESSAGE5 = Message.builder()
+                    .user(USER2)
+                    .store(STORE2)
+                    .status(ACCEPTED)
+                    .build();
+
+            Message DUMMY_MESSAGE6 = Message.builder()
+                    .user(USER2)
+                    .store(STORE2)
+                    .status(REJECTED)
+                    .build();
+
+            Message DUMMY_MESSAGE7 = Message.builder()
+                    .user(USER3)
+                    .store(STORE3)
+                    .status(PENDING)
+                    .build();
+
+            Message DUMMY_MESSAGE8 = Message.builder()
+                    .user(USER3)
+                    .store(STORE3)
+                    .status(ACCEPTED)
+                    .build();
+
+            messageList.add(DUMMY_MESSAGE1);
+            messageList.add(DUMMY_MESSAGE2);
+            messageList.add(DUMMY_MESSAGE3);
+            messageList.add(DUMMY_MESSAGE4);
+            messageList.add(DUMMY_MESSAGE5);
+            messageList.add(DUMMY_MESSAGE6);
+            messageList.add(DUMMY_MESSAGE7);
+            messageList.add(DUMMY_MESSAGE8);
+
+            messageRepository.saveAll(messageList);
+        }
+    }
+}
