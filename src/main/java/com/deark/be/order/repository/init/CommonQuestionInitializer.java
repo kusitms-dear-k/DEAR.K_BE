@@ -33,7 +33,56 @@ public class CommonQuestionInitializer implements ApplicationRunner {
                     .isRequired(true)
                     .build();
 
+            CommonQuestion COMMON_QUESTION2 = CommonQuestion.builder()
+                    .title("전화번호")
+                    .hint("전화번호를 입력해주세요.")
+                    .isRequired(true)
+                    .build();
+
+            CommonQuestion COMMON_QUESTION3 = CommonQuestion.builder()
+                    .title("일정")
+                    .hint("픽업 일자 및 시간을 선택해주세요.")
+                    .isRequired(true)
+                    .build();
+
+            CommonQuestion COMMON_QUESTION4 = CommonQuestion.builder()
+                    .title("크기")
+                    .hint("케이크 크기를 선택해주세요.")
+                    .isRequired(true)
+                    .build();
+
+            CommonQuestion COMMON_QUESTION5 = CommonQuestion.builder()
+                    .title("크림")
+                    .hint("크림 맛을 선택해주세요.")
+                    .isRequired(true)
+                    .build();
+
+            CommonQuestion COMMON_QUESTION6 = CommonQuestion.builder()
+                    .title("시트")
+                    .hint("시트 맛을 선택해주세요.")
+                    .isRequired(true)
+                    .build();
+
+            CommonQuestion COMMON_QUESTION7 = CommonQuestion.builder()
+                    .title("디자인")
+                    .hint("원하는 케이크 디자인을 보여주세요.")
+                    .isRequired(false)
+                    .build();
+
+            CommonQuestion COMMON_QUESTION8 = CommonQuestion.builder()
+                    .title("요청사항")
+                    .hint("텍스트 요청사항을 설명해주세요.")
+                    .isRequired(false)
+                    .build();
+
             commonQuestionList.add(COMMON_QUESTION1);
+            commonQuestionList.add(COMMON_QUESTION2);
+            commonQuestionList.add(COMMON_QUESTION3);
+            commonQuestionList.add(COMMON_QUESTION4);
+            commonQuestionList.add(COMMON_QUESTION5);
+            commonQuestionList.add(COMMON_QUESTION6);
+            commonQuestionList.add(COMMON_QUESTION7);
+            commonQuestionList.add(COMMON_QUESTION8);
 
             commonQuestionRepository.saveAll(commonQuestionList);
         }
