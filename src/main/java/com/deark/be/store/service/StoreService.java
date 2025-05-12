@@ -67,10 +67,10 @@ public class StoreService {
     public SearchStoreResponseList getStoreList(Long userId, Long page, Long count, SortType sortType,
                                                 String keyword, Boolean isSameDayOrder, List<String> locationList,
                                                 LocalDate startDate, LocalDate endDate, Long minPrice, Long maxPrice,
-                                                Boolean isLunchBoxCake) {
+                                                Boolean isSelfService, Boolean isLunchBoxCake) {
 
         SearchStorePagedResult allSearchResult = storeRepository.findAllStoreByCriteria(userId, page, count, sortType,
-                keyword, isSameDayOrder, locationList, startDate, endDate, minPrice, maxPrice, isLunchBoxCake);
+                keyword, isSameDayOrder, locationList, startDate, endDate, minPrice, maxPrice, isSelfService, isLunchBoxCake);
 
         return SearchStoreResponseList.of(allSearchResult.totalCount(), page, allSearchResult.hasNext(),
                 allSearchResult.storeList());

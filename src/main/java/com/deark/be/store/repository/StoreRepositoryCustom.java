@@ -10,5 +10,6 @@ public interface StoreRepositoryCustom {
     SearchStorePagedResult findAllStoreByCriteria(
             Long userId, Long page, Long count, SortType sortType,
             String keyword, Boolean isSameDayOrder, List<String> locationList,
-            LocalDate startDate, LocalDate endDate, Long minPrice, Long maxPrice, Boolean isLunchBoxCake);
+            LocalDate startDate, LocalDate endDate, Long minPrice, Long maxPrice,
+            Boolean isSelfService, Boolean isLunchBoxCake);
 }

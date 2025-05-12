@@ -27,14 +27,14 @@ public class DesignService {
 
      private final DesignRepository designRepository;
      private final EventDesignRepository eventDesignRepository;
-     private final SizeRepository sizeRepository;
 
      public SearchDesignResponseList getDesignList(Long userId, Long page, Long count, SortType sortType,
                                                    String keyword, Boolean isSameDayOrder, List<String> locationList,
-                                                   LocalDate startDate, LocalDate endDate, Long minPrice, Long maxPrice, Boolean isLunchBoxCake) {
+                                                   LocalDate startDate, LocalDate endDate, Long minPrice, Long maxPrice,
+                                                   Boolean isSelfService, Boolean isLunchBoxCake) {
 
         SearchDesignPagedResult allSearchResult = designRepository.findAllDesignByCriteria(userId, page, count, sortType,
-                keyword, isSameDayOrder, locationList, startDate, endDate, minPrice, maxPrice, isLunchBoxCake);
+                keyword, isSameDayOrder, locationList, startDate, endDate, minPrice, maxPrice, isSelfService, isLunchBoxCake);
 
         boolean hasNext = allSearchResult.designList().size() == count + 1;
 
