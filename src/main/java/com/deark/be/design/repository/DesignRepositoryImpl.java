@@ -42,7 +42,8 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
     public SearchDesignPagedResult findAllDesignByCriteria(
             Long userId, Long page, Long count, SortType sortType,
             String keyword, Boolean isSameDayOrder, List<String> locationList,
-            LocalDate startDate, LocalDate endDate, Long minPrice, Long maxPrice, Boolean isLunchBoxCake) {
+            LocalDate startDate, LocalDate endDate, Long minPrice, Long maxPrice,
+            Boolean isSelfService, Boolean isLunchBoxCake) {
 
         // --- 1) 공통 표현식들 ---
         BooleanExpression keywordExpr  = keywordSearchExpression(keyword);
@@ -56,6 +57,10 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                         : Collections.emptyList();
         BooleanExpression businessDayExpr = (!businessDays.isEmpty())
                 ? businessHours.businessDay.in(businessDays)
+                : null;
+
+        BooleanExpression isSelfServiceExpr = isSelfService != null
+                ? store.isSelfService.eq(isSelfService)
                 : null;
 
         BooleanExpression hasLunchBoxCakeSizeExpr = JPAExpressions
@@ -100,6 +105,7 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                         locationExpr,
                         priceExpr,
                         businessDayExpr,
+                        isSelfServiceExpr,
                         Boolean.TRUE.equals(isLunchBoxCake)
                                 ? hasLunchBoxCakeSizeExpr
                                 : null
@@ -135,6 +141,7 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                         locationExpr,
                         priceExpr,
                         businessDayExpr,
+                        isSelfServiceExpr,
                         Boolean.TRUE.equals(isLunchBoxCake)
                                 ? hasLunchBoxCakeSizeExpr
                                 : null

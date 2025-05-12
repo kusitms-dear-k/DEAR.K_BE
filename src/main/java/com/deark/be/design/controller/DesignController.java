@@ -28,7 +28,7 @@ public class DesignController {
     @Operation(summary = "디자인 통합 검색", description = "page는 0부터 시작합니다. hasNext가 false이면 마지막 페이지입니다.<br><br>" +
             "입력받은 값 : keyword / 당일 주문 여부 : isSameDayOrder / 지역 리스트 : locationList (ex. 강남구, 중랑구) <br>" +
             "시작일 : '2025-01-01' 형식으로 startDate / 종료일 : '2025-01-01' 형식으로 endDate (하루만 선택할 경우 시작일과 종료일을 같게 입력해주세요.) <br>" +
-            "최소 금액 : minPrice / 최대 금액 : maxPrice / 도시락 케이크 여부는 isLunchBoxCake 에 입력해주세요.")
+            "최소 금액 : minPrice / 최대 금액 : maxPrice / 24시 무인 가게 여부 : isSelfService / 도시락 케이크 여부는 isLunchBoxCake 에 입력해주세요.")
     @GetMapping("/search")
     public ResponseEntity<ResponseTemplate<SearchDesignResponseList>> searchDesign(
             @AuthenticationPrincipal Long userId,
@@ -42,11 +42,12 @@ public class DesignController {
             @RequestParam(required = false) LocalDate endDate,
             @RequestParam(required = false) Long minPrice,
             @RequestParam(required = false) Long maxPrice,
+            @RequestParam(required = false) Boolean isSelfService,
             @RequestParam(required = false) Boolean isLunchBoxCake) {
 
         SearchDesignResponseList designList = designService.getDesignList(
                 userId, page, count, sortType,
-                keyword, isSameDayOrder, locationList, startDate, endDate, minPrice, maxPrice, isLunchBoxCake);
+                keyword, isSameDayOrder, locationList, startDate, endDate, minPrice, maxPrice, isSelfService, isLunchBoxCake);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
