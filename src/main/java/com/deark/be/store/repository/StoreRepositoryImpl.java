@@ -42,7 +42,7 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
             Long userId, Long page, Long count, SortType sortType,
             String keyword, Boolean isSameDayOrder, List<String> locationList,
             LocalDate startDate, LocalDate endDate,
-            Long minPrice, Long maxPrice, Boolean isLunchBoxCake) {
+            Long minPrice, Long maxPrice, Boolean isSelfService, Boolean isLunchBoxCake) {
 
         BooleanExpression keywordExpr  = keywordSearchExpression(keyword);
         BooleanExpression sameDayExpr  = isSameDayOrder != null
@@ -56,6 +56,10 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
                 : Collections.emptyList();
         BooleanExpression businessDayExpr = !businessDays.isEmpty()
                 ? businessHours.businessDay.in(businessDays)
+                : null;
+
+        BooleanExpression isSelfServiceExpr = isSelfService != null
+                ? store.isSelfService.eq(isSelfService)
                 : null;
 
         BooleanExpression hasLunchBoxCakeSizeExpr = JPAExpressions
@@ -84,6 +88,7 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
                 locationExpr,
                 priceExpr,
                 businessDayExpr,
+                isSelfServiceExpr,
                 Boolean.TRUE.equals(isLunchBoxCake)
                         ? hasLunchBoxCakeSizeExpr
                         : null
