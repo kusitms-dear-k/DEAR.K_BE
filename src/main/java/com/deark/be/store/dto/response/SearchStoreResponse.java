@@ -18,7 +18,7 @@ public record SearchStoreResponse(
         @Schema(description = "당일 주문 가능 여부", example = "true")
         Boolean isSameDayOrder,
         @Schema(description = "무인 가게 운영 여부", example = "false")
-        Boolean isUnmanned,
+        Boolean isSelfService,
         @Schema(description = "도시락 케이크 가능 여부", example = "true")
         Boolean isLunchBoxCake,
         @Schema(description = "찜하기 여부", example = "false")
