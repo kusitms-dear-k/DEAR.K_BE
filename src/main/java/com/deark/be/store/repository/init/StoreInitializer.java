@@ -64,7 +64,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .businessNumber("234-56-78901")
                     .establishDate(LocalDate.of(2021, 7, 2))
                     .imageUrl(storeImageUrl + "/birthday.jpg")
-                    .isSelfService(false)
+                    .isSelfService(true)
                     .isSameDayOrder(false)
                     .build();
 
@@ -129,7 +129,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .businessNumber("789-01-23456")
                     .establishDate(LocalDate.of(2019, 11, 30))
                     .imageUrl(storeImageUrl + "/blackpink.png")
-                    .isSelfService(false)
+                    .isSelfService(true)
                     .isSameDayOrder(false)
                     .build();
 
@@ -168,7 +168,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .businessNumber("793-04-56789")
                     .establishDate(LocalDate.of(2022, 9, 9))
                     .imageUrl(storeImageUrl + "/pink.png")
-                    .isSelfService(false)
+                    .isSelfService(true)
                     .isSameDayOrder(true)
                     .build();
 
