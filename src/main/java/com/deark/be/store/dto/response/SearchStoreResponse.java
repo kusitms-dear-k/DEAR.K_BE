@@ -11,7 +11,7 @@ public record SearchStoreResponse(
         String storeImageUrl,
         String address,
         Boolean isSameDayOrder,
-        Boolean isUnmanned,
+        Boolean isSelfService,
         Boolean isLunchBoxCake,
         Boolean isLiked,
         Long likeCount,
