@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.Map;
 
 @Builder
-public record MyOrderPendingResponse(
+public record MyOrderStatusResponse(
         @Schema(description = "쪽지 ID", example = "1")
         Long messageId,
         @Schema(description = "요청 날짜", example = "2025-05-01")
@@ -23,10 +23,10 @@ public record MyOrderPendingResponse(
         @Schema(description = "주문서 질문 & 답", example = "{ \"크기\": \"도시락 케이크\", \"픽업 희망 날짜\": \"2025년 6월 20일 금요일\", \"픽업 희망 시간\": \"13시 30분\" }")
         Map<String, String> qaDetails
 ) {
-    public static MyOrderPendingResponse of(Message message, Map<String, String> qaMap) {
+    public static MyOrderStatusResponse of(Message message, Map<String, String> qaMap) {
         Design design = message.getDesign();
 
-        return MyOrderPendingResponse.builder()
+        return MyOrderStatusResponse.builder()
                 .messageId(message.getId())
                 .createdAt(message.getCreatedAt().toLocalDate())
                 .storeName(message.getStore().getName())

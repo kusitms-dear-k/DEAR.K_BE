@@ -3,10 +3,7 @@ package com.deark.be.order.service;
 import com.deark.be.order.domain.Message;
 import com.deark.be.order.domain.QA;
 import com.deark.be.order.domain.type.Status;
-import com.deark.be.order.dto.response.MyOrderCountResponse;
-import com.deark.be.order.dto.response.MyOrderCountResponseList;
-import com.deark.be.order.dto.response.MyOrderPendingResponse;
-import com.deark.be.order.dto.response.MyOrderPendingResponseList;
+import com.deark.be.order.dto.response.*;
 import com.deark.be.order.repository.MessageRepository;
 import com.deark.be.order.repository.QARepository;
 import com.deark.be.user.domain.User;
@@ -21,8 +18,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static com.deark.be.order.domain.type.Status.PENDING;
 
 @Slf4j
 @Service
@@ -47,20 +42,20 @@ public class OrderService {
         return MyOrderCountResponseList.from(result);
     }
 
-    public MyOrderPendingResponseList getAllPendingOrders(Long userId) {
+    public MyOrderStatusResponseList getAllMyOrdersByStatus(Long userId, Status status) {
         User user = userService.findUser(userId);
 
-        List<Message> pendingMessages = messageRepository.findAllByUserAndStatus(user, PENDING);
+        List<Message> pendingMessages = messageRepository.findAllByUserAndStatus(user, status);
 
-        List<MyOrderPendingResponse> responseList =  pendingMessages.stream()
+        List<MyOrderStatusResponse> responseList =  pendingMessages.stream()
                 .map(message -> {
                     List<QA> qaList = qaRepository.findAllByMessage(message);
                     Map<String, String> qaMap = buildOrderedQaMap(qaList);
-                    return MyOrderPendingResponse.of(message, qaMap);
+                    return MyOrderStatusResponse.of(message, qaMap);
                 })
                 .toList();
 
-        return MyOrderPendingResponseList.from(responseList);
+        return MyOrderStatusResponseList.from(responseList);
     }
 
     private static Map<String, String> buildOrderedQaMap(List<QA> qaList) {
