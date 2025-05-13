@@ -34,8 +34,6 @@ public class MessageInitializer implements ApplicationRunner {
             log.info("[Message] 더미 데이터 존재");
         } else {
             User USER1 = userRepository.findById(1L).orElseThrow();
-            User USER2 = userRepository.findById(2L).orElseThrow();
-            User USER3 = userRepository.findById(3L).orElseThrow();
 
             Store STORE1 = storeRepository.findById(1L).orElseThrow();
             Store STORE2 = storeRepository.findById(2L).orElseThrow();
@@ -62,31 +60,31 @@ public class MessageInitializer implements ApplicationRunner {
                     .build();
 
             Message DUMMY_MESSAGE4 = Message.builder()
-                    .user(USER2)
+                    .user(USER1)
                     .store(STORE2)
                     .status(PENDING)
                     .build();
 
             Message DUMMY_MESSAGE5 = Message.builder()
-                    .user(USER2)
+                    .user(USER1)
                     .store(STORE2)
                     .status(ACCEPTED)
                     .build();
 
             Message DUMMY_MESSAGE6 = Message.builder()
-                    .user(USER2)
+                    .user(USER1)
                     .store(STORE2)
                     .status(REJECTED)
                     .build();
 
             Message DUMMY_MESSAGE7 = Message.builder()
-                    .user(USER3)
+                    .user(USER1)
                     .store(STORE3)
                     .status(PENDING)
                     .build();
 
             Message DUMMY_MESSAGE8 = Message.builder()
-                    .user(USER3)
+                    .user(USER1)
                     .store(STORE3)
                     .status(ACCEPTED)
                     .build();
