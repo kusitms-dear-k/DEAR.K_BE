@@ -11,6 +11,7 @@ import com.deark.be.user.domain.User;
 import com.deark.be.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
@@ -18,6 +19,8 @@ import org.springframework.core.annotation.Order;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.deark.be.order.domain.type.DesignType.CUSTOM;
+import static com.deark.be.order.domain.type.DesignType.STORE;
 import static com.deark.be.order.domain.type.Status.*;
 
 @Slf4j
@@ -30,6 +33,9 @@ public class MessageInitializer implements ApplicationRunner {
     private final UserRepository userRepository;
     private final StoreRepository storeRepository;
     private final DesignRepository designRepository;
+
+    @Value("${spring.cloud.aws.s3.url}/design")
+    private String designImageUrl;
 
     @Override
     public void run(ApplicationArguments args) {
@@ -53,6 +59,7 @@ public class MessageInitializer implements ApplicationRunner {
                     .user(USER1)
                     .store(STORE1)
                     .design(DESIGN1)
+                    .designType(STORE)
                     .status(PENDING)
                     .build();
 
@@ -60,6 +67,7 @@ public class MessageInitializer implements ApplicationRunner {
                     .user(USER1)
                     .store(STORE1)
                     .design(DESIGN8)
+                    .designType(STORE)
                     .status(ACCEPTED)
                     .build();
 
@@ -67,6 +75,7 @@ public class MessageInitializer implements ApplicationRunner {
                     .user(USER1)
                     .store(STORE1)
                     .design(DESIGN1)
+                    .designType(STORE)
                     .status(REJECTED)
                     .build();
 
@@ -74,6 +83,7 @@ public class MessageInitializer implements ApplicationRunner {
                     .user(USER1)
                     .store(STORE2)
                     .design(DESIGN2)
+                    .designType(STORE)
                     .status(PENDING)
                     .build();
 
@@ -81,6 +91,7 @@ public class MessageInitializer implements ApplicationRunner {
                     .user(USER1)
                     .store(STORE2)
                     .design(DESIGN2)
+                    .designType(STORE)
                     .status(ACCEPTED)
                     .build();
 
@@ -88,12 +99,15 @@ public class MessageInitializer implements ApplicationRunner {
                     .user(USER1)
                     .store(STORE2)
                     .design(DESIGN2)
+                    .designType(STORE)
                     .status(REJECTED)
                     .build();
 
             Message DUMMY_MESSAGE7 = Message.builder()
                     .user(USER1)
                     .store(STORE3)
+                    .designType(CUSTOM)
+                    .designUrl(designImageUrl + "/bear.png")
                     .status(PENDING)
                     .build();
 
@@ -101,6 +115,7 @@ public class MessageInitializer implements ApplicationRunner {
                     .user(USER1)
                     .store(STORE3)
                     .design(DESIGN3)
+                    .designType(STORE)
                     .status(ACCEPTED)
                     .build();
 

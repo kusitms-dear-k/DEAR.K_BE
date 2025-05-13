@@ -24,9 +24,6 @@ public class QAInitializer implements ApplicationRunner {
     private final QARepository qaRepository;
     private final MessageRepository messageRepository;
 
-    @Value("${spring.cloud.aws.s3.url}/design")
-    private String designImageUrl;
-
     @Override
     public void run(ApplicationArguments args) {
         if (qaRepository.count() > 0) {
@@ -107,12 +104,6 @@ public class QAInitializer implements ApplicationRunner {
                     .message(MESSAGE2)
                     .question("픽업 희망 시간")
                     .answer("15시 00분")
-                    .build();
-
-            QA DUMMY_QA14 = QA.builder()
-                    .message(MESSAGE2)
-                    .question("디자인")
-                    .answer("생일케이크")
                     .build();
 
             QA DUMMY_QA15 = QA.builder()
@@ -211,12 +202,6 @@ public class QAInitializer implements ApplicationRunner {
                     .answer("13시 30분")
                     .build();
 
-            QA DUMMY_QA32 = QA.builder()
-                    .message(MESSAGE7)
-                    .question("디자인")
-                    .answer(designImageUrl + "/bear.png")
-                    .build();
-
             QA DUMMY_QA33 = QA.builder()
                     .message(MESSAGE7)
                     .question("추가 요청사항")
@@ -243,9 +228,9 @@ public class QAInitializer implements ApplicationRunner {
 
             List<QA> qaList = new ArrayList<>(List.of(
                     DUMMY_QA1, DUMMY_QA2, DUMMY_QA3, DUMMY_QA4, DUMMY_QA6, DUMMY_QA7, DUMMY_QA8, DUMMY_QA9,
-                    DUMMY_QA10, DUMMY_QA11, DUMMY_QA12, DUMMY_QA13, DUMMY_QA14, DUMMY_QA15, DUMMY_QA16, DUMMY_QA17, DUMMY_QA18,
+                    DUMMY_QA10, DUMMY_QA11, DUMMY_QA12, DUMMY_QA13, DUMMY_QA15, DUMMY_QA16, DUMMY_QA17, DUMMY_QA18,
                     DUMMY_QA19, DUMMY_QA20, DUMMY_QA21, DUMMY_QA22, DUMMY_QA24, DUMMY_QA25, DUMMY_QA26, DUMMY_QA27,
-                    DUMMY_QA28, DUMMY_QA29, DUMMY_QA30, DUMMY_QA31, DUMMY_QA32, DUMMY_QA33, DUMMY_QA34, DUMMY_QA35, DUMMY_QA36
+                    DUMMY_QA28, DUMMY_QA29, DUMMY_QA30, DUMMY_QA31, DUMMY_QA33, DUMMY_QA34, DUMMY_QA35, DUMMY_QA36
             ));
 
             qaRepository.saveAll(qaList);
