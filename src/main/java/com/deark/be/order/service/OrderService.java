@@ -6,6 +6,7 @@ import com.deark.be.order.domain.type.Status;
 import com.deark.be.order.dto.response.MyOrderCountResponse;
 import com.deark.be.order.dto.response.MyOrderCountResponseList;
 import com.deark.be.order.dto.response.MyOrderPendingResponse;
+import com.deark.be.order.dto.response.MyOrderPendingResponseList;
 import com.deark.be.order.repository.MessageRepository;
 import com.deark.be.order.repository.QARepository;
 import com.deark.be.user.domain.User;
@@ -46,18 +47,20 @@ public class OrderService {
         return MyOrderCountResponseList.from(result);
     }
 
-    public List<MyOrderPendingResponse> getAllPendingOrders(Long userId) {
+    public MyOrderPendingResponseList getAllPendingOrders(Long userId) {
         User user = userService.findUser(userId);
 
         List<Message> pendingMessages = messageRepository.findAllByUserAndStatus(user, PENDING);
 
-        return pendingMessages.stream()
+        List<MyOrderPendingResponse> responseList =  pendingMessages.stream()
                 .map(message -> {
                     List<QA> qaList = qaRepository.findAllByMessage(message);
                     Map<String, String> qaMap = buildOrderedQaMap(qaList);
                     return MyOrderPendingResponse.of(message, qaMap);
                 })
                 .toList();
+
+        return MyOrderPendingResponseList.from(responseList);
     }
 
     private static Map<String, String> buildOrderedQaMap(List<QA> qaList) {

@@ -2,7 +2,7 @@ package com.deark.be.order.controller;
 
 import com.deark.be.global.dto.ResponseTemplate;
 import com.deark.be.order.dto.response.MyOrderCountResponseList;
-import com.deark.be.order.dto.response.MyOrderPendingResponse;
+import com.deark.be.order.dto.response.MyOrderPendingResponseList;
 import com.deark.be.order.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,8 +14,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @Tag(name = "Mypage", description = "마이페이지 관련 API")
 @Slf4j
@@ -40,10 +38,10 @@ public class MypageController {
 
     @Operation(summary = "응답 대기 중인 모든 내 요청서 조회", description = "응답 대기 중인 내 요청서를 조회합니다.")
     @GetMapping("/request/pending")
-    public ResponseEntity<ResponseTemplate<List<MyOrderPendingResponse>>> getWaitingOrders(
+    public ResponseEntity<ResponseTemplate<MyOrderPendingResponseList>> getWaitingOrders(
             @AuthenticationPrincipal Long userId) {
 
-        List<MyOrderPendingResponse> responseList = orderService.getAllPendingOrders(userId);
+        MyOrderPendingResponseList responseList = orderService.getAllPendingOrders(userId);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
