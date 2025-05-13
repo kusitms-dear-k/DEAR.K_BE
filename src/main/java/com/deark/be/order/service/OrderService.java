@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -53,10 +54,32 @@ public class OrderService {
         return pendingMessages.stream()
                 .map(message -> {
                     List<QA> qaList = qaRepository.findAllByMessage(message);
-                    Map<String, String> qaMap = qaList.stream()
-                            .collect(Collectors.toMap(QA::getQuestion, QA::getAnswer));
+                    Map<String, String> qaMap = buildOrderedQaMap(qaList);
                     return MyOrderPendingResponse.of(message, qaMap);
                 })
                 .toList();
     }
+
+    private static Map<String, String> buildOrderedQaMap(List<QA> qaList) {
+        Map<String, String> rawMap = qaList.stream()
+                .collect(Collectors.toMap(QA::getQuestion, QA::getAnswer, (a, b) -> b));
+
+        Map<String, String> orderedMap = new LinkedHashMap<>();
+
+        for (String key : QA_ORDER) {
+            if (rawMap.containsKey(key)) {
+                orderedMap.put(key, rawMap.get(key));
+            }
+        }
+
+        rawMap.keySet().stream()
+                .filter(k -> !orderedMap.containsKey(k))
+                .forEach(k -> orderedMap.put(k, rawMap.get(k)));
+
+        return orderedMap;
+    }
+
+    private static final List<String> QA_ORDER = List.of(
+            "이름", "전화번호", "디자인", "크기", "크림 맛", "시트 맛", "픽업 희망 일자", "픽업 희망 시간", "추가 요청사항"
+    );
 }
