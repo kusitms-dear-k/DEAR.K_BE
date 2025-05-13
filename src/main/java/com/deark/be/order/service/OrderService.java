@@ -1,9 +1,13 @@
 package com.deark.be.order.service;
 
+import com.deark.be.order.domain.Message;
+import com.deark.be.order.domain.QA;
 import com.deark.be.order.domain.type.Status;
 import com.deark.be.order.dto.response.MyOrderCountResponse;
 import com.deark.be.order.dto.response.MyOrderCountResponseList;
+import com.deark.be.order.dto.response.MyOrderPendingResponse;
 import com.deark.be.order.repository.MessageRepository;
+import com.deark.be.order.repository.QARepository;
 import com.deark.be.user.domain.User;
 import com.deark.be.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static com.deark.be.order.domain.type.Status.PENDING;
 
 @Slf4j
 @Service
@@ -21,6 +29,7 @@ import java.util.List;
 public class OrderService {
 
     private final MessageRepository messageRepository;
+    private final QARepository qaRepository;
     private final UserService userService;
 
     public MyOrderCountResponseList getAllCountByStatus(Long userId) {
@@ -34,5 +43,20 @@ public class OrderService {
         }
 
         return MyOrderCountResponseList.from(result);
+    }
+
+    public List<MyOrderPendingResponse> getAllPendingOrders(Long userId) {
+        User user = userService.findUser(userId);
+
+        List<Message> pendingMessages = messageRepository.findAllByUserAndStatus(user, PENDING);
+
+        return pendingMessages.stream()
+                .map(message -> {
+                    List<QA> qaList = qaRepository.findAllByMessage(message);
+                    Map<String, String> qaMap = qaList.stream()
+                            .collect(Collectors.toMap(QA::getQuestion, QA::getAnswer));
+                    return MyOrderPendingResponse.of(message, qaMap);
+                })
+                .toList();
     }
 }

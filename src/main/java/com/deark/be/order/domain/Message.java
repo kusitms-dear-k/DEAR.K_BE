@@ -1,5 +1,6 @@
 package com.deark.be.order.domain;
 
+import com.deark.be.design.domain.Design;
 import com.deark.be.global.domain.BaseTimeEntity;
 import com.deark.be.order.domain.type.Status;
 import com.deark.be.store.domain.Store;
@@ -31,6 +32,10 @@ public class Message extends BaseTimeEntity {
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "design_id")
+    private Design design;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private Status status;
@@ -42,9 +47,10 @@ public class Message extends BaseTimeEntity {
     private String makerResponse;
 
     @Builder
-    public Message(User user, Store store, Status status, LocalDateTime responseTime, String makerResponse) {
+    public Message(User user, Store store, Design design, Status status, LocalDateTime responseTime, String makerResponse) {
         this.user = user;
         this.store = store;
+        this.design = design;
         this.status = status;
         this.responseTime = responseTime;
         this.makerResponse = makerResponse;

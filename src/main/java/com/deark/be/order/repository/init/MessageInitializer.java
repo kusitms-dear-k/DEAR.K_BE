@@ -1,5 +1,7 @@
 package com.deark.be.order.repository.init;
 
+import com.deark.be.design.domain.Design;
+import com.deark.be.design.repository.DesignRepository;
 import com.deark.be.global.util.DummyDataInit;
 import com.deark.be.order.domain.Message;
 import com.deark.be.order.repository.MessageRepository;
@@ -20,13 +22,14 @@ import static com.deark.be.order.domain.type.Status.*;
 
 @Slf4j
 @RequiredArgsConstructor
-@Order(3)
+@Order(4)
 @DummyDataInit
 public class MessageInitializer implements ApplicationRunner {
 
     private final MessageRepository messageRepository;
     private final UserRepository userRepository;
     private final StoreRepository storeRepository;
+    private final DesignRepository designRepository;
 
     @Override
     public void run(ApplicationArguments args) {
@@ -39,41 +42,52 @@ public class MessageInitializer implements ApplicationRunner {
             Store STORE2 = storeRepository.findById(2L).orElseThrow();
             Store STORE3 = storeRepository.findById(3L).orElseThrow();
 
+            Design DESIGN1 = designRepository.findById(1L).orElseThrow();
+            Design DESIGN2 = designRepository.findById(2L).orElseThrow();
+            Design DESIGN3 = designRepository.findById(3L).orElseThrow();
+            Design DESIGN8 = designRepository.findById(8L).orElseThrow();
+
             List<Message> messageList = new ArrayList<>();
 
             Message DUMMY_MESSAGE1 = Message.builder()
                     .user(USER1)
                     .store(STORE1)
+                    .design(DESIGN1)
                     .status(PENDING)
                     .build();
 
             Message DUMMY_MESSAGE2 = Message.builder()
                     .user(USER1)
                     .store(STORE1)
+                    .design(DESIGN8)
                     .status(ACCEPTED)
                     .build();
 
             Message DUMMY_MESSAGE3 = Message.builder()
                     .user(USER1)
                     .store(STORE1)
+                    .design(DESIGN1)
                     .status(REJECTED)
                     .build();
 
             Message DUMMY_MESSAGE4 = Message.builder()
                     .user(USER1)
                     .store(STORE2)
+                    .design(DESIGN2)
                     .status(PENDING)
                     .build();
 
             Message DUMMY_MESSAGE5 = Message.builder()
                     .user(USER1)
                     .store(STORE2)
+                    .design(DESIGN2)
                     .status(ACCEPTED)
                     .build();
 
             Message DUMMY_MESSAGE6 = Message.builder()
                     .user(USER1)
                     .store(STORE2)
+                    .design(DESIGN2)
                     .status(REJECTED)
                     .build();
 
@@ -86,6 +100,7 @@ public class MessageInitializer implements ApplicationRunner {
             Message DUMMY_MESSAGE8 = Message.builder()
                     .user(USER1)
                     .store(STORE3)
+                    .design(DESIGN3)
                     .status(ACCEPTED)
                     .build();
 

@@ -7,6 +7,7 @@ import com.deark.be.order.repository.MessageRepository;
 import com.deark.be.order.repository.QARepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
@@ -16,12 +17,15 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-@Order(4)
+@Order(5)
 @DummyDataInit
 public class QAInitializer implements ApplicationRunner {
 
     private final QARepository qaRepository;
     private final MessageRepository messageRepository;
+
+    @Value("${spring.cloud.aws.s3.url}/design")
+    private String designImageUrl;
 
     @Override
     public void run(ApplicationArguments args) {
@@ -30,8 +34,8 @@ public class QAInitializer implements ApplicationRunner {
         } else {
             Message MESSAGE1 = messageRepository.findById(1L).orElseThrow();
             Message MESSAGE2 = messageRepository.findById(2L).orElseThrow();
-
-            List<QA> qaList = new ArrayList<>();
+            Message MESSAGE4 = messageRepository.findById(4L).orElseThrow();
+            Message MESSAGE7 = messageRepository.findById(7L).orElseThrow();
 
             QA DUMMY_QA1 = QA.builder()
                     .message(MESSAGE1)
@@ -55,12 +59,6 @@ public class QAInitializer implements ApplicationRunner {
                     .message(MESSAGE1)
                     .question("픽업 희망 시간")
                     .answer("14시 30분")
-                    .build();
-
-            QA DUMMY_QA5 = QA.builder()
-                    .message(MESSAGE1)
-                    .question("디자인")
-                    .answer("레인보우케이크")
                     .build();
 
             QA DUMMY_QA6 = QA.builder()
@@ -141,24 +139,114 @@ public class QAInitializer implements ApplicationRunner {
                     .answer("초코")
                     .build();
 
-            qaList.add(DUMMY_QA1);
-            qaList.add(DUMMY_QA2);
-            qaList.add(DUMMY_QA3);
-            qaList.add(DUMMY_QA4);
-            qaList.add(DUMMY_QA5);
-            qaList.add(DUMMY_QA6);
-            qaList.add(DUMMY_QA7);
-            qaList.add(DUMMY_QA8);
-            qaList.add(DUMMY_QA9);
-            qaList.add(DUMMY_QA10);
-            qaList.add(DUMMY_QA11);
-            qaList.add(DUMMY_QA12);
-            qaList.add(DUMMY_QA13);
-            qaList.add(DUMMY_QA14);
-            qaList.add(DUMMY_QA15);
-            qaList.add(DUMMY_QA16);
-            qaList.add(DUMMY_QA17);
-            qaList.add(DUMMY_QA18);
+            QA DUMMY_QA19 = QA.builder()
+                    .message(MESSAGE4)
+                    .question("이름")
+                    .answer("이지은")
+                    .build();
+
+            QA DUMMY_QA20 = QA.builder()
+                    .message(MESSAGE4)
+                    .question("전화번호")
+                    .answer("010-9876-5432")
+                    .build();
+
+            QA DUMMY_QA21 = QA.builder()
+                    .message(MESSAGE4)
+                    .question("픽업 희망 일자")
+                    .answer("2025년 6월 15일 일요일")
+                    .build();
+
+            QA DUMMY_QA22 = QA.builder()
+                    .message(MESSAGE4)
+                    .question("픽업 희망 시간")
+                    .answer("16시 00분")
+                    .build();
+
+            QA DUMMY_QA24 = QA.builder()
+                    .message(MESSAGE4)
+                    .question("추가 요청사항")
+                    .answer("곰돌이 눈을 더 크게 해주세요. 초코시트로 해주세요.")
+                    .build();
+
+            QA DUMMY_QA25 = QA.builder()
+                    .message(MESSAGE4)
+                    .question("크기")
+                    .answer("도시락 케이크")
+                    .build();
+
+            QA DUMMY_QA26 = QA.builder()
+                    .message(MESSAGE4)
+                    .question("크림 맛")
+                    .answer("딸기")
+                    .build();
+
+            QA DUMMY_QA27 = QA.builder()
+                    .message(MESSAGE4)
+                    .question("시트 맛")
+                    .answer("초코")
+                    .build();
+
+            QA DUMMY_QA28 = QA.builder()
+                    .message(MESSAGE7)
+                    .question("이름")
+                    .answer("최유진")
+                    .build();
+
+            QA DUMMY_QA29 = QA.builder()
+                    .message(MESSAGE7)
+                    .question("전화번호")
+                    .answer("010-5555-6666")
+                    .build();
+
+            QA DUMMY_QA30 = QA.builder()
+                    .message(MESSAGE7)
+                    .question("픽업 희망 일자")
+                    .answer("2025년 6월 20일 금요일")
+                    .build();
+
+            QA DUMMY_QA31 = QA.builder()
+                    .message(MESSAGE7)
+                    .question("픽업 희망 시간")
+                    .answer("13시 30분")
+                    .build();
+
+            QA DUMMY_QA32 = QA.builder()
+                    .message(MESSAGE7)
+                    .question("디자인")
+                    .answer(designImageUrl + "/bear.png")
+                    .build();
+
+            QA DUMMY_QA33 = QA.builder()
+                    .message(MESSAGE7)
+                    .question("추가 요청사항")
+                    .answer("하트 모양을 더 선명하게 해주세요. 핑크색 크림으로 해주세요.")
+                    .build();
+
+            QA DUMMY_QA34 = QA.builder()
+                    .message(MESSAGE7)
+                    .question("크기")
+                    .answer("1호 케이크")
+                    .build();
+
+            QA DUMMY_QA35 = QA.builder()
+                    .message(MESSAGE7)
+                    .question("크림 맛")
+                    .answer("바닐라")
+                    .build();
+
+            QA DUMMY_QA36 = QA.builder()
+                    .message(MESSAGE7)
+                    .question("시트 맛")
+                    .answer("바닐라")
+                    .build();
+
+            List<QA> qaList = new ArrayList<>(List.of(
+                    DUMMY_QA1, DUMMY_QA2, DUMMY_QA3, DUMMY_QA4, DUMMY_QA6, DUMMY_QA7, DUMMY_QA8, DUMMY_QA9,
+                    DUMMY_QA10, DUMMY_QA11, DUMMY_QA12, DUMMY_QA13, DUMMY_QA14, DUMMY_QA15, DUMMY_QA16, DUMMY_QA17, DUMMY_QA18,
+                    DUMMY_QA19, DUMMY_QA20, DUMMY_QA21, DUMMY_QA22, DUMMY_QA24, DUMMY_QA25, DUMMY_QA26, DUMMY_QA27,
+                    DUMMY_QA28, DUMMY_QA29, DUMMY_QA30, DUMMY_QA31, DUMMY_QA32, DUMMY_QA33, DUMMY_QA34, DUMMY_QA35, DUMMY_QA36
+            ));
 
             qaRepository.saveAll(qaList);
         }
