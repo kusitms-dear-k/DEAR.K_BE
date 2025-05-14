@@ -51,7 +51,7 @@ public class QAInitializer implements ApplicationRunner {
             QA DUMMY_QA3 = QA.builder()
                     .message(MESSAGE1)
                     .question("픽업 희망 일자")
-                    .answer("2025년 5월 31일 토요일")
+                    .answer("2025년 5월 30일 금요일")
                     .isRequired(true)
                     .build();
 
@@ -163,7 +163,7 @@ public class QAInitializer implements ApplicationRunner {
             QA DUMMY_QA21 = QA.builder()
                     .message(MESSAGE4)
                     .question("픽업 희망 일자")
-                    .answer("2025년 6월 15일 일요일")
+                    .answer("2025년 6월 17일 화요일")
                     .isRequired(true)
                     .build();
 
