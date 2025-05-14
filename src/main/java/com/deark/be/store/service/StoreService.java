@@ -87,7 +87,7 @@ public class StoreService {
                         .anyMatch(BusinessHours::getIsOpen24Hours);
 
         boolean isLunchBoxCake = sizeRepository.existsByStoreIdAndNameContaining(storeId, "도시락");
-        boolean isBookmarkedInEvent = eventStoreRepository.existsByEventUserIdAndStoreId(userId, storeId);
+        boolean isLiked = eventStoreRepository.existsByEventUserIdAndStoreId(userId, storeId);
         List<PickUpHourResponse> pickupHours = store.getBusinessHoursList().stream()
                 .map(PickUpHourResponse::from)
                 .toList();
@@ -100,7 +100,7 @@ public class StoreService {
                 store,
                 is24hSelfService,
                 isLunchBoxCake,
-                isBookmarkedInEvent,
+                isLiked,
                 businessHours,
                 pickupHours,
                 likeCount,
