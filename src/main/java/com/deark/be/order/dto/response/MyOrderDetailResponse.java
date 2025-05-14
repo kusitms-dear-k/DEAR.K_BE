@@ -4,7 +4,7 @@ import com.deark.be.order.domain.Message;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
-import java.util.Map;
+import java.util.List;
 
 @Builder
 public record MyOrderDetailResponse(
@@ -16,10 +16,10 @@ public record MyOrderDetailResponse(
         String designName,
         @Schema(description = "디자인 이미지 URL", example = "https://deark.com/design/1/image")
         String designImageUrl,
-        @Schema(description = "주문서 질문 & 답", example = "{ \"크기\": \"도시락 케이크\", \"픽업 희망 날짜\": \"2025년 6월 20일 금요일\", \"픽업 희망 시간\": \"13시 30분\" }")
-        Map<String, String> qaDetails
+        @Schema(description = "주문서 질문 & 답", example = "[{\"title\": \"이름\", \"answer\": \"박지유\", \"isRequired\": \"true\"}]")
+        List<QAResponse> qaDetails
 ) {
-    public static MyOrderDetailResponse of(Message message, String operatingHours, Map<String, String> qaMap) {
+    public static MyOrderDetailResponse of(Message message, String operatingHours, List<QAResponse> qaMap) {
         return MyOrderDetailResponse.builder()
                 .messageId(message.getId())
                 .operatingHours(operatingHours)

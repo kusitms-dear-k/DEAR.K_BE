@@ -27,10 +27,14 @@ public class QA {
     @Column(name = "answer")
     private String answer;
 
+    @Column(name = "is_required")
+    private Boolean isRequired;
+
     @Builder
-    public QA(Message message, String question, String answer) {
+    public QA(Message message, String question, String answer, Boolean isRequired) {
         this.message = message;
         this.question = question;
         this.answer = answer;
+        this.isRequired = isRequired;
     }
 }

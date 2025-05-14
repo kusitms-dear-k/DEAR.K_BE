@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -76,13 +77,18 @@ public class OrderService {
         Message message = findMessage(messageId);
 
         List<QA> qaList = qaRepository.findAllByMessage(message);
-        Map<String, String> qaMap = buildOrderedQaMap(qaList);
+        List<QAResponse> qaResponses = buildOrderedQaList(qaList);
 
-        String pickupDateStr = qaMap.get("픽업 희망 일자");
+        String pickupDateStr = qaResponses.stream()
+                .filter(q -> "픽업 희망 일자".equals(q.title()))
+                .map(QAResponse::answer)
+                .findFirst()
+                .orElse("");
+
         String dayName = extractDayName(pickupDateStr);
         String businessHourStr = getBusinessHourStr(dayName, message);
 
-        return MyOrderDetailResponse.of(message, businessHourStr, qaMap);
+        return MyOrderDetailResponse.of(message, businessHourStr, qaResponses);
     }
 
     private static Map<String, String> buildOrderedQaMap(List<QA> qaList) {
@@ -102,6 +108,27 @@ public class OrderService {
                 .forEach(k -> orderedMap.put(k, rawMap.get(k)));
 
         return orderedMap;
+    }
+
+
+    private static List<QAResponse> buildOrderedQaList(List<QA> qaList) {
+        Map<String, QA> qaMap = qaList.stream()
+                .collect(Collectors.toMap(QA::getQuestion, Function.identity(), (a, b) -> b));
+
+        List<QAResponse> orderedList = new ArrayList<>();
+
+        for (String key : QA_ORDER) {
+            if (qaMap.containsKey(key)) {
+                orderedList.add(QAResponse.from(qaMap.get(key)));
+            }
+        }
+
+        qaMap.keySet().stream()
+                .filter(k -> !QA_ORDER.contains(k))
+                .sorted()
+                .forEach(k -> orderedList.add(QAResponse.from(qaMap.get(k))));
+
+        return orderedList;
     }
 
     private static final List<String> QA_ORDER = List.of(
