@@ -72,7 +72,7 @@ public class MypageController {
     }
 
     @Operation(summary = "수락된 주문서 상세 조회", description = "수락된 주문서의 메이커 답변, 견적서 상세 정보, 카카오톡 링크를 조회합니다.")
-    @GetMapping("/order/accepted/{messageId}")
+    @GetMapping("/request/accepted/{messageId}")
     public ResponseEntity<ResponseTemplate<MyOrderAcceptedResponse>> getAcceptedOrderDetail(
             @PathVariable Long messageId) {
 
