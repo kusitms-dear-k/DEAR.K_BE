@@ -6,10 +6,9 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum Status {
-    REQUESTED("주문 요청"),
-    ACCEPTED("주문 수락"),
-    REJECTED("주문 거절"),
-    PENDING("주문 대기"),
+    PENDING("응답 대기"),
+    ACCEPTED("수락"),
+    REJECTED("반려"),
     ;
 
     private final String statusName;

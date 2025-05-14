@@ -1,14 +1,18 @@
 package com.deark.be.order.exception.errorcode;
 
+import com.deark.be.global.exception.errorcode.ErrorCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor
-public enum OrderErrorCode {
+public enum OrderErrorCode implements ErrorCode {
 
     ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "ORDER400", "주문을 찾을 수 없습니다."),
+    MESSAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "ORDER401", "쪽지를 찾을 수 없습니다."),
+    ORDER_NOT_ACCEPTED(HttpStatus.BAD_REQUEST, "ORDER402", "수락된 주문이 아닙니다."),
+    ORDER_NOT_REJECTED(HttpStatus.BAD_REQUEST, "ORDER403", "거절된 주문이 아닙니다."),
     ;
 
     private final HttpStatus httpStatus;

@@ -31,17 +31,21 @@ public class OrderQuestion {
     @Column(name = "question_type", nullable = false)
     private QuestionType questionType;
 
+    @Column(name = "title")
+    private String title;
+
     @Column(name = "content")
     private String content;
 
-    @Column(name = "is_required", nullable = false)
+    @Column(name = "is_required")
     private Boolean isRequired;
 
     @Builder
-    public OrderQuestion(Store store, CommonQuestion commonQuestion, QuestionType questionType, String content, Boolean isRequired) {
+    public OrderQuestion(Store store, CommonQuestion commonQuestion, QuestionType questionType, String title, String content, Boolean isRequired) {
         this.store = store;
         this.commonQuestion = commonQuestion;
         this.questionType = questionType;
+        this.title = title;
         this.content = content;
         this.isRequired = isRequired;
     }

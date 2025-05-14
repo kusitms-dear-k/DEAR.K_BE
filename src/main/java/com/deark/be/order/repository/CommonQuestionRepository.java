@@ -1,9 +1,9 @@
 package com.deark.be.order.repository;
 
-import com.deark.be.order.domain.OrderQuestion;
+import com.deark.be.order.domain.CommonQuestion;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface OrderRepository extends JpaRepository<OrderQuestion, Long> {
+public interface CommonQuestionRepository extends JpaRepository<CommonQuestion, Long> {
 }
