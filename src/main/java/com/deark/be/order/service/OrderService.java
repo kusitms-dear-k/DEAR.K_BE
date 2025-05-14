@@ -26,8 +26,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static com.deark.be.order.exception.errorcode.OrderErrorCode.ORDER_NOT_ACCEPTED;
-import static com.deark.be.order.exception.errorcode.OrderErrorCode.ORDER_NOT_FOUND;
+import static com.deark.be.order.exception.errorcode.OrderErrorCode.*;
 
 @Slf4j
 @Service
@@ -71,6 +70,11 @@ public class OrderService {
 
     public MyOrderRejectedResponse getRejectedOrderReason(Long messageId) {
         Message message = findMessage(messageId);
+
+        if (message.getStatus() != Status.REJECTED) {
+            throw new OrderException(ORDER_NOT_REJECTED);
+        }
+
         return MyOrderRejectedResponse.from(message);
     }
 
