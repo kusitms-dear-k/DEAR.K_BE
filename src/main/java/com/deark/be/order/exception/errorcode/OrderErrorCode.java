@@ -11,6 +11,7 @@ public enum OrderErrorCode implements ErrorCode {
 
     ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "ORDER400", "주문을 찾을 수 없습니다."),
     MESSAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "ORDER401", "쪽지를 찾을 수 없습니다."),
+    ORDER_NOT_ACCEPTED(HttpStatus.BAD_REQUEST, "ORDER402", "수락된 주문이 아닙니다."),
     ;
 
     private final HttpStatus httpStatus;

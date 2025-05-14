@@ -69,6 +69,7 @@ public class MessageInitializer implements ApplicationRunner {
                     .design(DESIGN8)
                     .designType(STORE)
                     .status(ACCEPTED)
+                    .makerResponse("안녕하세요 고객님 :) 문의해주셔서 감사합니다. 해당 디자인으로 말씀하신 일정에 가능합니다!")
                     .build();
 
             Message DUMMY_MESSAGE3 = Message.builder()
@@ -94,6 +95,7 @@ public class MessageInitializer implements ApplicationRunner {
                     .design(DESIGN2)
                     .designType(STORE)
                     .status(ACCEPTED)
+                    .makerResponse("안녕하세요 고객님 :) 문의해주셔서 감사합니다. 해당 디자인으로 말씀하신 일정에 가능합니다!")
                     .build();
 
             Message DUMMY_MESSAGE6 = Message.builder()

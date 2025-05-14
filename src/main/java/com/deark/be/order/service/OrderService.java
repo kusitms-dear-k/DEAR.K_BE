@@ -26,6 +26,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static com.deark.be.order.exception.errorcode.OrderErrorCode.ORDER_NOT_ACCEPTED;
 import static com.deark.be.order.exception.errorcode.OrderErrorCode.ORDER_NOT_FOUND;
 
 @Slf4j
@@ -89,6 +90,19 @@ public class OrderService {
         String businessHourStr = getBusinessHourStr(dayName, message);
 
         return MyOrderDetailResponse.of(message, businessHourStr, qaResponses);
+    }
+
+    public MyOrderAcceptedResponse getAcceptedOrderDetail(Long messageId) {
+        Message message = findMessage(messageId);
+
+        if (message.getStatus() != Status.ACCEPTED) {
+            throw new OrderException(ORDER_NOT_ACCEPTED);
+        }
+
+        List<QA> qaList = qaRepository.findAllByMessage(message);
+        Map<String, String> qaMap = buildOrderedQaMap(qaList);
+
+        return MyOrderAcceptedResponse.of(message, qaMap);
     }
 
     private static Map<String, String> buildOrderedQaMap(List<QA> qaList) {

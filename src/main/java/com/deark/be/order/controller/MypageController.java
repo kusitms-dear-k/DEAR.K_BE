@@ -2,10 +2,7 @@ package com.deark.be.order.controller;
 
 import com.deark.be.global.dto.ResponseTemplate;
 import com.deark.be.order.domain.type.Status;
-import com.deark.be.order.dto.response.MyOrderCountResponseList;
-import com.deark.be.order.dto.response.MyOrderDetailResponse;
-import com.deark.be.order.dto.response.MyOrderRejectedResponse;
-import com.deark.be.order.dto.response.MyOrderStatusResponseList;
+import com.deark.be.order.dto.response.*;
 import com.deark.be.order.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -68,6 +65,18 @@ public class MypageController {
             @PathVariable Long messageId) {
 
         MyOrderDetailResponse response = orderService.getOrderDetail(messageId);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseTemplate.from(response));
+    }
+
+    @Operation(summary = "수락된 주문서 상세 조회", description = "수락된 주문서의 메이커 답변, 견적서 상세 정보, 카카오톡 링크를 조회합니다.")
+    @GetMapping("/order/accepted/{messageId}")
+    public ResponseEntity<ResponseTemplate<MyOrderAcceptedResponse>> getAcceptedOrderDetail(
+            @PathVariable Long messageId) {
+
+        MyOrderAcceptedResponse response = orderService.getAcceptedOrderDetail(messageId);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

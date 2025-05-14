@@ -53,6 +53,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .imageUrl(storeImageUrl + "/blueberry.jpg")
                     .isSelfService(true)
                     .isSameDayOrder(true)
+                    .chattingUrl("https://pf.kakao.com/_xkKxj")
                     .build();
 
             Store DUMMY_STORE2 = Store.builder()
@@ -66,6 +67,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .imageUrl(storeImageUrl + "/birthday.jpg")
                     .isSelfService(false)
                     .isSameDayOrder(false)
+                    .chattingUrl("https://pf.kakao.com/_vxkKxj")
                     .build();
 
             Store DUMMY_STORE3 = Store.builder()
@@ -79,6 +81,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .imageUrl(storeImageUrl + "/yellow.jpg")
                     .isSelfService(false)
                     .isSameDayOrder(false)
+                    .chattingUrl("https://pf.kakao.com/_khxj")
                     .build();
 
             Store DUMMY_STORE4 = Store.builder()
@@ -92,6 +95,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .imageUrl(storeImageUrl + "/star.jpg")
                     .isSelfService(true)
                     .isSameDayOrder(true)
+                    .chattingUrl("https://pf.kakao.com/_ljhwj")
                     .build();
 
             Store DUMMY_STORE5 = Store.builder()
@@ -105,6 +109,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .imageUrl(storeImageUrl + "/ribbon.jpg")
                     .isSelfService(false)
                     .isSameDayOrder(false)
+                    .chattingUrl("https://pf.kakao.com/_xskKxj")
                     .build();
 
             Store DUMMY_STORE6 = Store.builder()
@@ -118,6 +123,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .imageUrl(storeImageUrl + "/loopy.png")
                     .isSelfService(true)
                     .isSameDayOrder(true)
+                    .chattingUrl("https://pf.kakao.com/_qkxlw")
                     .build();
 
             Store DUMMY_STORE7 = Store.builder()
@@ -131,6 +137,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .imageUrl(storeImageUrl + "/blackpink.png")
                     .isSelfService(false)
                     .isSameDayOrder(false)
+                    .chattingUrl("https://pf.kakao.com/_shxlw")
                     .build();
 
             Store DUMMY_STORE8 = Store.builder()
@@ -144,6 +151,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .imageUrl(storeImageUrl + "/whiteblack.png")
                     .isSelfService(false)
                     .isSameDayOrder(true)
+                    .chattingUrl("https://pf.kakao.com/_xkxlw")
                     .build();
 
             Store DUMMY_STORE9 = Store.builder()
@@ -157,6 +165,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .imageUrl(storeImageUrl + "/muffin.png")
                     .isSelfService(true)
                     .isSameDayOrder(false)
+                    .chattingUrl("https://pf.kakao.com/_xlkhk")
                     .build();
 
             Store DUMMY_STORE10 = Store.builder()
@@ -170,6 +179,7 @@ public class StoreInitializer implements ApplicationRunner {
                     .imageUrl(storeImageUrl + "/pink.png")
                     .isSelfService(false)
                     .isSameDayOrder(true)
+                    .chattingUrl("https://pf.kakao.com/_xkxlw")
                     .build();
 
             storeList.add(DUMMY_STORE1);
