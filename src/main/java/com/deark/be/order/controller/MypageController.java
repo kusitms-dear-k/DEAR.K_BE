@@ -3,6 +3,7 @@ package com.deark.be.order.controller;
 import com.deark.be.global.dto.ResponseTemplate;
 import com.deark.be.order.domain.type.Status;
 import com.deark.be.order.dto.response.MyOrderCountResponseList;
+import com.deark.be.order.dto.response.MyOrderRejectedResponse;
 import com.deark.be.order.dto.response.MyOrderStatusResponseList;
 import com.deark.be.order.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,5 +50,17 @@ public class MypageController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ResponseTemplate.from(responseList));
+    }
+
+    @Operation(summary = "반려된 견적서 사유 조회", description = "반려된 견적서의 사유를 조회합니다.")
+    @GetMapping("/request/reject/{messageId}")
+    public ResponseEntity<ResponseTemplate<MyOrderRejectedResponse>> getRejectReason(
+            @RequestParam Long messageId) {
+
+        MyOrderRejectedResponse response = orderService.getRejectedOrderReason(messageId);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseTemplate.from(response));
     }
 }

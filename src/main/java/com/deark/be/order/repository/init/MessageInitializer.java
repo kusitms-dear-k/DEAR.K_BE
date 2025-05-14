@@ -77,6 +77,7 @@ public class MessageInitializer implements ApplicationRunner {
                     .design(DESIGN1)
                     .designType(STORE)
                     .status(REJECTED)
+                    .makerResponse("디자인에 사용될 재료 부족 및 소진")
                     .build();
 
             Message DUMMY_MESSAGE4 = Message.builder()
@@ -101,6 +102,7 @@ public class MessageInitializer implements ApplicationRunner {
                     .design(DESIGN2)
                     .designType(STORE)
                     .status(REJECTED)
+                    .makerResponse("기간 내 제작 불가")
                     .build();
 
             Message DUMMY_MESSAGE7 = Message.builder()

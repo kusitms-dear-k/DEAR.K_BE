@@ -4,6 +4,7 @@ import com.deark.be.order.domain.Message;
 import com.deark.be.order.domain.QA;
 import com.deark.be.order.domain.type.Status;
 import com.deark.be.order.dto.response.*;
+import com.deark.be.order.exception.OrderException;
 import com.deark.be.order.repository.MessageRepository;
 import com.deark.be.order.repository.QARepository;
 import com.deark.be.user.domain.User;
@@ -18,6 +19,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static com.deark.be.order.exception.errorcode.OrderErrorCode.ORDER_NOT_FOUND;
 
 @Slf4j
 @Service
@@ -58,6 +61,11 @@ public class OrderService {
         return MyOrderStatusResponseList.from(responseList);
     }
 
+    public MyOrderRejectedResponse getRejectedOrderReason(Long messageId) {
+        Message message = findMessage(messageId);
+        return MyOrderRejectedResponse.from(message);
+    }
+
     private static Map<String, String> buildOrderedQaMap(List<QA> qaList) {
         Map<String, String> rawMap = qaList.stream()
                 .collect(Collectors.toMap(QA::getQuestion, QA::getAnswer, (a, b) -> b));
@@ -80,4 +88,9 @@ public class OrderService {
     private static final List<String> QA_ORDER = List.of(
             "이름", "전화번호", "디자인", "크기", "크림 맛", "시트 맛", "픽업 희망 일자", "픽업 희망 시간", "추가 요청사항"
     );
+
+    private Message findMessage(Long messageId) {
+        return messageRepository.findById(messageId)
+                .orElseThrow(() -> new OrderException(ORDER_NOT_FOUND));
+    }
 }
