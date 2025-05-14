@@ -3,6 +3,7 @@ package com.deark.be.order.controller;
 import com.deark.be.global.dto.ResponseTemplate;
 import com.deark.be.order.domain.type.Status;
 import com.deark.be.order.dto.response.MyOrderCountResponseList;
+import com.deark.be.order.dto.response.MyOrderDetailResponse;
 import com.deark.be.order.dto.response.MyOrderRejectedResponse;
 import com.deark.be.order.dto.response.MyOrderStatusResponseList;
 import com.deark.be.order.service.OrderService;
@@ -13,10 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Mypage", description = "마이페이지 관련 API")
 @Slf4j
@@ -53,11 +51,23 @@ public class MypageController {
     }
 
     @Operation(summary = "반려된 견적서 사유 조회", description = "반려된 견적서의 사유를 조회합니다.")
-    @GetMapping("/request/reject/{messageId}")
+    @GetMapping("/request/rejected/{messageId}")
     public ResponseEntity<ResponseTemplate<MyOrderRejectedResponse>> getRejectReason(
-            @RequestParam Long messageId) {
+            @PathVariable Long messageId) {
 
         MyOrderRejectedResponse response = orderService.getRejectedOrderReason(messageId);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseTemplate.from(response));
+    }
+
+    @Operation(summary = "견적서 또는 주문서 상세 조회", description = "견적서 또는 주문서의 상세 정보를 조회합니다.")
+    @GetMapping("/request/detail/{messageId}")
+    public ResponseEntity<ResponseTemplate<MyOrderDetailResponse>> getOrderDetail(
+            @PathVariable Long messageId) {
+
+        MyOrderDetailResponse response = orderService.getOrderDetail(messageId);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
