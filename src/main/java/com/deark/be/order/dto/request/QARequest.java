@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(description = "주문서 질문과 답변에 대한 정보")
 public record QARequest(
         @Schema(description = "질문", example = "이름")
-        String question,
+        String title,
 
         @Schema(description = "답변", example = "김혜연")
         String answer
@@ -15,7 +15,7 @@ public record QARequest(
     public QA toEntity(Message message) {
         return QA.builder()
                 .message(message)
-                .question(question)
+                .question(title)
                 .answer(answer)
                 .build();
     }
