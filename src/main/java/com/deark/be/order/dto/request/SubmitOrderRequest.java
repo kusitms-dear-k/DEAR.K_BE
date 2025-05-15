@@ -25,7 +25,7 @@ public record SubmitOrderRequest(
         @Schema(description = "디자인 ID (designType이 STORE일 경우 사용)", example = "1")
         Long designId,
 
-        @Schema(description = "사용자가 직접 업로드한 디자인 이미지 URL (designType이 CUSTOM일 경우 사용)", example = "")
+        @Schema(description = "사용자가 직접 업로드한 디자인 이미지 URL (designType이 CUSTOM일 경우 사용)")
         String designUrl,
 
         @Schema(description = "추가 요청사항 이미지 선택 유형 (EVENT: 사용자가 찜한 디자인, CUSTOM: 사용자 업로드)", example = "CUSTOM")
