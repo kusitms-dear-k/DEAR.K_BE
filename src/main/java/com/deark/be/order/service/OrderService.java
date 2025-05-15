@@ -60,8 +60,8 @@ public class OrderService {
         List<MyOrderStatusResponse> responseList =  pendingMessages.stream()
                 .map(message -> {
                     List<QA> qaList = qaRepository.findAllByMessage(message);
-                    List<QAStatusResponse> qaMap = buildOrderedQaStatusList(qaList);
-                    return MyOrderStatusResponse.of(message, qaMap);
+                    List<QAStatusResponse> qaStatusList = buildOrderedQaStatusList(qaList);
+                    return MyOrderStatusResponse.of(message, qaStatusList);
                 })
                 .toList();
 
