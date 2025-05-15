@@ -87,6 +87,7 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                         design.id,
                         design.name,
                         design.imageUrl,
+                        store.id,
                         store.name,
                         design.price,
                         store.address,
@@ -114,7 +115,7 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                         design.id,
                         design.name,
                         design.imageUrl,
-                        store.name,
+                        store.id,
                         design.price,
                         store.address,
                         store.isSameDayOrder
