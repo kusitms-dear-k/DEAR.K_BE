@@ -60,8 +60,8 @@ public class OrderService {
         List<MyOrderStatusResponse> responseList =  pendingMessages.stream()
                 .map(message -> {
                     List<QA> qaList = qaRepository.findAllByMessage(message);
-                    Map<String, String> qaMap = buildOrderedQaMap(qaList);
-                    return MyOrderStatusResponse.of(message, qaMap);
+                    List<QAStatusResponse> qaStatusList = buildOrderedQaStatusList(qaList);
+                    return MyOrderStatusResponse.of(message, qaStatusList);
                 })
                 .toList();
 
@@ -126,6 +126,26 @@ public class OrderService {
                 .forEach(k -> orderedMap.put(k, rawMap.get(k)));
 
         return orderedMap;
+    }
+
+    private static List<QAStatusResponse> buildOrderedQaStatusList(List<QA> qaList) {
+        Map<String, QA> rawMap = qaList.stream()
+                .collect(Collectors.toMap(QA::getQuestion, Function.identity(), (a, b) -> b));
+
+        List<QAStatusResponse> orderedList = new ArrayList<>();
+
+        for (String key : QA_ORDER) {
+            if (rawMap.containsKey(key)) {
+                orderedList.add(QAStatusResponse.from(rawMap.get(key)));
+            }
+        }
+
+        rawMap.keySet().stream()
+                .filter(k -> !QA_ORDER.contains(k))
+                .sorted()
+                .forEach(k -> orderedList.add(QAStatusResponse.from(rawMap.get(k))));
+
+        return orderedList;
     }
 
 
