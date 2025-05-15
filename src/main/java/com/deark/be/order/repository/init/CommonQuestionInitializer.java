@@ -28,49 +28,49 @@ public class CommonQuestionInitializer implements ApplicationRunner {
             List<CommonQuestion> commonQuestionList = new ArrayList<>();
 
             CommonQuestion COMMON_QUESTION1 = CommonQuestion.builder()
-                    .title("이름")
+                    .title("name")
                     .hint("이름을 입력해주세요.")
                     .isRequired(true)
                     .build();
 
             CommonQuestion COMMON_QUESTION2 = CommonQuestion.builder()
-                    .title("전화번호")
+                    .title("phoneNumber")
                     .hint("전화번호를 입력해주세요.")
                     .isRequired(true)
                     .build();
 
             CommonQuestion COMMON_QUESTION3 = CommonQuestion.builder()
-                    .title("일정")
+                    .title("date")
                     .hint("픽업 일자 및 시간을 선택해주세요.")
                     .isRequired(true)
                     .build();
 
             CommonQuestion COMMON_QUESTION4 = CommonQuestion.builder()
-                    .title("크기")
+                    .title("size")
                     .hint("케이크 크기를 선택해주세요.")
                     .isRequired(true)
                     .build();
 
             CommonQuestion COMMON_QUESTION5 = CommonQuestion.builder()
-                    .title("크림")
+                    .title("cream")
                     .hint("크림 맛을 선택해주세요.")
                     .isRequired(true)
                     .build();
 
             CommonQuestion COMMON_QUESTION6 = CommonQuestion.builder()
-                    .title("시트")
+                    .title("sheet")
                     .hint("시트 맛을 선택해주세요.")
                     .isRequired(true)
                     .build();
 
             CommonQuestion COMMON_QUESTION7 = CommonQuestion.builder()
-                    .title("디자인")
+                    .title("design")
                     .hint("원하는 케이크 디자인을 보여주세요.")
                     .isRequired(false)
                     .build();
 
             CommonQuestion COMMON_QUESTION8 = CommonQuestion.builder()
-                    .title("요청사항")
+                    .title("request")
                     .hint("텍스트 요청사항을 설명해주세요.")
                     .isRequired(false)
                     .build();

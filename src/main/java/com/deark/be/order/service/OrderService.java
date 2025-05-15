@@ -25,10 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -90,21 +87,30 @@ public class OrderService {
 
     public MyOrderDetailResponse getOrderDetail(Long messageId) {
         Message message = findMessage(messageId);
-
         List<QA> qaList = qaRepository.findAllByMessage(message);
-        List<QAResponse> qaResponses = buildOrderedQaList(qaList);
 
-        String pickupDateStr = qaResponses.stream()
-                .filter(q -> "픽업 희망 일자".equals(q.title()))
-                .map(QAResponse::answer)
+        Map<String, Map<String, Object>> qaMap = qaList.stream()
+                .collect(Collectors.toMap(
+                        QA::getQuestion,
+                        qa -> {
+                            Map<String, Object> value = new HashMap<>();
+                            value.put("answer", qa.getAnswer());
+                            return value;
+                        }
+                ));
+
+        String pickupDateStr = qaList.stream()
+                .filter(q -> "pickupDate".equals(q.getQuestion()))
+                .map(QA::getAnswer)
                 .findFirst()
                 .orElse("");
 
         String dayName = extractDayName(pickupDateStr);
         String businessHourStr = getBusinessHourStr(dayName, message);
 
-        return MyOrderDetailResponse.of(message, businessHourStr, qaResponses);
+        return MyOrderDetailResponse.of(message, businessHourStr, qaMap);
     }
+
 
     public MyOrderAcceptedResponse getAcceptedOrderDetail(Long messageId) {
         Message message = findMessage(messageId);

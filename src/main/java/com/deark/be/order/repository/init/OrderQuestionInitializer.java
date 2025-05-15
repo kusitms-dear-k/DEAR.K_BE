@@ -99,7 +99,7 @@ public class OrderQuestionInitializer implements ApplicationRunner {
             OrderQuestion ORDER_QUESTION9 = OrderQuestion.builder()
                     .store(STORE1)
                     .questionType(CUSTOM)
-                    .title("주차 여부")
+                    .title("parking")
                     .content("주차 여부를 알려주세요.")
                     .isRequired(false)
                     .build();
@@ -107,7 +107,7 @@ public class OrderQuestionInitializer implements ApplicationRunner {
             OrderQuestion ORDER_QUESTION10 = OrderQuestion.builder()
                     .store(STORE1)
                     .questionType(CUSTOM)
-                    .title("추가 요청사항")
+                    .title("additionalRequest")
                     .content("원하는 요청사항을 작성해주세요.")
                     .isRequired(false)
                     .build();
@@ -163,7 +163,7 @@ public class OrderQuestionInitializer implements ApplicationRunner {
             OrderQuestion ORDER_QUESTION19 = OrderQuestion.builder()
                     .store(STORE2)
                     .questionType(CUSTOM)
-                    .title("추가 요청사항")
+                    .title("additionalRequest")
                     .content("원하는 요청사항을 작성해주세요.")
                     .isRequired(false)
                     .build();
