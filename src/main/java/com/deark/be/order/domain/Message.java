@@ -3,6 +3,7 @@ package com.deark.be.order.domain;
 import com.deark.be.design.domain.Design;
 import com.deark.be.global.domain.BaseTimeEntity;
 import com.deark.be.order.domain.type.DesignType;
+import com.deark.be.order.domain.type.RequestDetailType;
 import com.deark.be.order.domain.type.Status;
 import com.deark.be.store.domain.Store;
 import com.deark.be.user.domain.User;
@@ -37,6 +38,10 @@ public class Message extends BaseTimeEntity {
     @JoinColumn(name = "design_id")
     private Design design;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "request_detail_design_id")
+    private Design requestDetailDesign;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private Status status;
@@ -48,6 +53,13 @@ public class Message extends BaseTimeEntity {
     @Column(name = "design_url")
     private String designUrl;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "request_detail_type", nullable = false)
+    private RequestDetailType requestDetailType;
+
+    @Column(name = "request_detail_url")
+    private String requestDetailImageUrl;
+
     @Column(name = "response_time")
     private LocalDateTime responseTime;
 
@@ -55,13 +67,16 @@ public class Message extends BaseTimeEntity {
     private String makerResponse;
 
     @Builder
-    public Message(User user, Store store, Design design, Status status, DesignType designType, String designUrl, LocalDateTime responseTime, String makerResponse) {
+    public Message(User user, Store store, Design design, Design requestDetailDesign, Status status, DesignType designType, String designUrl, RequestDetailType requestDetailType, String requestDetailImageUrl, LocalDateTime responseTime, String makerResponse) {
         this.user = user;
         this.store = store;
         this.design = design;
+        this.requestDetailDesign = requestDetailDesign;
         this.status = status;
         this.designType = designType;
         this.designUrl = designUrl;
+        this.requestDetailType = requestDetailType;
+        this.requestDetailImageUrl = requestDetailImageUrl;
         this.responseTime = responseTime;
         this.makerResponse = makerResponse;
     }
