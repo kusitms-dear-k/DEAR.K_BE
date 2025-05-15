@@ -11,7 +11,9 @@ public record SearchDesignResponse(
         String designName,
         @Schema(description = "디자인 이미지 URL", example = "https://cdn.deark.com/designs/3tier.png")
         String designImageUrl,
-        @Schema(description = "디자인을 업로드한 스토어 이름", example = "디어케이 케이크")
+        @Schema(description = "가게 ID", example = "1")
+        Long storeId,
+        @Schema(description = "디자인을 업로드한 가게 이름", example = "디어케이 케이크")
         String storeName,
         @Schema(description = "디자인 최소 가격", example = "15000")
         Long price,

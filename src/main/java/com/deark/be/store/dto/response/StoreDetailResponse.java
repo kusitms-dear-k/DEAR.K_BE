@@ -14,7 +14,7 @@ public record StoreDetailResponse(
         Boolean isSameDayOrder,
         Boolean is24hSelfService,
         Boolean isLunchBoxCake,
-        Boolean isBookmarkedInEvent,
+        Boolean isLiked,
         List<BusinessHourResponse> businessHours,
         List<PickUpHourResponse> pickUpHours,
         String ownerName,
@@ -26,7 +26,7 @@ public record StoreDetailResponse(
             Store store,
             boolean is24hSelfService,
             boolean isLunchBoxCake,
-            boolean isBookmarkedInEvent,
+            boolean isLiked,
             List<BusinessHourResponse> businessHours,
             List<PickUpHourResponse> pickupHours,
             Long likeCount,
@@ -41,7 +41,7 @@ public record StoreDetailResponse(
                 .isSameDayOrder(store.getIsSameDayOrder())
                 .is24hSelfService(is24hSelfService)
                 .isLunchBoxCake(isLunchBoxCake)
-                .isBookmarkedInEvent(isBookmarkedInEvent)
+                .isLiked(isLiked)
                 .businessHours(businessHours)
                 .pickUpHours(pickupHours)
                 .ownerName(store.getOwnerName())
