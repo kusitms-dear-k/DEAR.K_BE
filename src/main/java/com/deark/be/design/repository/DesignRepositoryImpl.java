@@ -162,6 +162,8 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                 event.user.id.eq(userId).and(eventDesign.design.eq(design))
         );
 
+        NumberExpression<Long> likeCount = eventDesign.id.countDistinct().coalesce(0L);
+
         BooleanExpression isLikedExpr = likedSum.gt(0L);
 
         BooleanExpression sizeFilter = (sizeName != null && !sizeName.isBlank())
@@ -176,7 +178,8 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                         design.imageUrl,
                         store.name,
                         design.price,
-                        isLikedExpr
+                        isLikedExpr,
+                        likeCount
                 ))
                 .from(design)
                 .join(design.store, store)
