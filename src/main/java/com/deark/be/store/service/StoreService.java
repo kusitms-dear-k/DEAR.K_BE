@@ -57,8 +57,7 @@ public class StoreService {
 
     @Transactional
     public void registerStoreBasicInfo(Long storeId, StoreBasicInfoRequest request) {
-        Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new StoreException(STORE_NOT_FOUND));
+        Store store = getStoreByIdOrThrow(storeId);
 
         request.updateBasicInfo(store);
         businessHoursService.registerBusinessHours(store, request.businessHours());
@@ -79,8 +78,7 @@ public class StoreService {
     public StoreDetailResponse getStoreDetail(Long storeId, Long userId) {
         List<String> sizeNameList = sizeRepository.findSizeNamesByStoreId(storeId);
         Long likeCount = eventStoreRepository.countByStoreId(storeId);
-        Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new StoreException(STORE_NOT_FOUND));
+        Store store = getStoreByIdOrThrow(storeId);
 
         boolean is24hSelfService = Boolean.TRUE.equals(store.getIsSelfService()) &&
                 store.getBusinessHoursList().stream()
@@ -107,4 +105,10 @@ public class StoreService {
                 sizeNameList
         );
     }
+
+    public Store getStoreByIdOrThrow(Long storeId) {
+        return storeRepository.findById(storeId)
+                .orElseThrow(() -> new StoreException(STORE_NOT_FOUND));
+    }
+
 }

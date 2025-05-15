@@ -1,9 +1,11 @@
 package com.deark.be.design.service;
 
+import static com.deark.be.design.exception.errorcode.DesignErrorCode.DESIGN_NOT_FOUND;
+
 import com.deark.be.design.domain.Design;
 import com.deark.be.design.dto.response.*;
+import com.deark.be.design.exception.DesignException;
 import com.deark.be.design.repository.DesignRepository;
-import com.deark.be.design.repository.SizeRepository;
 import com.deark.be.event.repository.EventDesignRepository;
 import com.deark.be.store.domain.type.SortType;
 import lombok.RequiredArgsConstructor;
@@ -78,5 +80,11 @@ public class DesignService {
 
     public DesignDetailResponse getDesignDetail(Long userId, Long designId) {
         return designRepository.findDesignDetailById(userId, designId);
+    }
+
+
+    public Design getDesignByIdOrThrow(Long designId) {
+        return designRepository.findById(designId)
+                .orElseThrow(() -> new DesignException(DESIGN_NOT_FOUND));
     }
 }

@@ -4,6 +4,7 @@ import com.deark.be.design.domain.Design;
 import com.deark.be.design.repository.DesignRepository;
 import com.deark.be.global.util.DummyDataInit;
 import com.deark.be.order.domain.Message;
+import com.deark.be.order.domain.type.RequestDetailType;
 import com.deark.be.order.repository.MessageRepository;
 import com.deark.be.store.domain.Store;
 import com.deark.be.store.repository.StoreRepository;
@@ -21,6 +22,7 @@ import java.util.List;
 
 import static com.deark.be.order.domain.type.DesignType.CUSTOM;
 import static com.deark.be.order.domain.type.DesignType.STORE;
+import static com.deark.be.order.domain.type.RequestDetailType.EVENT;
 import static com.deark.be.order.domain.type.Status.*;
 
 @Slf4j
@@ -29,6 +31,7 @@ import static com.deark.be.order.domain.type.Status.*;
 @DummyDataInit
 public class MessageInitializer implements ApplicationRunner {
 
+    public static final RequestDetailType REQUEST_DETAIL_TYPE = RequestDetailType.CUSTOM;
     private final MessageRepository messageRepository;
     private final UserRepository userRepository;
     private final StoreRepository storeRepository;
@@ -60,6 +63,8 @@ public class MessageInitializer implements ApplicationRunner {
                     .store(STORE1)
                     .design(DESIGN1)
                     .designType(STORE)
+                    .requestDetailDesign(DESIGN2)
+                    .requestDetailType(EVENT)
                     .status(PENDING)
                     .build();
 
@@ -68,6 +73,8 @@ public class MessageInitializer implements ApplicationRunner {
                     .store(STORE1)
                     .design(DESIGN8)
                     .designType(STORE)
+                    .requestDetailDesign(DESIGN3)
+                    .requestDetailType(EVENT)
                     .status(ACCEPTED)
                     .makerResponse("안녕하세요 고객님 :) 문의해주셔서 감사합니다. 해당 디자인으로 말씀하신 일정에 가능합니다!")
                     .build();
@@ -77,6 +84,8 @@ public class MessageInitializer implements ApplicationRunner {
                     .store(STORE1)
                     .design(DESIGN1)
                     .designType(STORE)
+                    .requestDetailDesign(DESIGN8)
+                    .requestDetailType(EVENT)
                     .status(REJECTED)
                     .makerResponse("디자인에 사용될 재료 부족 및 소진")
                     .build();
@@ -86,6 +95,9 @@ public class MessageInitializer implements ApplicationRunner {
                     .store(STORE2)
                     .design(DESIGN2)
                     .designType(STORE)
+                    .requestDetailDesign(DESIGN8)
+                    .requestDetailType(EVENT)
+                    .requestDetailDesign(DESIGN1)
                     .status(PENDING)
                     .build();
 
@@ -94,6 +106,8 @@ public class MessageInitializer implements ApplicationRunner {
                     .store(STORE2)
                     .design(DESIGN2)
                     .designType(STORE)
+                    .requestDetailDesign(DESIGN1)
+                    .requestDetailType(EVENT)
                     .status(ACCEPTED)
                     .makerResponse("안녕하세요 고객님 :) 문의해주셔서 감사합니다. 해당 디자인으로 말씀하신 일정에 가능합니다!")
                     .build();
@@ -103,6 +117,8 @@ public class MessageInitializer implements ApplicationRunner {
                     .store(STORE2)
                     .design(DESIGN2)
                     .designType(STORE)
+                    .requestDetailDesign(DESIGN8)
+                    .requestDetailType(EVENT)
                     .status(REJECTED)
                     .makerResponse("기간 내 제작 불가")
                     .build();
@@ -112,6 +128,8 @@ public class MessageInitializer implements ApplicationRunner {
                     .store(STORE3)
                     .designType(CUSTOM)
                     .designUrl(designImageUrl + "/bear.png")
+                    .requestDetailType(RequestDetailType.CUSTOM)
+                    .requestDetailImageUrl(designImageUrl+"/heart.png")
                     .status(PENDING)
                     .build();
 
@@ -120,6 +138,8 @@ public class MessageInitializer implements ApplicationRunner {
                     .store(STORE3)
                     .design(DESIGN3)
                     .designType(STORE)
+                    .requestDetailType(RequestDetailType.CUSTOM)
+                    .requestDetailImageUrl(designImageUrl+"/friend_picture.png")
                     .status(ACCEPTED)
                     .build();
 
