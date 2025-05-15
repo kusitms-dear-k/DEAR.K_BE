@@ -16,6 +16,8 @@ public record StoreDesignResponse(
         @Schema(description = "디자인 최소 가격", example = "15000")
         Long price,
         @Schema(description = "찜하기 여부", example = "false")
-        Boolean isLiked
+        Boolean isLiked,
+        @Schema(description = "디자인 좋아요 수", example = "10")
+        Long likeCount
 ) {
 }
