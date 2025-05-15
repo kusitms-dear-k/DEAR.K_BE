@@ -47,7 +47,8 @@ public class MypageController {
                 .body(ResponseTemplate.from(responseList));
     }
 
-    @Operation(summary = "반려된 견적서 사유 조회", description = "반려된 견적서의 사유를 조회합니다.")
+    @Operation(summary = "반려된 견적서 사유 조회", description = "반려된 견적서의 사유를 조회합니다. <br>" +
+            "테스트 하려면 ID : 3 또는 6으로 조회하면 됩니다.")
     @GetMapping("/request/rejected/{messageId}")
     public ResponseEntity<ResponseTemplate<MyOrderRejectedResponse>> getRejectReason(
             @PathVariable Long messageId) {
@@ -59,7 +60,8 @@ public class MypageController {
                 .body(ResponseTemplate.from(response));
     }
 
-    @Operation(summary = "견적서 또는 주문서 상세 조회", description = "견적서 또는 주문서의 상세 정보를 조회합니다.")
+    @Operation(summary = "견적서 또는 주문서 상세 조회", description = "견적서 또는 주문서의 상세 정보를 조회합니다. <br>" +
+            "테스트 하려면 ID : 1 또는 4 또는 7로 조회하면 됩니다.")
     @GetMapping("/request/detail/{messageId}")
     public ResponseEntity<ResponseTemplate<MyOrderDetailResponse>> getOrderDetail(
             @PathVariable Long messageId) {
@@ -71,7 +73,8 @@ public class MypageController {
                 .body(ResponseTemplate.from(response));
     }
 
-    @Operation(summary = "수락된 주문서 상세 조회", description = "수락된 주문서의 메이커 답변, 견적서 상세 정보, 카카오톡 링크를 조회합니다.")
+    @Operation(summary = "수락된 주문서 상세 조회", description = "수락된 주문서의 메이커 답변, 견적서 상세 정보, 카카오톡 링크를 조회합니다. <br>" +
+            "테스트 하려면 ID : 2로 조회하면 됩니다.")
     @GetMapping("/request/accepted/{messageId}")
     public ResponseEntity<ResponseTemplate<MyOrderAcceptedResponse>> getAcceptedOrderDetail(
             @PathVariable Long messageId) {
