@@ -89,17 +89,4 @@ public class StoreController {
                 .status(HttpStatus.OK)
                 .body(ResponseTemplate.from(storeList));
     }
-
-    @Operation(summary = "스토어 상세 조회", description = "스토어 상세 정보를 조회합니다.<br>"
-            + "가게에서 설정한 모든 사이즈 정보도 이때 함께 응답합니다.")
-    @GetMapping("/detail/{storeId}")
-    public ResponseEntity<ResponseTemplate<StoreDetailResponse>> getStoreDetail(
-            @PathVariable Long storeId,
-            @AuthenticationPrincipal Long userId
-    ) {
-        StoreDetailResponse storeDetail = storeService.getStoreDetail(storeId, userId);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(ResponseTemplate.from(storeDetail));
-    }
 }

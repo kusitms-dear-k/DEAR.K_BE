@@ -1,6 +1,7 @@
 package com.deark.be.order.service;
 
 import com.deark.be.design.domain.Design;
+import com.deark.be.design.dto.response.StoreDesignSimpleResponse;
 import com.deark.be.design.service.DesignService;
 import com.deark.be.global.service.S3Service;
 import com.deark.be.order.domain.Message;
@@ -145,5 +146,9 @@ public class OrderService {
                 .toList();
 
         return DesignSheetResponseList.from(designSheetResponses);
+    }
+
+    public List<StoreDesignSimpleResponse> getDesignListByStoreId(Long storeId) {
+        return designService.getSimpleDesignListByStoreId(storeId);
     }
 }

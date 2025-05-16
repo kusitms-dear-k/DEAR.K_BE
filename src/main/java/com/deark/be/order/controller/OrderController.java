@@ -1,5 +1,6 @@
 package com.deark.be.order.controller;
 
+import com.deark.be.design.dto.response.StoreDesignSimpleResponse;
 import com.deark.be.global.dto.ResponseTemplate;
 import com.deark.be.order.dto.request.SubmitOrderRequest;
 import com.deark.be.order.dto.response.BusinessHoursResponse;
@@ -13,6 +14,7 @@ import com.deark.be.store.dto.response.DesignSizeResponseList;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -125,5 +127,15 @@ public class OrderController {
         DesignSheetResponseList designSheet = orderService.getDesignSheet(storeId);
 
         return ResponseEntity.ok(ResponseTemplate.from(designSheet));
+    }
+
+    @Operation(summary = "가게의 모든 디자인 조회 ", description = "가게의 모든 디자인을 조회합니다. ")
+    @GetMapping("/store/{storeId}/design")
+    public ResponseEntity<ResponseTemplate<List<StoreDesignSimpleResponse>>> getDesignListForOrderSelect(
+            @PathVariable Long storeId
+    ) {
+
+        List<StoreDesignSimpleResponse> designList = orderService.getDesignListByStoreId(storeId);
+        return ResponseEntity.ok(ResponseTemplate.from(designList));
     }
 }
