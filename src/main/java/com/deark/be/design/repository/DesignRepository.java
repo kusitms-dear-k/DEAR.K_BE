@@ -13,4 +13,6 @@ public interface DesignRepository extends JpaRepository<Design, Long>, DesignRep
 
     @Query("SELECT d.id FROM Design d LEFT JOIN d.eventDesignList ed GROUP BY d.id ORDER BY COUNT(ed) DESC")
     List<Long> findTopDesignIds(Pageable pageable);
+
+    List<Design> findByStoreId(Long storeId);
 }

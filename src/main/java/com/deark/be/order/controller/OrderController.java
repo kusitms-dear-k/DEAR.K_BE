@@ -7,17 +7,21 @@ import com.deark.be.order.service.OrderQuestionService;
 import com.deark.be.order.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "Order", description = "주문 관련 API")
 @Slf4j
@@ -51,12 +55,15 @@ public class OrderController {
         - requestDetailType이 `CUSTOM`인 경우(= 사용자 갤러리에서 선택): requestDetailImageUrl 필수, requestDetailDesignId은 null로 설정해주세요.
 
         """)
-    @PostMapping("/submit")
+    @PostMapping(value="/submit", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,
+            MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ResponseTemplate<Long>> submitOrder(
             @AuthenticationPrincipal Long userId,
-            @RequestBody SubmitOrderRequest request) {
+            @RequestPart("request") @Valid SubmitOrderRequest request,
+            @RequestPart(value = "designImage",required = false) MultipartFile designImage,
+            @RequestPart(value = "requestDetailImage",required = false) MultipartFile requestDetailImage) {
 
-        Long messageId = orderService.submitOrder(request, userId);
+        Long messageId = orderService.submitOrder(request, userId,designImage,requestDetailImage);
         return ResponseEntity.ok(ResponseTemplate.from(messageId));
     }
 }

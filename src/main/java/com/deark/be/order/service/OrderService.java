@@ -2,6 +2,7 @@ package com.deark.be.order.service;
 
 import com.deark.be.design.domain.Design;
 import com.deark.be.design.service.DesignService;
+import com.deark.be.global.service.S3Service;
 import com.deark.be.order.domain.Message;
 import com.deark.be.order.domain.QA;
 import com.deark.be.order.domain.type.DesignType;
@@ -10,6 +11,7 @@ import com.deark.be.order.domain.type.Status;
 import com.deark.be.order.dto.request.SubmitOrderRequest;
 import com.deark.be.order.dto.response.*;
 import com.deark.be.order.exception.OrderException;
+import com.deark.be.order.exception.errorcode.OrderErrorCode;
 import com.deark.be.order.repository.MessageRepository;
 import com.deark.be.order.repository.QARepository;
 import com.deark.be.store.domain.Store;
@@ -32,6 +34,7 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import org.springframework.web.multipart.MultipartFile;
 
 import static com.deark.be.order.exception.errorcode.OrderErrorCode.*;
 
@@ -47,6 +50,7 @@ public class OrderService {
     private final BusinessHoursService businessHoursService;
     private final StoreService storeService;
     private final DesignService designService;
+    private final S3Service s3Service;
 
     public MyOrderCountResponseList getAllCountByStatus(Long userId) {
         User user = userService.findUser(userId);
@@ -210,12 +214,15 @@ public class OrderService {
     }
 
     @Transactional
-    public Long submitOrder(SubmitOrderRequest request, Long userId) {
+    public Long submitOrder(SubmitOrderRequest request, Long userId, MultipartFile designImage, MultipartFile requestDetailImage) {
         User user = userService.findUser(userId);
         Store store = storeService.getStoreByIdOrThrow(request.storeId());
 
-        request.validateDesignParams();
-        request.validateRequestDetailParams();
+        String designUrl = (designImage != null) ? s3Service.uploadFile(designImage) : null;
+        String requestDetailImageUrl = (requestDetailImage != null) ? s3Service.uploadFile(requestDetailImage) : null;
+
+        validateDesignParams(request,designUrl);
+        validateRequestDetailParams(request,requestDetailImageUrl);
 
         Design design = request.designType() == DesignType.STORE
                 ? designService.getDesignByIdOrThrow(request.designId())
@@ -225,7 +232,7 @@ public class OrderService {
                 ? designService.getDesignByIdOrThrow(request.requestDetailDesignId())
                 : null;
 
-        Message message=messageRepository.save(request.toEntity(user,store,design,requestDetailDesign));
+        Message message=messageRepository.save(request.toEntity(user,store,design,requestDetailDesign,designUrl,requestDetailImageUrl));
         List<QA> qaList =request.answers().stream()
                 .map(answer -> answer.toEntity(message))
                 .toList();
@@ -234,5 +241,28 @@ public class OrderService {
         return message.getId();
     }
 
+    public void validateDesignParams(SubmitOrderRequest request, String designUrl) {
+        if (request.designType() == DesignType.STORE) {
+            if (request.designId() == null || designUrl != null) {
+                throw new OrderException(OrderErrorCode.INVALID_STORE_DESIGN_CONFLICT);
+            }
+        } else if (request.designType() == DesignType.CUSTOM) {
+            if (designUrl == null || designUrl.isBlank() || request.designId()  != null) {
+                throw new OrderException(OrderErrorCode.INVALID_CUSTOM_DESIGN_CONFLICT);
+            }
+        }
+    }
+
+    public void validateRequestDetailParams(SubmitOrderRequest request, String requestDetailImageUrl) {
+        if (request.requestDetailType() == RequestDetailType.EVENT) {
+            if (request.requestDetailDesignId() == null || requestDetailImageUrl != null) {
+                throw new OrderException(OrderErrorCode.INVALID_EVENT_REQUEST_DETAIL_CONFLICT);
+            }
+        } else if (request.requestDetailType() == RequestDetailType.CUSTOM) {
+            if (requestDetailImageUrl == null || requestDetailImageUrl.isBlank() || request.requestDetailDesignId() != null) {
+                throw new OrderException(OrderErrorCode.INVALID_CUSTOM_REQUEST_DETAIL_CONFLICT);
+            }
+        }
+    }
 
 }
