@@ -7,6 +7,7 @@ import com.deark.be.order.dto.response.OrderQuestionResponseList;
 import com.deark.be.order.dto.response.PickUpDateResponseList;
 import com.deark.be.order.service.OrderQuestionService;
 import com.deark.be.order.service.OrderService;
+import com.deark.be.store.dto.response.DesignCreamResponseList;
 import com.deark.be.store.dto.response.DesignSizeResponseList;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -90,5 +91,15 @@ public class OrderController {
         DesignSizeResponseList designSize = orderService.getDesignSize(storeId);
 
         return ResponseEntity.ok(ResponseTemplate.from(designSize));
+    }
+
+    @Operation(summary = "가게의 모든 디자인 크림 조회", description = "가게의 모든 디자인 크림을 조회합니다.")
+    @GetMapping("/store/{storeId}/cream")
+    public ResponseEntity<ResponseTemplate<DesignCreamResponseList>> getDesignCream(
+            @PathVariable Long storeId) {
+
+        DesignCreamResponseList designCream = orderService.getDesignCream(storeId);
+
+        return ResponseEntity.ok(ResponseTemplate.from(designCream));
     }
 }

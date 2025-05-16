@@ -8,11 +8,11 @@ import java.util.List;
 @Builder
 public record DesignSizeResponseList(
         @Schema(description = "디자인 사이즈 리스트")
-        List<DesignSizeResponse> designList
+        List<DesignSizeResponse> sizeList
 ) {
-    public static DesignSizeResponseList from(List<DesignSizeResponse> designList) {
+    public static DesignSizeResponseList from(List<DesignSizeResponse> sizeList) {
         return DesignSizeResponseList.builder()
-                .designList(designList)
+                .sizeList(sizeList)
                 .build();
     }
 }
