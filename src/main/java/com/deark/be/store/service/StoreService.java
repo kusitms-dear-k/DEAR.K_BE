@@ -8,11 +8,7 @@ import com.deark.be.store.domain.Store;
 import com.deark.be.store.domain.type.SortType;
 import com.deark.be.store.dto.request.StoreBasicInfoRequest;
 import com.deark.be.store.dto.request.StoreRegisterRequest;
-import com.deark.be.store.dto.response.BusinessHourResponse;
-import com.deark.be.store.dto.response.PickUpHourResponse;
-import com.deark.be.store.dto.response.SearchStorePagedResult;
-import com.deark.be.store.dto.response.SearchStoreResponseList;
-import com.deark.be.store.dto.response.StoreDetailResponse;
+import com.deark.be.store.dto.response.*;
 import com.deark.be.store.exception.StoreException;
 import com.deark.be.store.repository.StoreRepository;
 import com.deark.be.user.domain.User;
@@ -38,10 +34,11 @@ public class StoreService {
 
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
-    private final BusinessHoursService businessHoursService;
     private final SizeRepository sizeRepository;
-    private final S3Service s3Service;
     private final EventStoreRepository eventStoreRepository;
+
+    private final S3Service s3Service;
+    private final BusinessHoursService businessHoursService;
 
     @Transactional
     public Long registerStore(StoreRegisterRequest request, Long userId, MultipartFile businessLicenseFile,
@@ -110,5 +107,4 @@ public class StoreService {
         return storeRepository.findById(storeId)
                 .orElseThrow(() -> new StoreException(STORE_NOT_FOUND));
     }
-
 }

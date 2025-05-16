@@ -70,8 +70,8 @@ public class CommonQuestionInitializer implements ApplicationRunner {
                     .build();
 
             CommonQuestion COMMON_QUESTION8 = CommonQuestion.builder()
-                    .title("요청사항")
-                    .hint("텍스트 요청사항을 설명해주세요.")
+                    .title("기타 요청사항")
+                    .hint("기타 요청사항이 있다면 작성해주세요.")
                     .isRequired(false)
                     .build();
 
