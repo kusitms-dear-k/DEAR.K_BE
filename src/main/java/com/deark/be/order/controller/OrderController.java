@@ -3,6 +3,7 @@ package com.deark.be.order.controller;
 import com.deark.be.global.dto.ResponseTemplate;
 import com.deark.be.order.dto.request.SubmitOrderRequest;
 import com.deark.be.order.dto.response.OrderQuestionResponseList;
+import com.deark.be.order.dto.response.PickUpDateResponseList;
 import com.deark.be.order.service.OrderQuestionService;
 import com.deark.be.order.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,12 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Order", description = "주문 관련 API")
 @Slf4j
@@ -58,5 +54,15 @@ public class OrderController {
 
         Long messageId = orderService.submitOrder(request, userId);
         return ResponseEntity.ok(ResponseTemplate.from(messageId));
+    }
+
+    @Operation(summary = "가게 운영 요일 조회", description = "가게 운영 요일을 조회합니다.")
+    @GetMapping("/store/{storeId}/business-day")
+    public ResponseEntity<ResponseTemplate<PickUpDateResponseList>> getBusinessHours(
+            @PathVariable Long storeId) {
+
+        PickUpDateResponseList businessHours = orderService.getPickUpDate(storeId);
+
+        return ResponseEntity.ok(ResponseTemplate.from(businessHours));
     }
 }

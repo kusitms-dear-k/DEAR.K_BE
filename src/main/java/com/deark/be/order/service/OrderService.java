@@ -7,9 +7,13 @@ import com.deark.be.order.domain.QA;
 import com.deark.be.order.domain.type.DesignType;
 import com.deark.be.order.domain.type.RequestDetailType;
 import com.deark.be.order.dto.request.SubmitOrderRequest;
+import com.deark.be.order.dto.response.PickUpDateResponse;
+import com.deark.be.order.dto.response.PickUpDateResponseList;
 import com.deark.be.order.repository.MessageRepository;
 import com.deark.be.order.repository.QARepository;
+import com.deark.be.store.domain.BusinessHours;
 import com.deark.be.store.domain.Store;
+import com.deark.be.store.repository.BusinessHoursRepository;
 import com.deark.be.store.service.StoreService;
 import com.deark.be.user.domain.User;
 import com.deark.be.user.service.UserService;
@@ -28,6 +32,7 @@ public class OrderService {
 
     private final MessageRepository messageRepository;
     private final QARepository qaRepository;
+    private final BusinessHoursRepository businessHoursRepository;
     private final UserService userService;
     private final StoreService storeService;
     private final DesignService designService;
@@ -55,5 +60,16 @@ public class OrderService {
         qaRepository.saveAll(qaList);
 
         return message.getId();
+    }
+
+    public PickUpDateResponseList getPickUpDate(Long storeId) {
+        Store store = storeService.getStoreByIdOrThrow(storeId);
+
+        List<BusinessHours> businessHours = businessHoursRepository.findAllByStore(store);
+        List<PickUpDateResponse> pickUpDates = businessHours.stream()
+                .map(businessHour -> PickUpDateResponse.from(businessHour.getBusinessDay()))
+                .toList();
+
+        return PickUpDateResponseList.from(pickUpDates);
     }
 }
