@@ -31,7 +31,6 @@ import static com.deark.be.order.domain.type.Status.*;
 @DummyDataInit
 public class MessageInitializer implements ApplicationRunner {
 
-    public static final RequestDetailType REQUEST_DETAIL_TYPE = RequestDetailType.CUSTOM;
     private final MessageRepository messageRepository;
     private final UserRepository userRepository;
     private final StoreRepository storeRepository;

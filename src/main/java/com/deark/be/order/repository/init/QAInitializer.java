@@ -61,6 +61,13 @@ public class QAInitializer implements ApplicationRunner {
                     .isRequired(true)
                     .build();
 
+            QA DUMMY_QA5 = QA.builder()
+                    .message(MESSAGE1)
+                    .question("기타 요청사항")
+                    .answer("주차증 발급해주세요.")
+                    .isRequired(true)
+                    .build();
+
             QA DUMMY_QA6 = QA.builder()
                     .message(MESSAGE1)
                     .question("추가 요청사항")
@@ -114,6 +121,13 @@ public class QAInitializer implements ApplicationRunner {
                     .message(MESSAGE2)
                     .question("픽업 희망 시간")
                     .answer("15시 00분")
+                    .isRequired(true)
+                    .build();
+
+            QA DUMMY_QA14 = QA.builder()
+                    .message(MESSAGE2)
+                    .question("기타 요청사항")
+                    .answer("없습니다.")
                     .isRequired(true)
                     .build();
 
@@ -173,6 +187,13 @@ public class QAInitializer implements ApplicationRunner {
                     .isRequired(true)
                     .build();
 
+            QA DUMMY_QA23 = QA.builder()
+                    .message(MESSAGE4)
+                    .question("기타 요청사항")
+                    .answer("보냉백 추가할게요!")
+                    .isRequired(true)
+                    .build();
+
             QA DUMMY_QA24 = QA.builder()
                     .message(MESSAGE4)
                     .question("추가 요청사항")
@@ -229,6 +250,13 @@ public class QAInitializer implements ApplicationRunner {
                     .isRequired(true)
                     .build();
 
+            QA DUMMY_QA32 = QA.builder()
+                    .message(MESSAGE7)
+                    .question("기타 요청사항")
+                    .answer("없습니다.")
+                    .isRequired(true)
+                    .build();
+
             QA DUMMY_QA33 = QA.builder()
                     .message(MESSAGE7)
                     .question("추가 요청사항")
@@ -261,7 +289,8 @@ public class QAInitializer implements ApplicationRunner {
                     DUMMY_QA1, DUMMY_QA2, DUMMY_QA3, DUMMY_QA4, DUMMY_QA6, DUMMY_QA7, DUMMY_QA8, DUMMY_QA9,
                     DUMMY_QA10, DUMMY_QA11, DUMMY_QA12, DUMMY_QA13, DUMMY_QA15, DUMMY_QA16, DUMMY_QA17, DUMMY_QA18,
                     DUMMY_QA19, DUMMY_QA20, DUMMY_QA21, DUMMY_QA22, DUMMY_QA24, DUMMY_QA25, DUMMY_QA26, DUMMY_QA27,
-                    DUMMY_QA28, DUMMY_QA29, DUMMY_QA30, DUMMY_QA31, DUMMY_QA33, DUMMY_QA34, DUMMY_QA35, DUMMY_QA36
+                    DUMMY_QA28, DUMMY_QA29, DUMMY_QA30, DUMMY_QA31, DUMMY_QA33, DUMMY_QA34, DUMMY_QA35, DUMMY_QA36,
+                    DUMMY_QA5, DUMMY_QA14, DUMMY_QA23, DUMMY_QA32
             ));
 
             qaRepository.saveAll(qaList);
