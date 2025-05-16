@@ -8,6 +8,7 @@ import com.deark.be.order.dto.response.PickUpDateResponseList;
 import com.deark.be.order.service.OrderQuestionService;
 import com.deark.be.order.service.OrderService;
 import com.deark.be.store.dto.response.DesignCreamResponseList;
+import com.deark.be.store.dto.response.DesignSheetResponseList;
 import com.deark.be.store.dto.response.DesignSizeResponseList;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -101,5 +102,15 @@ public class OrderController {
         DesignCreamResponseList designCream = orderService.getDesignCream(storeId);
 
         return ResponseEntity.ok(ResponseTemplate.from(designCream));
+    }
+
+    @Operation(summary = "가게의 모든 디자인 시트 조회", description = "가게의 모든 디자인 시트를 조회합니다.")
+    @GetMapping("/store/{storeId}/sheet")
+    public ResponseEntity<ResponseTemplate<DesignSheetResponseList>> getDesignSheet(
+            @PathVariable Long storeId) {
+
+        DesignSheetResponseList designSheet = orderService.getDesignSheet(storeId);
+
+        return ResponseEntity.ok(ResponseTemplate.from(designSheet));
     }
 }

@@ -14,10 +14,7 @@ import com.deark.be.order.repository.MessageRepository;
 import com.deark.be.order.repository.QARepository;
 import com.deark.be.store.domain.BusinessHours;
 import com.deark.be.store.domain.Store;
-import com.deark.be.store.dto.response.DesignCreamResponse;
-import com.deark.be.store.dto.response.DesignCreamResponseList;
-import com.deark.be.store.dto.response.DesignSizeResponse;
-import com.deark.be.store.dto.response.DesignSizeResponseList;
+import com.deark.be.store.dto.response.*;
 import com.deark.be.store.service.BusinessHoursService;
 import com.deark.be.store.service.StoreService;
 import com.deark.be.user.domain.User;
@@ -107,5 +104,16 @@ public class OrderService {
                 .toList();
 
         return DesignCreamResponseList.from(designSizeResponses);
+    }
+
+    public DesignSheetResponseList getDesignSheet(Long storeId) {
+        Store store = storeService.getStoreByIdOrThrow(storeId);
+
+        List<DesignSheetResponse> designSheetResponses = store.getSheetList().stream()
+                .distinct()
+                .map(DesignSheetResponse::from)
+                .toList();
+
+        return DesignSheetResponseList.from(designSheetResponses);
     }
 }
