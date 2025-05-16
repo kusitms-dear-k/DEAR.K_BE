@@ -82,7 +82,6 @@ public class DesignService {
         return designRepository.findDesignDetailById(userId, designId);
     }
 
-
     public Design getDesignByIdOrThrow(Long designId) {
         return designRepository.findById(designId)
                 .orElseThrow(() -> new DesignException(DESIGN_NOT_FOUND));

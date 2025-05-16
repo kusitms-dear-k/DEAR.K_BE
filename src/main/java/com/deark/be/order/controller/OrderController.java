@@ -7,6 +7,7 @@ import com.deark.be.order.dto.response.OrderQuestionResponseList;
 import com.deark.be.order.dto.response.PickUpDateResponseList;
 import com.deark.be.order.service.OrderQuestionService;
 import com.deark.be.order.service.OrderService;
+import com.deark.be.store.dto.response.DesignSizeResponseList;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -79,5 +80,15 @@ public class OrderController {
         BusinessHoursResponse businessHours = orderService.getBusinessHours(storeId, pickUpDate);
 
         return ResponseEntity.ok(ResponseTemplate.from(businessHours));
+    }
+
+    @Operation(summary = "가게의 모든 디자인 사이즈 조회", description = "가게의 모든 디자인 사이즈를 조회합니다.")
+    @GetMapping("/store/{storeId}/size")
+    public ResponseEntity<ResponseTemplate<DesignSizeResponseList>> getDesignSize(
+            @PathVariable Long storeId) {
+
+        DesignSizeResponseList designSize = orderService.getDesignSize(storeId);
+
+        return ResponseEntity.ok(ResponseTemplate.from(designSize));
     }
 }

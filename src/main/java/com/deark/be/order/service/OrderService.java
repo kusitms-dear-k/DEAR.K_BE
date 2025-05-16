@@ -14,6 +14,8 @@ import com.deark.be.order.repository.MessageRepository;
 import com.deark.be.order.repository.QARepository;
 import com.deark.be.store.domain.BusinessHours;
 import com.deark.be.store.domain.Store;
+import com.deark.be.store.dto.response.DesignSizeResponse;
+import com.deark.be.store.dto.response.DesignSizeResponseList;
 import com.deark.be.store.service.BusinessHoursService;
 import com.deark.be.store.service.StoreService;
 import com.deark.be.user.domain.User;
@@ -79,6 +81,18 @@ public class OrderService {
     public BusinessHoursResponse getBusinessHours(Long storeId, LocalDate pickUpDate) {
         Store store = storeService.getStoreByIdOrThrow(storeId);
         BusinessHours businessHours = businessHoursService.getBusinessHoursByDate(store, pickUpDate);
+
         return BusinessHoursResponse.from(businessHours);
+    }
+
+    public DesignSizeResponseList getDesignSize(Long storeId) {
+        Store store = storeService.getStoreByIdOrThrow(storeId);
+
+        List<DesignSizeResponse> designSizeResponses = store.getSizeList().stream()
+                .distinct()
+                .map(DesignSizeResponse::from)
+                .toList();
+
+        return DesignSizeResponseList.from(designSizeResponses);
     }
 }
