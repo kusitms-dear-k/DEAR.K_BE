@@ -87,4 +87,16 @@ public class DesignService {
         return designRepository.findById(designId)
                 .orElseThrow(() -> new DesignException(DESIGN_NOT_FOUND));
     }
+
+    public List<StoreDesignSimpleResponse> getSimpleDesignListByStoreId(Long storeId) {
+        List<Design> designs = designRepository.findByStoreId(storeId);
+        return designs.stream()
+                .map(design -> StoreDesignSimpleResponse.builder()
+                        .designId(design.getId())
+                        .designName(design.getName())
+                        .imageUrl(design.getImageUrl())
+                        .price(design.getPrice())
+                        .build())
+                .toList();
+    }
 }
