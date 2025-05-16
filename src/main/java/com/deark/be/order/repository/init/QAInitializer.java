@@ -35,224 +35,224 @@ public class QAInitializer implements ApplicationRunner {
 
             QA DUMMY_QA1 = QA.builder()
                     .message(MESSAGE1)
-                    .question("name")
+                    .question("이름")
                     .answer("김혜연")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA2 = QA.builder()
                     .message(MESSAGE1)
-                    .question("phoneNumber")
+                    .question("전화번호")
                     .answer("010-4037-2419")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA3 = QA.builder()
                     .message(MESSAGE1)
-                    .question("pickupDate")
+                    .question("픽업 희망 일자")
                     .answer("2025년 5월 30일 금요일")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA4 = QA.builder()
                     .message(MESSAGE1)
-                    .question("pickupTime")
+                    .question("픽업 희망 시간")
                     .answer("14시 30분")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA6 = QA.builder()
                     .message(MESSAGE1)
-                    .question("additionalRequest")
+                    .question("추가 요청사항")
                     .answer("문구를 생일축하해! 로 넣어주세요. 사진 속 리본 3개를 곰돌이 위에 올려주세요.")
                     .isRequired(false)
                     .build();
 
             QA DUMMY_QA7 = QA.builder()
                     .message(MESSAGE1)
-                    .question("size")
+                    .question("크기")
                     .answer("도시락 케이크")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA8 = QA.builder()
                     .message(MESSAGE1)
-                    .question("cream")
+                    .question("크림 맛")
                     .answer("블루베리")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA9 = QA.builder()
                     .message(MESSAGE1)
-                    .question("sheet")
+                    .question("시트 맛")
                     .answer("바닐라")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA10 = QA.builder()
                     .message(MESSAGE2)
-                    .question("name")
+                    .question("이름")
                     .answer("박소윤")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA11 = QA.builder()
                     .message(MESSAGE2)
-                    .question("phoneNumber")
+                    .question("전화번호")
                     .answer("010-1234-5678")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA12 = QA.builder()
                     .message(MESSAGE2)
-                    .question("pickupDate")
+                    .question("픽업 희망 일자")
                     .answer("2025년 6월 1일 일요일")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA13 = QA.builder()
                     .message(MESSAGE2)
-                    .question("pickupTime")
+                    .question("픽업 희망 시간")
                     .answer("15시 00분")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA15 = QA.builder()
                     .message(MESSAGE2)
-                    .question("additionalRequest")
+                    .question("추가 요청사항")
                     .answer("문구를 생일축하해! 로 넣어주세요. 사진 속 리본 3개를 곰돌이 위에 올려주세요.")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA16 = QA.builder()
                     .message(MESSAGE2)
-                    .question("size")
+                    .question("크기")
                     .answer("도시락 케이크")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA17 = QA.builder()
                     .message(MESSAGE2)
-                    .question("cream")
+                    .question("크림 맛")
                     .answer("생크림")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA18 = QA.builder()
                     .message(MESSAGE2)
-                    .question("sheet")
+                    .question("시트 맛")
                     .answer("초코")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA19 = QA.builder()
                     .message(MESSAGE4)
-                    .question("name")
+                    .question("이름")
                     .answer("이지은")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA20 = QA.builder()
                     .message(MESSAGE4)
-                    .question("phoneNumber")
+                    .question("전화번호")
                     .answer("010-9876-5432")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA21 = QA.builder()
                     .message(MESSAGE4)
-                    .question("pickupDate")
+                    .question("픽업 희망 일자")
                     .answer("2025년 6월 17일 화요일")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA22 = QA.builder()
                     .message(MESSAGE4)
-                    .question("pickupTime")
+                    .question("픽업 희망 시간")
                     .answer("16시 00분")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA24 = QA.builder()
                     .message(MESSAGE4)
-                    .question("additionalRequest")
+                    .question("추가 요청사항")
                     .answer("곰돌이 눈을 더 크게 해주세요. 초코시트로 해주세요.")
                     .isRequired(false)
                     .build();
 
             QA DUMMY_QA25 = QA.builder()
                     .message(MESSAGE4)
-                    .question("size")
+                    .question("크기")
                     .answer("도시락 케이크")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA26 = QA.builder()
                     .message(MESSAGE4)
-                    .question("cream")
+                    .question("크림 맛")
                     .answer("딸기")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA27 = QA.builder()
                     .message(MESSAGE4)
-                    .question("sheet")
+                    .question("시트 맛")
                     .answer("초코")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA28 = QA.builder()
                     .message(MESSAGE7)
-                    .question("name")
+                    .question("이름")
                     .answer("최유진")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA29 = QA.builder()
                     .message(MESSAGE7)
-                    .question("phoneNumber")
+                    .question("전화번호")
                     .answer("010-5555-6666")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA30 = QA.builder()
                     .message(MESSAGE7)
-                    .question("pickupDate")
+                    .question("픽업 희망 일자")
                     .answer("2025년 6월 20일 금요일")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA31 = QA.builder()
                     .message(MESSAGE7)
-                    .question("pickupTime")
+                    .question("픽업 희망 시간")
                     .answer("13시 30분")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA33 = QA.builder()
                     .message(MESSAGE7)
-                    .question("additionalRequest")
+                    .question("추가 요청사항")
                     .answer("하트 모양을 더 선명하게 해주세요. 핑크색 크림으로 해주세요.")
                     .isRequired(false)
                     .build();
 
             QA DUMMY_QA34 = QA.builder()
                     .message(MESSAGE7)
-                    .question("size")
+                    .question("크기")
                     .answer("1호 케이크")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA35 = QA.builder()
                     .message(MESSAGE7)
-                    .question("cream")
+                    .question("크림 맛")
                     .answer("바닐라")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA36 = QA.builder()
                     .message(MESSAGE7)
-                    .question("sheet")
+                    .question("시트 맛")
                     .answer("바닐라")
                     .isRequired(true)
                     .build();

@@ -10,7 +10,6 @@ import com.deark.be.order.domain.type.Status;
 import com.deark.be.order.dto.request.SubmitOrderRequest;
 import com.deark.be.order.dto.response.*;
 import com.deark.be.order.exception.OrderException;
-import com.deark.be.order.exception.errorcode.OrderErrorCode;
 import com.deark.be.order.repository.MessageRepository;
 import com.deark.be.order.repository.QARepository;
 import com.deark.be.store.domain.Store;
@@ -25,7 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -87,30 +89,21 @@ public class OrderService {
 
     public MyOrderDetailResponse getOrderDetail(Long messageId) {
         Message message = findMessage(messageId);
+
         List<QA> qaList = qaRepository.findAllByMessage(message);
+        List<QAResponse> qaResponses = buildOrderedQaList(qaList);
 
-        Map<String, Map<String, Object>> qaMap = qaList.stream()
-                .collect(Collectors.toMap(
-                        QA::getQuestion,
-                        qa -> {
-                            Map<String, Object> value = new HashMap<>();
-                            value.put("answer", qa.getAnswer());
-                            return value;
-                        }
-                ));
-
-        String pickupDateStr = qaList.stream()
-                .filter(q -> "pickupDate".equals(q.getQuestion()))
-                .map(QA::getAnswer)
+        String pickupDateStr = qaResponses.stream()
+                .filter(q -> "픽업 희망 일자".equals(q.title()))
+                .map(QAResponse::answer)
                 .findFirst()
                 .orElse("");
 
         String dayName = extractDayName(pickupDateStr);
         String businessHourStr = getBusinessHourStr(dayName, message);
 
-        return MyOrderDetailResponse.of(message, businessHourStr, qaMap);
+        return MyOrderDetailResponse.of(message, businessHourStr, qaResponses);
     }
-
 
     public MyOrderAcceptedResponse getAcceptedOrderDetail(Long messageId) {
         Message message = findMessage(messageId);
@@ -208,7 +201,7 @@ public class OrderService {
     }
 
     private String getBusinessHourStr(String dayName, Message message) {
-         return businessHoursService.getBusinessHourForPickupDate(message.getStore(), dayName);
+        return businessHoursService.getBusinessHourForPickupDate(message.getStore(), dayName);
     }
 
     private Message findMessage(Long messageId) {
