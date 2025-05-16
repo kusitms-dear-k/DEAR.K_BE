@@ -4,6 +4,7 @@ import com.deark.be.store.domain.BusinessHours;
 import com.deark.be.store.domain.Store;
 import com.deark.be.store.domain.type.BusinessDay;
 import com.deark.be.store.dto.request.BusinessHoursRequest;
+import com.deark.be.store.exception.StoreException;
 import com.deark.be.store.repository.BusinessHoursRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.List;
+
+import static com.deark.be.store.exception.errorcode.StoreErrorCode.BUSINESS_HOURS_NOT_FOUND;
 
 @Slf4j
 @Service
@@ -42,5 +46,17 @@ public class BusinessHoursService {
                 .findFirst()
                 .map(bh -> bh.getOpenTime() + " ~ " + bh.getCloseTime())
                 .orElse("해당 요일에는 운영하지 않습니다");
+    }
+
+    public List<BusinessHours> getBusinessHoursByStore(Store store) {
+        return businessHoursRepository.findAllByStore(store);
+    }
+
+    public BusinessHours getBusinessHoursByDate(Store store, LocalDate pickUpDate) {
+        DayOfWeek dayOfWeek = pickUpDate.getDayOfWeek();
+        BusinessDay businessDay = BusinessDay.valueOf(dayOfWeek.name());
+
+        return businessHoursRepository.findByStoreAndBusinessDay(store, businessDay)
+                .orElseThrow(() -> new StoreException(BUSINESS_HOURS_NOT_FOUND));
     }
 }

@@ -2,6 +2,7 @@ package com.deark.be.order.controller;
 
 import com.deark.be.global.dto.ResponseTemplate;
 import com.deark.be.order.dto.request.SubmitOrderRequest;
+import com.deark.be.order.dto.response.BusinessHoursResponse;
 import com.deark.be.order.dto.response.OrderQuestionResponseList;
 import com.deark.be.order.dto.response.PickUpDateResponseList;
 import com.deark.be.order.service.OrderQuestionService;
@@ -14,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @Tag(name = "Order", description = "주문 관련 API")
 @Slf4j
@@ -62,6 +65,18 @@ public class OrderController {
             @PathVariable Long storeId) {
 
         PickUpDateResponseList businessHours = orderService.getPickUpDate(storeId);
+
+        return ResponseEntity.ok(ResponseTemplate.from(businessHours));
+    }
+
+    @Operation(summary = "픽업 날짜의 가게 운영시간 조회", description = "픽업 날짜의 가게 운영시간을 조회합니다. <br>" +
+            "픽업날짜에 2025-01-01 형식으로 넣어주세요.")
+    @GetMapping("/store/{storeId}/business-hours")
+    public ResponseEntity<ResponseTemplate<BusinessHoursResponse>> getBusinessHours(
+            @PathVariable Long storeId,
+            @RequestParam LocalDate pickUpDate) {
+
+        BusinessHoursResponse businessHours = orderService.getBusinessHours(storeId, pickUpDate);
 
         return ResponseEntity.ok(ResponseTemplate.from(businessHours));
     }
