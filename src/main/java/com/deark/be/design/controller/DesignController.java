@@ -97,4 +97,14 @@ public class DesignController {
                 .status(HttpStatus.OK)
                 .body(ResponseTemplate.from(designDetail));
     }
+
+    @Operation(summary = "주문서 작성 화면의 \"디자인 선택\" 용 조회 ", description = "주문서 작성 화면의 \"디자인 선택\" 드롭다운 또는 리스트용 데이터만 제공합니다.")
+    @GetMapping("/store/{storeId}/select")
+    public ResponseEntity<ResponseTemplate<List<StoreDesignSimpleResponse>>> getDesignListForOrderSelect(
+            @PathVariable Long storeId
+    ) {
+
+        List<StoreDesignSimpleResponse> designList = designService.getSimpleDesignListByStoreId(storeId);
+        return ResponseEntity.ok(ResponseTemplate.from(designList));
+    }
 }
