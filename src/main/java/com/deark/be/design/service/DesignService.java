@@ -91,12 +91,7 @@ public class DesignService {
     public List<StoreDesignSimpleResponse> getSimpleDesignListByStoreId(Long storeId) {
         List<Design> designs = designRepository.findByStoreId(storeId);
         return designs.stream()
-                .map(design -> StoreDesignSimpleResponse.builder()
-                        .designId(design.getId())
-                        .designName(design.getName())
-                        .imageUrl(design.getImageUrl())
-                        .price(design.getPrice())
-                        .build())
+                .map(StoreDesignSimpleResponse::from)
                 .toList();
     }
 }

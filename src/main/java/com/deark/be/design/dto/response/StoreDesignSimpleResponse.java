@@ -11,12 +11,12 @@ public record StoreDesignSimpleResponse(
         @Schema(description = "디자인 이름", example = "레인보우케이크")
         String designName,
         @Schema(description = "디자인 이미지 URL", example = "https://cdn.deark.com/designs/rainbow.png")
-        String imageUrl,
+        String designImageUrl,
         @Schema(description = "디자인 가격", example = "19000")
         Long price
 ) {
-    public static StoreDesignResponse from(Design design) {
-        return StoreDesignResponse.builder()
+    public static StoreDesignSimpleResponse from(Design design) {
+        return StoreDesignSimpleResponse.builder()
                 .designId(design.getId())
                 .designName(design.getName())
                 .designImageUrl(design.getImageUrl())
