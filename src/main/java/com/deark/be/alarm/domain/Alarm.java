@@ -36,11 +36,19 @@ public class Alarm extends BaseTimeEntity {
     @Column(name = "is_read", nullable = false)
     private Boolean isRead;
 
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted;
+
     @Builder
-    public Alarm(User user, Message message, Type type, Boolean isRead) {
+    public Alarm(User user, Message message, Type type, Boolean isRead, Boolean isDeleted) {
         this.user = user;
         this.message = message;
         this.type = type;
         this.isRead = isRead;
+        this.isDeleted = isDeleted;
+    }
+
+    public void markAsDeleted() {
+        this.isDeleted = true;
     }
 }

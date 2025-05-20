@@ -54,6 +54,7 @@ public class AlarmInitializer implements ApplicationRunner {
                     .message(MESSAGE2)
                     .type(ORDER)
                     .isRead(false)
+                    .isDeleted(false)
                     .build();
 
             Alarm DUMMY_ALARM2 = Alarm.builder()
@@ -61,6 +62,7 @@ public class AlarmInitializer implements ApplicationRunner {
                     .message(MESSAGE3)
                     .type(ORDER)
                     .isRead(false)
+                    .isDeleted(false)
                     .build();
 
             Alarm DUMMY_ALARM3 = Alarm.builder()
@@ -68,6 +70,7 @@ public class AlarmInitializer implements ApplicationRunner {
                     .message(MESSAGE5)
                     .type(ORDER)
                     .isRead(false)
+                    .isDeleted(false)
                     .build();
 
             Alarm DUMMY_ALARM4 = Alarm.builder()
@@ -75,6 +78,7 @@ public class AlarmInitializer implements ApplicationRunner {
                     .message(MESSAGE6)
                     .type(ORDER)
                     .isRead(false)
+                    .isDeleted(false)
                     .build();
 
             Alarm DUMMY_ALARM5 = Alarm.builder()
@@ -82,6 +86,7 @@ public class AlarmInitializer implements ApplicationRunner {
                     .message(MESSAGE8)
                     .type(ORDER)
                     .isRead(false)
+                    .isDeleted(false)
                     .build();
 
             Alarm DUMMY_ALARM6 = Alarm.builder()
@@ -89,6 +94,7 @@ public class AlarmInitializer implements ApplicationRunner {
                     .message(MESSAGE9)
                     .type(ORDER)
                     .isRead(false)
+                    .isDeleted(false)
                     .build();
 
             Alarm DUMMY_ALARM7 = Alarm.builder()
@@ -96,6 +102,7 @@ public class AlarmInitializer implements ApplicationRunner {
                     .message(MESSAGE10)
                     .type(ORDER)
                     .isRead(false)
+                    .isDeleted(false)
                     .build();
 
             alarmList.add(DUMMY_ALARM1);
