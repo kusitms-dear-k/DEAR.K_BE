@@ -3,6 +3,7 @@ package com.deark.be.order.domain;
 import com.deark.be.design.domain.Design;
 import com.deark.be.global.domain.BaseTimeEntity;
 import com.deark.be.order.domain.type.DesignType;
+import com.deark.be.order.domain.type.ProgressStatus;
 import com.deark.be.order.domain.type.RequestDetailType;
 import com.deark.be.order.domain.type.Status;
 import com.deark.be.store.domain.Store;
@@ -45,6 +46,10 @@ public class Message extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private Status status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "progress_status")
+    private ProgressStatus progressStatus;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "design_type", nullable = false)
