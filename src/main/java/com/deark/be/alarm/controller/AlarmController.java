@@ -1,9 +1,19 @@
 package com.deark.be.alarm.controller;
 
+import com.deark.be.alarm.dto.response.AlarmResponseList;
+import com.deark.be.alarm.service.AlarmService;
+import com.deark.be.global.dto.ResponseTemplate;
+import com.deark.be.order.domain.type.Status;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Alarm", description = "알림 관련 API")
@@ -12,4 +22,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/alarm")
 public class AlarmController {
+
+    private final AlarmService alarmService;
+
+    @Operation(summary = "알림 전체 조회", description = "전체 알림을 조회 : Status를 null로 설정 <br>" +
+            "수락된 알림만 조회 : Status를 ACCEPTED로 설정 <br>")
+    @GetMapping("")
+    public ResponseEntity<ResponseTemplate<AlarmResponseList>> getAlarmList(
+            @AuthenticationPrincipal Long userId,
+            @RequestParam(required = false) Status status) {
+
+        AlarmResponseList responseList = alarmService.getAlarmList(userId, status);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseTemplate.from(responseList));
+    }
 }
