@@ -17,6 +17,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,7 +76,8 @@ public class MessageInitializer implements ApplicationRunner {
                     .requestDetailDesign(DESIGN3)
                     .requestDetailType(EVENT)
                     .status(ACCEPTED)
-                    .makerResponse("안녕하세요 고객님 :) 문의해주셔서 감사합니다. 해당 디자인으로 말씀하신 일정에 가능합니다!")
+                    .makerResponse("24500")
+                    .responseTime(LocalDateTime.of(2025, 5, 19, 12, 0))
                     .build();
 
             Message DUMMY_MESSAGE3 = Message.builder()
@@ -87,6 +89,7 @@ public class MessageInitializer implements ApplicationRunner {
                     .requestDetailType(EVENT)
                     .status(REJECTED)
                     .makerResponse("디자인에 사용될 재료 부족 및 소진")
+                    .responseTime(LocalDateTime.of(2025, 5, 20, 12, 0))
                     .build();
 
             Message DUMMY_MESSAGE4 = Message.builder()
@@ -108,7 +111,8 @@ public class MessageInitializer implements ApplicationRunner {
                     .requestDetailDesign(DESIGN1)
                     .requestDetailType(EVENT)
                     .status(ACCEPTED)
-                    .makerResponse("안녕하세요 고객님 :) 문의해주셔서 감사합니다. 해당 디자인으로 말씀하신 일정에 가능합니다!")
+                    .makerResponse("38000")
+                    .responseTime(LocalDateTime.of(2025, 5, 21, 17, 0))
                     .build();
 
             Message DUMMY_MESSAGE6 = Message.builder()
@@ -120,6 +124,7 @@ public class MessageInitializer implements ApplicationRunner {
                     .requestDetailType(EVENT)
                     .status(REJECTED)
                     .makerResponse("기간 내 제작 불가")
+                    .responseTime(LocalDateTime.of(2025, 5, 18, 14, 0))
                     .build();
 
             Message DUMMY_MESSAGE7 = Message.builder()
@@ -140,6 +145,32 @@ public class MessageInitializer implements ApplicationRunner {
                     .requestDetailType(RequestDetailType.CUSTOM)
                     .requestDetailImageUrl(designImageUrl+"/friend_picture.png")
                     .status(ACCEPTED)
+                    .makerResponse("50000")
+                    .responseTime(LocalDateTime.of(2025, 5, 19, 10, 0))
+                    .build();
+
+            Message DUMMY_MESSAGE9 = Message.builder()
+                    .user(USER1)
+                    .store(STORE1)
+                    .design(DESIGN1)
+                    .designType(STORE)
+                    .requestDetailType(EVENT)
+                    .requestDetailDesign(DESIGN2)
+                    .makerResponse("26500")
+                    .status(ACCEPTED)
+                    .responseTime(LocalDateTime.of(2025, 5, 18, 11, 0))
+                    .build();
+
+            Message DUMMY_MESSAGE10 = Message.builder()
+                    .user(USER1)
+                    .store(STORE1)
+                    .design(DESIGN8)
+                    .designType(STORE)
+                    .requestDetailType(EVENT)
+                    .requestDetailDesign(DESIGN3)
+                    .makerResponse("34500")
+                    .status(ACCEPTED)
+                    .responseTime(LocalDateTime.of(2025, 5, 20, 13, 0))
                     .build();
 
             messageList.add(DUMMY_MESSAGE1);
@@ -150,6 +181,8 @@ public class MessageInitializer implements ApplicationRunner {
             messageList.add(DUMMY_MESSAGE6);
             messageList.add(DUMMY_MESSAGE7);
             messageList.add(DUMMY_MESSAGE8);
+            messageList.add(DUMMY_MESSAGE9);
+            messageList.add(DUMMY_MESSAGE10);
 
             messageRepository.saveAll(messageList);
         }
