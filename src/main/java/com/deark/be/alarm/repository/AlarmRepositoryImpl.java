@@ -39,6 +39,7 @@ public class AlarmRepositoryImpl implements AlarmRepositoryCustom {
                 .join(alarm.message)
                 .where(
                         alarm.user.id.eq(userId),
+                        alarm.isDeleted.isFalse(),
                         buildStatusCondition(status)
                 )
                 .orderBy(alarm.id.desc())
@@ -50,6 +51,7 @@ public class AlarmRepositoryImpl implements AlarmRepositoryCustom {
                 .join(alarm.message)
                 .where(
                         alarm.user.id.eq(userId),
+                        alarm.isDeleted.isFalse(),
                         buildStatusCondition(status)
                 )
                 .fetchOne();
