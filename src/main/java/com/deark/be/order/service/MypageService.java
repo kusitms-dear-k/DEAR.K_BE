@@ -203,11 +203,18 @@ public class MypageService {
                 .orElseThrow(() -> new OrderException(ORDER_NOT_FOUND));
     }
 
-
+    @Transactional(readOnly = true)
     public OrderManagementResponseList getPickupScheduledOrders(Long userId) {
-        List<Message> messages = messageRepository.findMessagesWithQAsByUserIdAndProgressStatusIn(
-                userId, List.of(ProgressStatus.RESERVED, ProgressStatus.BAKING)
-        );
+        return extractOrderManagementResponses(userId, List.of(ProgressStatus.RESERVED, ProgressStatus.BAKING));
+    }
+
+    @Transactional(readOnly = true)
+    public OrderManagementResponseList getPickupCompletedOrders(Long userId) {
+        return extractOrderManagementResponses(userId, List.of(ProgressStatus.PICKUP_DONE));
+    }
+
+    private OrderManagementResponseList extractOrderManagementResponses(Long userId, List<ProgressStatus> statuses) {
+        List<Message> messages = messageRepository.findMessagesWithQAsByUserIdAndProgressStatusIn(userId, statuses);
 
         List<OrderManagementResponse> responses = messages.stream()
                 .map(message -> {
@@ -217,96 +224,33 @@ public class MypageService {
                             ? "갤러리에서 추가한 디자인"
                             : message.getDesign().getName();
 
-                    String designURL = (message.getDesignType() == DesignType.CUSTOM)
+                    String designUrl = (message.getDesignType() == DesignType.CUSTOM)
                             ? message.getDesignUrl()
                             : message.getDesign().getImageUrl();
 
-                    // QA 답변 추출
                     Map<String, String> answerMap = new HashMap<>();
-
                     for (QA qa : message.getQaList()) {
-                        String key = qa.getQuestion();
-                        String value = qa.getAnswer();
-                        // 중복된 key가 있으면 첫 번째 값을 유지
-                        if (!answerMap.containsKey(key)) {
-                            answerMap.put(key, value);
+                        String question = qa.getQuestion();
+                        String answer = qa.getAnswer();
+                        if (!answerMap.containsKey(question)) {
+                            answerMap.put(question, answer);
                         }
                     }
-
-                    String size = answerMap.getOrDefault("크기", null);
-                    String cream = answerMap.getOrDefault("크림", null);
-                    String sheet = answerMap.getOrDefault("시트", null);
-                    String pickupDate = answerMap.getOrDefault("픽업 희망 일자", null);
-                    String pickupTime = answerMap.getOrDefault("픽업 희망 시간", null);
 
                     return OrderManagementResponse.builder()
                             .messageId(message.getId())
                             .storeName(storeName)
                             .designName(designName)
-                            .designUrl(designURL)
-                            .size(size)
-                            .cream(cream)
-                            .sheet(sheet)
+                            .designUrl(designUrl)
+                            .size(answerMap.get("크기"))
+                            .cream(answerMap.get("크림"))
+                            .sheet(answerMap.get("시트"))
+                            .pickupDate(answerMap.get("픽업 희망 일자"))
+                            .pickupTime(answerMap.get("픽업 희망 시간"))
                             .progressStatus(message.getProgressStatus())
-                            .pickupDate(pickupDate)
-                            .pickupTime(pickupTime)
                             .build();
                 })
                 .toList();
-
-        return OrderManagementResponseList.from(responses);
-    }
-
-    @Transactional(readOnly = true)
-    public OrderManagementResponseList getPickupCompletedOrders(Long userId) {
-        List<Message> messages = messageRepository.findMessagesWithQAsByUserIdAndProgressStatusIn(
-                userId, List.of(ProgressStatus.PICKUP_DONE)
-        );
-
-
-        List<OrderManagementResponse> responses = new ArrayList<>();
-
-        for (Message message : messages) {
-            String storeName = message.getStore().getName();
-
-            String designName = (message.getDesignType() == DesignType.CUSTOM)
-                    ? "갤러리에서 추가한 디자인"
-                    : message.getDesign().getName();
-
-            String designURL = (message.getDesignType() == DesignType.CUSTOM)
-                    ? message.getDesignUrl()
-                    : message.getDesign().getImageUrl();
-
-            Map<String, String> answerMap = new HashMap<>();
-            for (QA qa : message.getQaList()) {
-                String question = qa.getQuestion();
-                String answer = qa.getAnswer();
-                if (!answerMap.containsKey(question)) {
-                    answerMap.put(question, answer);
-                }
-            }
-
-            String size = answerMap.get("크기");
-            String cream = answerMap.get("크림");
-            String sheet = answerMap.get("시트");
-            String pickupDate = answerMap.get("픽업 희망 일자");
-            String pickupTime = answerMap.get("픽업 희망 시간");
-
-            OrderManagementResponse response = OrderManagementResponse.builder()
-                    .messageId(message.getId())
-                    .storeName(storeName)
-                    .designName(designName)
-                    .designUrl(designURL)
-                    .size(size)
-                    .cream(cream)
-                    .sheet(sheet)
-                    .progressStatus(message.getProgressStatus())
-                    .pickupDate(pickupDate)
-                    .pickupTime(pickupTime)
-                    .build();
-
-            responses.add(response);
-        }
 
         return OrderManagementResponseList.from(responses);
     }
