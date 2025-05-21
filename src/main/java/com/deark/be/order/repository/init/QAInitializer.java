@@ -85,14 +85,14 @@ public class QAInitializer implements ApplicationRunner {
 
             QA DUMMY_QA8 = QA.builder()
                     .message(MESSAGE1)
-                    .question("크림")
+                    .question("크림 맛")
                     .answer("블루베리 크림")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA9 = QA.builder()
                     .message(MESSAGE1)
-                    .question("시트")
+                    .question("시트 맛")
                     .answer("바닐라 시트")
                     .isRequired(true)
                     .build();
@@ -148,14 +148,14 @@ public class QAInitializer implements ApplicationRunner {
 
             QA DUMMY_QA17 = QA.builder()
                     .message(MESSAGE2)
-                    .question("크림")
+                    .question("크림 맛")
                     .answer("생크림")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA18 = QA.builder()
                     .message(MESSAGE2)
-                    .question("시트")
+                    .question("시트 맛")
                     .answer("초코")
                     .isRequired(true)
                     .build();
@@ -211,14 +211,14 @@ public class QAInitializer implements ApplicationRunner {
 
             QA DUMMY_QA26 = QA.builder()
                     .message(MESSAGE4)
-                    .question("크림")
+                    .question("크림 맛")
                     .answer("딸기")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA27 = QA.builder()
                     .message(MESSAGE4)
-                    .question("시트")
+                    .question("시트 맛")
                     .answer("초코")
                     .isRequired(true)
                     .build();
@@ -274,14 +274,14 @@ public class QAInitializer implements ApplicationRunner {
 
             QA DUMMY_QA35 = QA.builder()
                     .message(MESSAGE7)
-                    .question("크림")
+                    .question("크림 맛")
                     .answer("바닐라")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA36 = QA.builder()
                     .message(MESSAGE7)
-                    .question("시트")
+                    .question("시트 맛")
                     .answer("바닐라")
                     .isRequired(true)
                     .build();
@@ -337,14 +337,14 @@ public class QAInitializer implements ApplicationRunner {
 
             QA DUMMY_QA44 = QA.builder()
                     .message(MESSAGE5)
-                    .question("크림")
+                    .question("크림 맛")
                     .answer("바닐라")
                     .isRequired(true)
                     .build();
 
             QA DUMMY_QA45 = QA.builder()
                     .message(MESSAGE5)
-                    .question("시트")
+                    .question("시트 맛")
                     .answer("초콜릿")
                     .isRequired(true)
                     .build();

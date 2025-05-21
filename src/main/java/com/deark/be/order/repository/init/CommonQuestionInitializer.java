@@ -58,13 +58,13 @@ public class CommonQuestionInitializer implements ApplicationRunner {
                     .build();
 
             CommonQuestion COMMON_QUESTION6 = CommonQuestion.builder()
-                    .title("크림")
+                    .title("크림 맛")
                     .hint("크림 맛을 선택해주세요.")
                     .isRequired(true)
                     .build();
 
             CommonQuestion COMMON_QUESTION7 = CommonQuestion.builder()
-                    .title("시트")
+                    .title("시트 맛")
                     .hint("시트 맛을 선택해주세요.")
                     .isRequired(true)
                     .build();
