@@ -4,6 +4,7 @@ import com.deark.be.design.domain.Design;
 import com.deark.be.design.repository.DesignRepository;
 import com.deark.be.global.util.DummyDataInit;
 import com.deark.be.order.domain.Message;
+import com.deark.be.order.domain.type.ProgressStatus;
 import com.deark.be.order.domain.type.RequestDetailType;
 import com.deark.be.order.repository.MessageRepository;
 import com.deark.be.store.domain.Store;
@@ -75,6 +76,7 @@ public class MessageInitializer implements ApplicationRunner {
                     .requestDetailDesign(DESIGN3)
                     .requestDetailType(EVENT)
                     .status(ACCEPTED)
+                    .progressStatus(ProgressStatus.RESERVED)
                     .makerResponse("안녕하세요 고객님 :) 문의해주셔서 감사합니다. 해당 디자인으로 말씀하신 일정에 가능합니다!")
                     .build();
 
@@ -108,6 +110,7 @@ public class MessageInitializer implements ApplicationRunner {
                     .requestDetailDesign(DESIGN1)
                     .requestDetailType(EVENT)
                     .status(ACCEPTED)
+                    .progressStatus(ProgressStatus.BAKING)
                     .makerResponse("안녕하세요 고객님 :) 문의해주셔서 감사합니다. 해당 디자인으로 말씀하신 일정에 가능합니다!")
                     .build();
 
@@ -129,7 +132,8 @@ public class MessageInitializer implements ApplicationRunner {
                     .designUrl(designImageUrl + "/bear.png")
                     .requestDetailType(RequestDetailType.CUSTOM)
                     .requestDetailImageUrl(designImageUrl+"/heart.png")
-                    .status(PENDING)
+                    .status(ACCEPTED)
+                    .progressStatus(ProgressStatus.PICKUP_DONE)
                     .build();
 
             Message DUMMY_MESSAGE8 = Message.builder()
@@ -139,7 +143,7 @@ public class MessageInitializer implements ApplicationRunner {
                     .designType(STORE)
                     .requestDetailType(RequestDetailType.CUSTOM)
                     .requestDetailImageUrl(designImageUrl+"/friend_picture.png")
-                    .status(ACCEPTED)
+                    .status(PENDING)
                     .build();
 
             messageList.add(DUMMY_MESSAGE1);
