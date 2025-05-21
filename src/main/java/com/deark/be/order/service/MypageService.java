@@ -2,6 +2,8 @@ package com.deark.be.order.service;
 
 import com.deark.be.order.domain.Message;
 import com.deark.be.order.domain.QA;
+import com.deark.be.order.domain.type.DesignType;
+import com.deark.be.order.domain.type.ProgressStatus;
 import com.deark.be.order.domain.type.Status;
 import com.deark.be.order.dto.response.*;
 import com.deark.be.order.exception.OrderException;
@@ -10,6 +12,7 @@ import com.deark.be.order.repository.QARepository;
 import com.deark.be.store.service.BusinessHoursService;
 import com.deark.be.user.domain.User;
 import com.deark.be.user.service.UserService;
+import java.util.HashMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -198,5 +201,57 @@ public class MypageService {
     private Message findMessage(Long messageId) {
         return messageRepository.findById(messageId)
                 .orElseThrow(() -> new OrderException(ORDER_NOT_FOUND));
+    }
+
+    @Transactional(readOnly = true)
+    public OrderManagementResponseList getPickupScheduledOrders(Long userId) {
+        return extractOrderManagementResponses(userId, List.of(ProgressStatus.RESERVED, ProgressStatus.BAKING));
+    }
+
+    @Transactional(readOnly = true)
+    public OrderManagementResponseList getPickupCompletedOrders(Long userId) {
+        return extractOrderManagementResponses(userId, List.of(ProgressStatus.PICKUP_DONE));
+    }
+
+    private OrderManagementResponseList extractOrderManagementResponses(Long userId, List<ProgressStatus> statuses) {
+        List<Message> messages = messageRepository.findMessagesWithQAsByUserIdAndProgressStatusIn(userId, statuses);
+
+        List<OrderManagementResponse> responses = messages.stream()
+                .map(message -> {
+                    String storeName = message.getStore().getName();
+
+                    String designName = (message.getDesignType() == DesignType.CUSTOM)
+                            ? "갤러리에서 추가한 디자인"
+                            : message.getDesign().getName();
+
+                    String designUrl = (message.getDesignType() == DesignType.CUSTOM)
+                            ? message.getDesignUrl()
+                            : message.getDesign().getImageUrl();
+
+                    Map<String, String> answerMap = new HashMap<>();
+                    for (QA qa : message.getQaList()) {
+                        String question = qa.getQuestion();
+                        String answer = qa.getAnswer();
+                        if (!answerMap.containsKey(question)) {
+                            answerMap.put(question, answer);
+                        }
+                    }
+
+                    return OrderManagementResponse.builder()
+                            .messageId(message.getId())
+                            .storeName(storeName)
+                            .designName(designName)
+                            .designUrl(designUrl)
+                            .size(answerMap.get("크기"))
+                            .cream(answerMap.get("크림 맛"))
+                            .sheet(answerMap.get("시트 맛"))
+                            .pickupDate(answerMap.get("픽업 희망 일자"))
+                            .pickupTime(answerMap.get("픽업 희망 시간"))
+                            .progressStatus(message.getProgressStatus())
+                            .build();
+                })
+                .toList();
+
+        return OrderManagementResponseList.from(responses);
     }
 }

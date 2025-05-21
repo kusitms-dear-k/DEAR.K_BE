@@ -41,35 +41,41 @@ public class CommonQuestionInitializer implements ApplicationRunner {
 
             CommonQuestion COMMON_QUESTION3 = CommonQuestion.builder()
                     .title("픽업 희망 일자")
-                    .hint("픽업 일자 및 시간을 선택해주세요.")
+                    .hint("픽업 일자를 선택해주세요.")
                     .isRequired(true)
                     .build();
 
             CommonQuestion COMMON_QUESTION4 = CommonQuestion.builder()
+                    .title("픽업 희망 시간")
+                    .hint("픽업 시간을 선택해주세요.")
+                    .isRequired(true)
+                    .build();
+
+            CommonQuestion COMMON_QUESTION5 = CommonQuestion.builder()
                     .title("크기")
                     .hint("케이크 크기를 선택해주세요.")
                     .isRequired(true)
                     .build();
 
-            CommonQuestion COMMON_QUESTION5 = CommonQuestion.builder()
-                    .title("크림")
+            CommonQuestion COMMON_QUESTION6 = CommonQuestion.builder()
+                    .title("크림 맛")
                     .hint("크림 맛을 선택해주세요.")
                     .isRequired(true)
                     .build();
 
-            CommonQuestion COMMON_QUESTION6 = CommonQuestion.builder()
-                    .title("시트")
+            CommonQuestion COMMON_QUESTION7 = CommonQuestion.builder()
+                    .title("시트 맛")
                     .hint("시트 맛을 선택해주세요.")
                     .isRequired(true)
                     .build();
 
-            CommonQuestion COMMON_QUESTION7 = CommonQuestion.builder()
+            CommonQuestion COMMON_QUESTION8 = CommonQuestion.builder()
                     .title("디자인")
                     .hint("원하는 케이크 디자인을 보여주세요.")
                     .isRequired(false)
                     .build();
 
-            CommonQuestion COMMON_QUESTION8 = CommonQuestion.builder()
+            CommonQuestion COMMON_QUESTION9 = CommonQuestion.builder()
                     .title("기타 요청사항")
                     .hint("기타 요청사항이 있다면 작성해주세요.")
                     .isRequired(false)
@@ -83,6 +89,7 @@ public class CommonQuestionInitializer implements ApplicationRunner {
             commonQuestionList.add(COMMON_QUESTION6);
             commonQuestionList.add(COMMON_QUESTION7);
             commonQuestionList.add(COMMON_QUESTION8);
+            commonQuestionList.add(COMMON_QUESTION9);
 
             commonQuestionRepository.saveAll(commonQuestionList);
         }

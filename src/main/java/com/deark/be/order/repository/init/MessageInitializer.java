@@ -4,6 +4,7 @@ import com.deark.be.design.domain.Design;
 import com.deark.be.design.repository.DesignRepository;
 import com.deark.be.global.util.DummyDataInit;
 import com.deark.be.order.domain.Message;
+import com.deark.be.order.domain.type.ProgressStatus;
 import com.deark.be.order.domain.type.RequestDetailType;
 import com.deark.be.order.repository.MessageRepository;
 import com.deark.be.store.domain.Store;
@@ -76,6 +77,7 @@ public class MessageInitializer implements ApplicationRunner {
                     .requestDetailDesign(DESIGN3)
                     .requestDetailType(EVENT)
                     .status(ACCEPTED)
+                    .progressStatus(ProgressStatus.RESERVED)
                     .makerResponse("24500")
                     .responseTime(LocalDateTime.of(2025, 5, 19, 12, 0))
                     .build();
@@ -113,6 +115,7 @@ public class MessageInitializer implements ApplicationRunner {
                     .status(ACCEPTED)
                     .makerResponse("38000")
                     .responseTime(LocalDateTime.of(2025, 5, 21, 17, 0))
+                    .progressStatus(ProgressStatus.BAKING)
                     .build();
 
             Message DUMMY_MESSAGE6 = Message.builder()
@@ -134,7 +137,8 @@ public class MessageInitializer implements ApplicationRunner {
                     .designUrl(designImageUrl + "/bear.png")
                     .requestDetailType(RequestDetailType.CUSTOM)
                     .requestDetailImageUrl(designImageUrl+"/heart.png")
-                    .status(PENDING)
+                    .status(ACCEPTED)
+                    .progressStatus(ProgressStatus.PICKUP_DONE)
                     .build();
 
             Message DUMMY_MESSAGE8 = Message.builder()
