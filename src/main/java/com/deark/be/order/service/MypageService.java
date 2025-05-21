@@ -217,6 +217,10 @@ public class MypageService {
                             ? "갤러리에서 추가한 디자인"
                             : message.getDesign().getName();
 
+                    String designURL = (message.getDesignType() == DesignType.CUSTOM)
+                            ? message.getDesignUrl()
+                            : message.getDesign().getImageUrl();
+
                     // QA 답변 추출
                     Map<String, String> answerMap = new HashMap<>();
 
@@ -239,6 +243,7 @@ public class MypageService {
                             .messageId(message.getId())
                             .storeName(storeName)
                             .designName(designName)
+                            .designUrl(designURL)
                             .size(size)
                             .cream(cream)
                             .sheet(sheet)
@@ -268,6 +273,9 @@ public class MypageService {
                     ? "갤러리에서 추가한 디자인"
                     : message.getDesign().getName();
 
+            String designURL = (message.getDesignType() == DesignType.CUSTOM)
+                    ? message.getDesignUrl()
+                    : message.getDesign().getImageUrl();
 
             Map<String, String> answerMap = new HashMap<>();
             for (QA qa : message.getQaList()) {
@@ -288,6 +296,7 @@ public class MypageService {
                     .messageId(message.getId())
                     .storeName(storeName)
                     .designName(designName)
+                    .designUrl(designURL)
                     .size(size)
                     .cream(cream)
                     .sheet(sheet)

@@ -8,6 +8,7 @@ public record OrderManagementResponse(
         Long messageId,
         String storeName,
         String designName,
+        String designUrl,
         String size,
         String cream,
         String sheet,
