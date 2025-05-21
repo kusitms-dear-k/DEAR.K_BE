@@ -77,7 +77,7 @@ public class Message extends BaseTimeEntity {
     private List<QA> qaList = new ArrayList<>();
 
     @Builder
-    public Message(User user, Store store, Design design, Design requestDetailDesign, Status status, DesignType designType, String designUrl, RequestDetailType requestDetailType, String requestDetailImageUrl, LocalDateTime responseTime, String makerResponse) {
+    public Message(User user, Store store, Design design, Design requestDetailDesign, Status status, DesignType designType, String designUrl, RequestDetailType requestDetailType, String requestDetailImageUrl, LocalDateTime responseTime, String makerResponse, ProgressStatus progressStatus) {
         this.user = user;
         this.store = store;
         this.design = design;
@@ -89,6 +89,7 @@ public class Message extends BaseTimeEntity {
         this.requestDetailImageUrl = requestDetailImageUrl;
         this.responseTime = responseTime;
         this.makerResponse = makerResponse;
+        this.progressStatus = progressStatus;
     }
 
     public String getDesignName() {
