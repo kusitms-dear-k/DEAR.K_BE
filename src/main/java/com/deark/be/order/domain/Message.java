@@ -9,6 +9,8 @@ import com.deark.be.order.domain.type.Status;
 import com.deark.be.store.domain.Store;
 import com.deark.be.user.domain.User;
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -71,6 +73,9 @@ public class Message extends BaseTimeEntity {
     @Column(name = "maker_response")
     private String makerResponse;
 
+    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<QA> qaList = new ArrayList<>();
+
     @Builder
     public Message(User user, Store store, Design design, Design requestDetailDesign, Status status, DesignType designType, String designUrl, RequestDetailType requestDetailType, String requestDetailImageUrl, LocalDateTime responseTime, String makerResponse) {
         this.user = user;
@@ -92,5 +97,10 @@ public class Message extends BaseTimeEntity {
 
     public String getDesignImageUrl() {
         return this.designType == DesignType.STORE ? design.getImageUrl() : designUrl;
+    }
+
+    public void addQA(QA qa) {
+        qaList.add(qa);
+        qa.assignMessage(this);
     }
 }
