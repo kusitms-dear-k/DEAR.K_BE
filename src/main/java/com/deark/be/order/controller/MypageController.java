@@ -89,7 +89,7 @@ public class MypageController {
     }
 
     @Operation(summary = "픽업 예정 주문서 조회", description = "로그인한 사용자의 픽업 예정(예약 완료, 베이킹 완료) 상태의 주문서 리스트를 조회합니다.")
-    @GetMapping("/pickup-scheduled")
+    @GetMapping("/pickup/scheduled")
     public ResponseEntity<ResponseTemplate<OrderManagementResponseList>> getPickupScheduledMessages(
             @AuthenticationPrincipal Long userId){
         OrderManagementResponseList responseList= mypageService.getPickupScheduledOrders(userId);
@@ -99,7 +99,7 @@ public class MypageController {
     }
 
     @Operation(summary = "픽업 완료 주문서 조회", description = "로그인한 사용자의 픽업 완료(PICKUP_DONE) 상태의 주문서를 조회합니다.")
-    @GetMapping("/pickup-completed")
+    @GetMapping("/pickup/completed")
     public ResponseEntity<ResponseTemplate<OrderManagementResponseList>> getPickupCompletedMessages(
             @AuthenticationPrincipal Long userId) {
         OrderManagementResponseList responseList = mypageService.getPickupCompletedOrders(userId);
