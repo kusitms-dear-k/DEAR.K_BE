@@ -64,11 +64,14 @@ public class OrderService {
                 ? designService.getDesignByIdOrThrow(request.requestDetailDesignId())
                 : null;
 
-        Message message = messageRepository.save(request.toEntity(user,store,design,requestDetailDesign,designUrl,requestDetailImageUrl));
-        List<QA> qaList =request.answers().stream()
-                .map(answer -> answer.toEntity(message))
-                .toList();
-        qaRepository.saveAll(qaList);
+        Message message = request.toEntity(user,store,design,requestDetailDesign,designUrl,requestDetailImageUrl);
+
+        request.answers().forEach(answerDto -> {
+            QA qa = answerDto.toEntity(message);
+            message.addQA(qa);
+        });
+
+        messageRepository.save(message);
 
         return message.getId();
     }

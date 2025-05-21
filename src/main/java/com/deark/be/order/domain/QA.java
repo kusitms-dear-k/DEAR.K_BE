@@ -30,6 +30,10 @@ public class QA {
     @Column(name = "is_required")
     private Boolean isRequired;
 
+    public void assignMessage(Message message) {
+        this.message = message;
+    }
+
     @Builder
     public QA(Message message, String question, String answer, Boolean isRequired) {
         this.message = message;
