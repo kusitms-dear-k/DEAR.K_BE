@@ -1,7 +1,7 @@
 package com.deark.be.order.controller;
 
 import com.deark.be.global.dto.ResponseTemplate;
-import com.deark.be.order.domain.type.Status;
+import com.deark.be.order.domain.type.OrderStatus;
 import com.deark.be.order.dto.response.*;
 import com.deark.be.order.service.MypageService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,9 +38,9 @@ public class MypageController {
     @GetMapping("/request/status")
     public ResponseEntity<ResponseTemplate<MyOrderStatusResponseList>> getMyOrdersByStatus(
             @AuthenticationPrincipal Long userId,
-            @RequestParam(defaultValue = "PENDING") Status status) {
+            @RequestParam(defaultValue = "PENDING") OrderStatus orderStatus) {
 
-        MyOrderStatusResponseList responseList = mypageService.getAllMyOrdersByStatus(userId, status);
+        MyOrderStatusResponseList responseList = mypageService.getAllMyOrdersByStatus(userId, orderStatus);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

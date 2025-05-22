@@ -2,7 +2,7 @@ package com.deark.be.alarm.repository;
 
 import com.deark.be.alarm.dto.response.AlarmResponse;
 import com.deark.be.alarm.dto.response.AlarmResponseList;
-import com.deark.be.order.domain.type.Status;
+import com.deark.be.order.domain.type.OrderStatus;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -23,14 +23,14 @@ public class AlarmRepositoryImpl implements AlarmRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public AlarmResponseList findAllByUserIdAndType(Long userId, Status status) {
+    public AlarmResponseList findAllByUserIdAndType(Long userId, OrderStatus orderStatus) {
         List<AlarmResponse> alarms = jpaQueryFactory
                 .select(Projections.constructor(
                         AlarmResponse.class,
                         alarm.id,
                         selectDesignImageUrl(),
                         alarm.message.store.name,
-                        alarm.message.status,
+                        alarm.message.orderStatus,
                         alarm.message.responseTime,
                         alarm.message.id,
                         alarm.isRead
@@ -40,7 +40,7 @@ public class AlarmRepositoryImpl implements AlarmRepositoryCustom {
                 .where(
                         alarm.user.id.eq(userId),
                         alarm.isDeleted.isFalse(),
-                        buildStatusCondition(status)
+                        buildStatusCondition(orderStatus)
                 )
                 .orderBy(alarm.id.desc())
                 .fetch();
@@ -52,7 +52,7 @@ public class AlarmRepositoryImpl implements AlarmRepositoryCustom {
                 .where(
                         alarm.user.id.eq(userId),
                         alarm.isDeleted.isFalse(),
-                        buildStatusCondition(status)
+                        buildStatusCondition(orderStatus)
                 )
                 .fetchOne();
 
@@ -69,11 +69,11 @@ public class AlarmRepositoryImpl implements AlarmRepositoryCustom {
                 .otherwise(alarm.message.design.imageUrl);
     }
 
-    private BooleanExpression buildStatusCondition(Status status) {
-        if (ObjectUtils.isEmpty(status)) {
-            return alarm.message.status.in(Status.ACCEPTED, Status.REJECTED);
+    private BooleanExpression buildStatusCondition(OrderStatus orderStatus) {
+        if (ObjectUtils.isEmpty(orderStatus)) {
+            return alarm.message.orderStatus.in(OrderStatus.ACCEPTED, OrderStatus.REJECTED);
         } else {
-            return alarm.message.status.eq(status);
+            return alarm.message.orderStatus.eq(orderStatus);
         }
     }
 }

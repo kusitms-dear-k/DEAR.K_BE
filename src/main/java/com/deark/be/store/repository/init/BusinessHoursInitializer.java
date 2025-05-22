@@ -19,7 +19,7 @@ import static com.deark.be.store.domain.type.BusinessDay.*;
 
 @Slf4j
 @RequiredArgsConstructor
-@Order(3)
+@Order(4)
 @DummyDataInit
 public class BusinessHoursInitializer implements ApplicationRunner {
 

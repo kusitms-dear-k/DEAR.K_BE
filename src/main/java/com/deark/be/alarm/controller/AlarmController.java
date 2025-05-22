@@ -4,7 +4,7 @@ import com.deark.be.alarm.dto.request.DeleteAlarmRequest;
 import com.deark.be.alarm.dto.response.AlarmResponseList;
 import com.deark.be.alarm.service.AlarmService;
 import com.deark.be.global.dto.ResponseTemplate;
-import com.deark.be.order.domain.type.Status;
+import com.deark.be.order.domain.type.OrderStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -30,9 +30,9 @@ public class AlarmController {
     @GetMapping()
     public ResponseEntity<ResponseTemplate<AlarmResponseList>> getAlarmList(
             @AuthenticationPrincipal Long userId,
-            @RequestParam(required = false) Status status) {
+            @RequestParam(required = false) OrderStatus orderStatus) {
 
-        AlarmResponseList responseList = alarmService.getAlarmList(userId, status);
+        AlarmResponseList responseList = alarmService.getAlarmList(userId, orderStatus);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

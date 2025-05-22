@@ -3,8 +3,8 @@ package com.deark.be.order.service;
 import com.deark.be.order.domain.Message;
 import com.deark.be.order.domain.QA;
 import com.deark.be.order.domain.type.DesignType;
+import com.deark.be.order.domain.type.OrderStatus;
 import com.deark.be.order.domain.type.ProgressStatus;
-import com.deark.be.order.domain.type.Status;
 import com.deark.be.order.dto.response.*;
 import com.deark.be.order.exception.OrderException;
 import com.deark.be.order.repository.MessageRepository;
@@ -46,18 +46,18 @@ public class MypageService {
 
         List<MyOrderCountResponse> result = new ArrayList<>();
 
-        for (Status status : Status.values()) {
-            Long count = messageRepository.countByUserAndStatus(user, status);
-            result.add(MyOrderCountResponse.of(status, count));
+        for (OrderStatus orderStatus : OrderStatus.values()) {
+            Long count = messageRepository.countByUserAndOrderStatus(user, orderStatus);
+            result.add(MyOrderCountResponse.of(orderStatus, count));
         }
 
         return MyOrderCountResponseList.from(result);
     }
 
-    public MyOrderStatusResponseList getAllMyOrdersByStatus(Long userId, Status status) {
+    public MyOrderStatusResponseList getAllMyOrdersByStatus(Long userId, OrderStatus orderStatus) {
         User user = userService.findUser(userId);
 
-        List<Message> pendingMessages = messageRepository.findAllByUserAndStatus(user, status);
+        List<Message> pendingMessages = messageRepository.findAllByUserAndOrderStatus(user, orderStatus);
 
         List<MyOrderStatusResponse> responseList =  pendingMessages.stream()
                 .map(message -> {
@@ -73,7 +73,7 @@ public class MypageService {
     public MyOrderRejectedResponse getRejectedOrderReason(Long messageId) {
         Message message = findMessage(messageId);
 
-        if (message.getStatus() != Status.REJECTED) {
+        if (message.getOrderStatus() != OrderStatus.REJECTED) {
             throw new OrderException(ORDER_NOT_REJECTED);
         }
 
@@ -101,7 +101,7 @@ public class MypageService {
     public MyOrderAcceptedResponse getAcceptedOrderDetail(Long messageId) {
         Message message = findMessage(messageId);
 
-        if (message.getStatus() != Status.ACCEPTED) {
+        if (message.getOrderStatus() != OrderStatus.ACCEPTED) {
             throw new OrderException(ORDER_NOT_ACCEPTED);
         }
 

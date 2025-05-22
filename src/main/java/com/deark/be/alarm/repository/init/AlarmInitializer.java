@@ -21,7 +21,7 @@ import static com.deark.be.alarm.domain.type.Type.ORDER;
 
 @Slf4j
 @RequiredArgsConstructor
-@Order(5)
+@Order(6)
 @DummyDataInit
 public class AlarmInitializer implements ApplicationRunner {
 

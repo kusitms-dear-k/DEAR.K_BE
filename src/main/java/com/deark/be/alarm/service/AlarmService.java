@@ -4,7 +4,7 @@ import com.deark.be.alarm.domain.Alarm;
 import com.deark.be.alarm.dto.request.DeleteAlarmRequest;
 import com.deark.be.alarm.dto.response.AlarmResponseList;
 import com.deark.be.alarm.repository.AlarmRepository;
-import com.deark.be.order.domain.type.Status;
+import com.deark.be.order.domain.type.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,8 +18,8 @@ public class AlarmService {
 
     private final AlarmRepository alarmRepository;
 
-    public AlarmResponseList getAlarmList(Long userId, Status status) {
-        return alarmRepository.findAllByUserIdAndType(userId, status);
+    public AlarmResponseList getAlarmList(Long userId, OrderStatus orderStatus) {
+        return alarmRepository.findAllByUserIdAndType(userId, orderStatus);
     }
 
     @Transactional

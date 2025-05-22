@@ -1,16 +1,16 @@
 package com.deark.be.order.dto.response;
 
-import com.deark.be.order.domain.type.Status;
+import com.deark.be.order.domain.type.OrderStatus;
 import lombok.Builder;
 
 @Builder
 public record MyOrderCountResponse(
-    Status status,
+    OrderStatus orderStatus,
     Long count
 ) {
-    public static MyOrderCountResponse of(Status status, Long count) {
+    public static MyOrderCountResponse of(OrderStatus orderStatus, Long count) {
         return MyOrderCountResponse.builder()
-            .status(status)
+            .orderStatus(orderStatus)
             .count(count)
             .build();
     }

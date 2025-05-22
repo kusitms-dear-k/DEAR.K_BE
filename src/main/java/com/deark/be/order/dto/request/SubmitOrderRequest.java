@@ -3,8 +3,8 @@ package com.deark.be.order.dto.request;
 import com.deark.be.design.domain.Design;
 import com.deark.be.order.domain.Message;
 import com.deark.be.order.domain.type.DesignType;
+import com.deark.be.order.domain.type.OrderStatus;
 import com.deark.be.order.domain.type.RequestDetailType;
-import com.deark.be.order.domain.type.Status;
 import com.deark.be.store.domain.Store;
 import com.deark.be.user.domain.User;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -40,7 +40,7 @@ public record SubmitOrderRequest(
                 .requestDetailDesign(requestDetailDesign)
                 .designUrl(designUrl)
                 .requestDetailImageUrl(requestDetailImageUrl)
-                .status(Status.PENDING)
+                .orderStatus(OrderStatus.PENDING)
                 .build();
     }
 }
