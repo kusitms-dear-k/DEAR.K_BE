@@ -9,6 +9,7 @@ import com.deark.be.event.domain.Event;
 import com.deark.be.event.domain.EventStore;
 import com.deark.be.event.domain.type.ThumbnailSource;
 import com.deark.be.event.dto.request.UpdateStoreMappingRequest;
+import com.deark.be.event.dto.response.StoreInEventResponse;
 import com.deark.be.event.exception.EventException;
 import com.deark.be.event.repository.EventRepository;
 import com.deark.be.event.repository.EventStoreRepository;
@@ -117,4 +118,15 @@ public class EventStoreService {
         }
     }
 
+    @Transactional
+    public void updateMemo(Long eventId, Long storeId, Long userId, String memo){
+        eventService.getValidatedEvent(eventId, userId);
+        EventStore eventStore = eventStoreRepository.findByEventIdAndStoreId(eventId, storeId)
+                .orElseThrow(() -> new EventException(EVENT_STORE_NOT_FOUND));
+        eventStore.updateMemo(memo);
+    }
+
+    public List<StoreInEventResponse> getStoresInEvent(Long eventId, Long userId) {
+        return eventStoreRepository.findStoresInEventWithDesignImages(eventId, userId);
+    }
 }
