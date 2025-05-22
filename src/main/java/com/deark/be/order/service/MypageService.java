@@ -12,7 +12,6 @@ import com.deark.be.order.repository.QARepository;
 import com.deark.be.store.service.BusinessHoursService;
 import com.deark.be.user.domain.User;
 import com.deark.be.user.service.UserService;
-import java.util.HashMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,7 @@ import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -107,28 +106,14 @@ public class MypageService {
         }
 
         List<QA> qaList = qaRepository.findAllByMessage(message);
-        Map<String, String> qaMap = buildOrderedQaMap(qaList);
 
-        return MyOrderAcceptedResponse.of(message, qaMap);
-    }
+        String pickupTime = qaList.stream()
+                .filter(qa -> "픽업 희망 시간".equals(qa.getQuestion()))
+                .map(QA::getAnswer)
+                .findFirst()
+                .orElse("");
 
-    private static Map<String, String> buildOrderedQaMap(List<QA> qaList) {
-        Map<String, String> rawMap = qaList.stream()
-                .collect(Collectors.toMap(QA::getQuestion, QA::getAnswer, (a, b) -> b));
-
-        Map<String, String> orderedMap = new LinkedHashMap<>();
-
-        for (String key : QA_ORDER) {
-            if (rawMap.containsKey(key)) {
-                orderedMap.put(key, rawMap.get(key));
-            }
-        }
-
-        rawMap.keySet().stream()
-                .filter(k -> !orderedMap.containsKey(k))
-                .forEach(k -> orderedMap.put(k, rawMap.get(k)));
-
-        return orderedMap;
+        return MyOrderAcceptedResponse.of(message, pickupTime);
     }
 
     private static List<QAStatusResponse> buildOrderedQaStatusList(List<QA> qaList) {
