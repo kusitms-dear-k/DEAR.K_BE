@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 @Slf4j
 @RequiredArgsConstructor
-@Order(2)
+@Order(3)
 @DummyDataInit
 public class EventInitializer implements ApplicationRunner {
 

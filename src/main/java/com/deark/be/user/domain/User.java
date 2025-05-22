@@ -30,6 +30,10 @@ public class User extends BaseTimeEntity {
     @Column(name = "user_id")
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bank_id")
+    private Bank bank;
+
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -68,13 +72,17 @@ public class User extends BaseTimeEntity {
     @Column(name = "is_push_agreement")
     private Boolean isThirdPartyAgreement;
 
+    @Column(name = "account")
+    private String account;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Event> eventList = new ArrayList<>();
 
     @Builder
-    public User(String name, String email, String phone, String socialId, Role role, Boolean isBlacklist,
+    public User(Bank bank, String name, String email, String phone, String socialId, Role role, Boolean isBlacklist,
                 String nickname, String profileImageUrl, Gender gender, LocalDate birthDate, List<Event> eventList,
-                Boolean isMarketingAgreement, Boolean isThirdPartyAgreement) {
+                Boolean isMarketingAgreement, Boolean isThirdPartyAgreement, String account) {
+        this.bank = bank;
         this.name = name;
         this.email = email;
         this.phone = phone;
@@ -88,6 +96,7 @@ public class User extends BaseTimeEntity {
         this.isMarketingAgreement = isMarketingAgreement;
         this.isThirdPartyAgreement = isThirdPartyAgreement;
         this.eventList = eventList;
+        this.account = account;
     }
 
     public static User from(OAuthInfoResponse oAuthInfoResponse) {

@@ -1,7 +1,9 @@
 package com.deark.be.user.repository.init;
 
 import com.deark.be.global.util.DummyDataInit;
+import com.deark.be.user.domain.Bank;
 import com.deark.be.user.domain.User;
+import com.deark.be.user.repository.BankRepository;
 import com.deark.be.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,17 +18,24 @@ import static com.deark.be.user.domain.type.Role.*;
 
 @Slf4j
 @RequiredArgsConstructor
-@Order(1)
+@Order(2)
 @DummyDataInit
 public class UserInitializer implements ApplicationRunner {
 
     private final UserRepository userRepository;
+    private final BankRepository bankRepository;
 
     @Override
     public void run(ApplicationArguments args) {
         if (userRepository.count() > 0) {
             log.info("[User] 더미 데이터 존재");
         } else {
+            Bank BANK1 = bankRepository.findById(1L).orElseThrow();
+            Bank BANK2 = bankRepository.findById(2L).orElseThrow();
+            Bank BANK3 = bankRepository.findById(3L).orElseThrow();
+            Bank BANK4 = bankRepository.findById(4L).orElseThrow();
+            Bank BANK5 = bankRepository.findById(5L).orElseThrow();
+
             List<User> userList = new ArrayList<>();
 
             // 기존 관리자, 고객, 사장님 1명
@@ -55,6 +64,8 @@ public class UserInitializer implements ApplicationRunner {
                     .socialId("ownerSocialId")
                     .role(OWNER)
                     .isBlacklist(false)
+                    .bank(BANK1)
+                    .account("123-456-789012")
                     .build();
 
             User DUMMY_OWNER1 = User.builder()
@@ -64,6 +75,8 @@ public class UserInitializer implements ApplicationRunner {
                     .socialId("owner1SocialId")
                     .role(OWNER)
                     .isBlacklist(false)
+                    .bank(BANK2)
+                    .account("234-567-890123")
                     .build();
 
             User DUMMY_OWNER2 = User.builder()
@@ -73,6 +86,8 @@ public class UserInitializer implements ApplicationRunner {
                     .socialId("owner2SocialId")
                     .role(OWNER)
                     .isBlacklist(false)
+                    .bank(BANK3)
+                    .account("345-678-901234")
                     .build();
 
             User DUMMY_OWNER3 = User.builder()
@@ -82,6 +97,8 @@ public class UserInitializer implements ApplicationRunner {
                     .socialId("owner3SocialId")
                     .role(OWNER)
                     .isBlacklist(false)
+                    .bank(BANK4)
+                    .account("456-789-012345")
                     .build();
 
             User DUMMY_OWNER4 = User.builder()
@@ -91,6 +108,8 @@ public class UserInitializer implements ApplicationRunner {
                     .socialId("owner4SocialId")
                     .role(OWNER)
                     .isBlacklist(false)
+                    .bank(BANK5)
+                    .account("567-890-123456")
                     .build();
 
             User DUMMY_OWNER5 = User.builder()
@@ -100,6 +119,8 @@ public class UserInitializer implements ApplicationRunner {
                     .socialId("owner5SocialId")
                     .role(OWNER)
                     .isBlacklist(false)
+                    .bank(BANK1)
+                    .account("678-901-234567")
                     .build();
 
             userList.add(DUMMY_USER1);
