@@ -5,6 +5,7 @@ import static com.deark.be.global.dto.ResponseTemplate.EMPTY_RESPONSE;
 import com.deark.be.event.dto.request.EventCreateRequest;
 import com.deark.be.event.dto.request.EventUpdateRequest;
 import com.deark.be.event.dto.request.UpdateDesignMappingRequest;
+import com.deark.be.event.dto.request.UpdateMemoRequest;
 import com.deark.be.event.dto.request.UpdateStoreMappingRequest;
 import com.deark.be.event.dto.response.DesignInEventResponse;
 import com.deark.be.event.dto.response.EventResponse;
@@ -25,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -130,7 +132,7 @@ public class EventController {
             @PathVariable Long eventId,
             @AuthenticationPrincipal Long userId
     ) {
-        List<StoreInEventResponse> result = eventService.getStoresInEvent(eventId, userId);
+        List<StoreInEventResponse> result = eventStoreService.getStoresInEvent(eventId, userId);
         return ResponseEntity.ok(ResponseTemplate.from(result));
     }
 
@@ -173,6 +175,30 @@ public class EventController {
             @AuthenticationPrincipal Long userId
     ) {
         eventStoreService.removeStoreFromEvent(eventId, storeId, userId);
+        return ResponseEntity.status(HttpStatus.OK).body(EMPTY_RESPONSE);
+    }
+
+    @PatchMapping("/{eventId}/designs/{designId}/memo")
+    @Operation(summary = "이벤트 디자인 메모 수정", description = "이벤트에 등록된 특정 디자인에 메모를 추가하거나 수정합니다.")
+    public ResponseEntity<ResponseTemplate<Object>> updateDesignMemo(
+            @PathVariable Long eventId,
+            @PathVariable Long designId,
+            @Valid @RequestBody UpdateMemoRequest request,
+            @AuthenticationPrincipal Long userId
+    ) {
+        eventDesignService.updateMemo(eventId, designId, userId, request.memo());
+        return ResponseEntity.status(HttpStatus.OK).body(EMPTY_RESPONSE);
+    }
+
+    @PatchMapping("/{eventId}/stores/{storeId}/memo")
+    @Operation(summary = "이벤트 스토어 메모 수정", description = "이벤트에 등록된 특정 스토어에 메모를 추가하거나 수정합니다.")
+    public ResponseEntity<ResponseTemplate<Object>> updateStoreMemo(
+            @PathVariable Long eventId,
+            @PathVariable Long storeId,
+            @Valid @RequestBody UpdateMemoRequest request,
+            @AuthenticationPrincipal Long userId
+    ) {
+        eventStoreService.updateMemo(eventId, storeId, userId, request.memo());
         return ResponseEntity.status(HttpStatus.OK).body(EMPTY_RESPONSE);
     }
 }
