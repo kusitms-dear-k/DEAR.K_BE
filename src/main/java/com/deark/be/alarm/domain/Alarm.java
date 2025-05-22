@@ -51,4 +51,8 @@ public class Alarm extends BaseTimeEntity {
     public void markAsDeleted() {
         this.isDeleted = true;
     }
+
+    public void markAsRead() {
+        this.isRead = true;
+    }
 }

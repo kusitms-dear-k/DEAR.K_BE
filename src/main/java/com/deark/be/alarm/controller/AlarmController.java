@@ -1,6 +1,7 @@
 package com.deark.be.alarm.controller;
 
 import com.deark.be.alarm.dto.request.DeleteAlarmRequest;
+import com.deark.be.alarm.dto.request.ReadAlarmRequest;
 import com.deark.be.alarm.dto.response.AlarmResponseList;
 import com.deark.be.alarm.service.AlarmService;
 import com.deark.be.global.dto.ResponseTemplate;
@@ -45,6 +46,18 @@ public class AlarmController {
             @RequestBody DeleteAlarmRequest request) {
 
         alarmService.markAlarmAsDeleted(request);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(EMPTY_RESPONSE);
+    }
+
+    @Operation(summary = "알림 읽음 처리", description = "알림을 읽음 처리합니다.")
+    @PutMapping("/read")
+    public ResponseEntity<ResponseTemplate<Object>> readAlarm(
+            @RequestBody ReadAlarmRequest request) {
+
+        alarmService.markAlarmAsRead(request);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

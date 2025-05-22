@@ -2,6 +2,7 @@ package com.deark.be.alarm.service;
 
 import com.deark.be.alarm.domain.Alarm;
 import com.deark.be.alarm.dto.request.DeleteAlarmRequest;
+import com.deark.be.alarm.dto.request.ReadAlarmRequest;
 import com.deark.be.alarm.dto.response.AlarmResponseList;
 import com.deark.be.alarm.repository.AlarmRepository;
 import com.deark.be.order.domain.type.OrderStatus;
@@ -26,6 +27,13 @@ public class AlarmService {
     public void markAlarmAsDeleted(DeleteAlarmRequest request) {
         request.alarmIdList().forEach(alarmId -> {
             alarmRepository.findById(alarmId).ifPresent(Alarm::markAsDeleted);
+        });
+    }
+
+    @Transactional
+    public void markAlarmAsRead(ReadAlarmRequest request) {
+        request.alarmIdList().forEach(alarmId -> {
+            alarmRepository.findById(alarmId).ifPresent(Alarm::markAsRead);
         });
     }
 }
