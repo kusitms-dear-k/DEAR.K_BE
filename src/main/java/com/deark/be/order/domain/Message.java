@@ -109,4 +109,8 @@ public class Message extends BaseTimeEntity {
         qaList.add(qa);
         qa.assignMessage(this);
     }
+
+    public void updateResponseStatus(ResponseStatus responseStatus) {
+        this.responseStatus = responseStatus;
+    }
 }

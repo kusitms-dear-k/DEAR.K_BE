@@ -5,6 +5,7 @@ import com.deark.be.order.domain.QA;
 import com.deark.be.order.domain.type.DesignType;
 import com.deark.be.order.domain.type.OrderStatus;
 import com.deark.be.order.domain.type.ProgressStatus;
+import com.deark.be.order.domain.type.ResponseStatus;
 import com.deark.be.order.dto.response.*;
 import com.deark.be.order.exception.OrderException;
 import com.deark.be.order.repository.MessageRepository;
@@ -114,6 +115,12 @@ public class MypageService {
                 .orElse("");
 
         return MyOrderAcceptedResponse.of(message, pickupTime);
+    }
+
+    @Transactional
+    public void updateResponseStatus(Long messageId, ResponseStatus responseStatus) {
+        Message message = findMessage(messageId);
+        message.updateResponseStatus(responseStatus);
     }
 
     private static List<QAStatusResponse> buildOrderedQaStatusList(List<QA> qaList) {
