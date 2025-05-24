@@ -67,4 +67,16 @@ public class UserController {
                 .status(HttpStatus.OK)
                 .body(EMPTY_RESPONSE);
     }
+
+    @Operation(summary = "홈 화면 유저 정보 조회", description = "유저의 닉네임과 읽지 않은 알림 여부를 제공합니다.")
+    @GetMapping("/home")
+    public ResponseEntity<ResponseTemplate<Object>> getHomeInfo(
+            @AuthenticationPrincipal Long userId) {
+
+        Object response = userService.getHomeResponse(userId);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseTemplate.from(response));
+    }
 }

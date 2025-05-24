@@ -1,7 +1,8 @@
 package com.deark.be.order.controller;
 
 import com.deark.be.global.dto.ResponseTemplate;
-import com.deark.be.order.domain.type.Status;
+import com.deark.be.order.domain.type.OrderStatus;
+import com.deark.be.order.domain.type.ResponseStatus;
 import com.deark.be.order.dto.response.*;
 import com.deark.be.order.service.MypageService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import static com.deark.be.global.dto.ResponseTemplate.EMPTY_RESPONSE;
 
 @Tag(name = "Mypage", description = "마이페이지 관련 API")
 @Slf4j
@@ -38,9 +41,9 @@ public class MypageController {
     @GetMapping("/request/status")
     public ResponseEntity<ResponseTemplate<MyOrderStatusResponseList>> getMyOrdersByStatus(
             @AuthenticationPrincipal Long userId,
-            @RequestParam(defaultValue = "PENDING") Status status) {
+            @RequestParam(defaultValue = "PENDING") OrderStatus orderStatus) {
 
-        MyOrderStatusResponseList responseList = mypageService.getAllMyOrdersByStatus(userId, status);
+        MyOrderStatusResponseList responseList = mypageService.getAllMyOrdersByStatus(userId, orderStatus);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -106,5 +109,19 @@ public class MypageController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ResponseTemplate.from(responseList));
+    }
+
+    @Operation(summary = "주문서 관련 피커 응답 변경", description = "주문서 관련 피커 응답을 변경합니다. <br>" +
+            "responseStatus : CANCELED(주문 취소), PAID(입금 완료) 중 하나로 입력해주세요.")
+    @PutMapping("/request/{messageId}")
+    public ResponseEntity<ResponseTemplate<Object>> updateResponseStatus(
+            @PathVariable Long messageId,
+            @RequestParam ResponseStatus status) {
+
+        mypageService.updateResponseStatus(messageId, status);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(EMPTY_RESPONSE);
     }
 }

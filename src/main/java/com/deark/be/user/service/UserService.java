@@ -1,10 +1,12 @@
 package com.deark.be.user.service;
 
+import com.deark.be.alarm.repository.AlarmRepository;
 import com.deark.be.auth.dto.response.OAuthInfoResponse;
 import com.deark.be.global.service.S3Service;
 import com.deark.be.user.domain.User;
 import com.deark.be.user.dto.request.SaveProfileRequest;
 import com.deark.be.user.dto.request.UpdateRoleRequest;
+import com.deark.be.user.dto.response.HomeResponse;
 import com.deark.be.user.exception.UserException;
 import com.deark.be.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ import static com.deark.be.user.exception.errorcode.UserErrorCode.USER_NOT_FOUND
 public class UserService {
 
     private final UserRepository userRepository;
+    private final AlarmRepository alarmRepository;
     private final S3Service s3Service;
 
     @Transactional
@@ -46,6 +49,16 @@ public class UserService {
         User user = findUser(userId);
         String profileImageUrl = uploadProfileImage(file);
         user.saveProfile(request, profileImageUrl);
+    }
+
+    public HomeResponse getHomeResponse(Long userId) {
+        if (userId == 0L) {
+            return HomeResponse.of("", false);
+        }
+
+        User user = findUser(userId);
+        Boolean isAlarm = alarmRepository.existsByUserIdAndIsDeletedFalseAndIsReadFalse(userId);
+        return HomeResponse.of(user.getName(), isAlarm);
     }
 
     public User findUser(Long userId) {

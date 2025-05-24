@@ -8,13 +8,15 @@ import lombok.Builder;
 public record LoginResponse(
         Role role,
         Long userId,
-        String profileImageUrl
+        String profileImageUrl,
+        String nickname
 ) {
     public static LoginResponse from(User user) {
         return LoginResponse.builder()
                 .role(user.getRole())
                 .userId(user.getId())
                 .profileImageUrl(user.getProfileImageUrl())
+                .nickname(user.getNickname())
                 .build();
     }
 }

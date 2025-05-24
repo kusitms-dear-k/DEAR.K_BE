@@ -3,8 +3,9 @@ package com.deark.be.order.service;
 import com.deark.be.order.domain.Message;
 import com.deark.be.order.domain.QA;
 import com.deark.be.order.domain.type.DesignType;
+import com.deark.be.order.domain.type.OrderStatus;
 import com.deark.be.order.domain.type.ProgressStatus;
-import com.deark.be.order.domain.type.Status;
+import com.deark.be.order.domain.type.ResponseStatus;
 import com.deark.be.order.dto.response.*;
 import com.deark.be.order.exception.OrderException;
 import com.deark.be.order.repository.MessageRepository;
@@ -12,7 +13,6 @@ import com.deark.be.order.repository.QARepository;
 import com.deark.be.store.service.BusinessHoursService;
 import com.deark.be.user.domain.User;
 import com.deark.be.user.service.UserService;
-import java.util.HashMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -47,18 +47,18 @@ public class MypageService {
 
         List<MyOrderCountResponse> result = new ArrayList<>();
 
-        for (Status status : Status.values()) {
-            Long count = messageRepository.countByUserAndStatus(user, status);
-            result.add(MyOrderCountResponse.of(status, count));
+        for (OrderStatus orderStatus : OrderStatus.values()) {
+            Long count = messageRepository.countByUserAndOrderStatus(user, orderStatus);
+            result.add(MyOrderCountResponse.of(orderStatus, count));
         }
 
         return MyOrderCountResponseList.from(result);
     }
 
-    public MyOrderStatusResponseList getAllMyOrdersByStatus(Long userId, Status status) {
+    public MyOrderStatusResponseList getAllMyOrdersByStatus(Long userId, OrderStatus orderStatus) {
         User user = userService.findUser(userId);
 
-        List<Message> pendingMessages = messageRepository.findAllByUserAndStatus(user, status);
+        List<Message> pendingMessages = messageRepository.findAllByUserAndOrderStatus(user, orderStatus);
 
         List<MyOrderStatusResponse> responseList =  pendingMessages.stream()
                 .map(message -> {
@@ -74,7 +74,7 @@ public class MypageService {
     public MyOrderRejectedResponse getRejectedOrderReason(Long messageId) {
         Message message = findMessage(messageId);
 
-        if (message.getStatus() != Status.REJECTED) {
+        if (message.getOrderStatus() != OrderStatus.REJECTED) {
             throw new OrderException(ORDER_NOT_REJECTED);
         }
 
@@ -102,33 +102,25 @@ public class MypageService {
     public MyOrderAcceptedResponse getAcceptedOrderDetail(Long messageId) {
         Message message = findMessage(messageId);
 
-        if (message.getStatus() != Status.ACCEPTED) {
+        if (message.getOrderStatus() != OrderStatus.ACCEPTED) {
             throw new OrderException(ORDER_NOT_ACCEPTED);
         }
 
         List<QA> qaList = qaRepository.findAllByMessage(message);
-        Map<String, String> qaMap = buildOrderedQaMap(qaList);
 
-        return MyOrderAcceptedResponse.of(message, qaMap);
+        String pickupTime = qaList.stream()
+                .filter(qa -> "픽업 희망 시간".equals(qa.getQuestion()))
+                .map(QA::getAnswer)
+                .findFirst()
+                .orElse("");
+
+        return MyOrderAcceptedResponse.of(message, pickupTime);
     }
 
-    private static Map<String, String> buildOrderedQaMap(List<QA> qaList) {
-        Map<String, String> rawMap = qaList.stream()
-                .collect(Collectors.toMap(QA::getQuestion, QA::getAnswer, (a, b) -> b));
-
-        Map<String, String> orderedMap = new LinkedHashMap<>();
-
-        for (String key : QA_ORDER) {
-            if (rawMap.containsKey(key)) {
-                orderedMap.put(key, rawMap.get(key));
-            }
-        }
-
-        rawMap.keySet().stream()
-                .filter(k -> !orderedMap.containsKey(k))
-                .forEach(k -> orderedMap.put(k, rawMap.get(k)));
-
-        return orderedMap;
+    @Transactional
+    public void updateResponseStatus(Long messageId, ResponseStatus responseStatus) {
+        Message message = findMessage(messageId);
+        message.updateResponseStatus(responseStatus);
     }
 
     private static List<QAStatusResponse> buildOrderedQaStatusList(List<QA> qaList) {

@@ -21,7 +21,7 @@ import static com.deark.be.order.domain.type.QuestionType.CUSTOM;
 
 @Slf4j
 @RequiredArgsConstructor
-@Order(3)
+@Order(4)
 @DummyDataInit
 public class OrderQuestionInitializer implements ApplicationRunner {
 

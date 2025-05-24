@@ -18,17 +18,19 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.deark.be.order.domain.type.DesignType.CUSTOM;
 import static com.deark.be.order.domain.type.DesignType.STORE;
 import static com.deark.be.order.domain.type.RequestDetailType.EVENT;
-import static com.deark.be.order.domain.type.Status.*;
+import static com.deark.be.order.domain.type.OrderStatus.*;
+import static com.deark.be.order.domain.type.ResponseStatus.UNRESPONSIVE;
 
 @Slf4j
 @RequiredArgsConstructor
-@Order(4)
+@Order(5)
 @DummyDataInit
 public class MessageInitializer implements ApplicationRunner {
 
@@ -65,7 +67,8 @@ public class MessageInitializer implements ApplicationRunner {
                     .designType(STORE)
                     .requestDetailDesign(DESIGN2)
                     .requestDetailType(EVENT)
-                    .status(PENDING)
+                    .orderStatus(PENDING)
+                    .responseStatus(UNRESPONSIVE)
                     .build();
 
             Message DUMMY_MESSAGE2 = Message.builder()
@@ -75,9 +78,11 @@ public class MessageInitializer implements ApplicationRunner {
                     .designType(STORE)
                     .requestDetailDesign(DESIGN3)
                     .requestDetailType(EVENT)
-                    .status(ACCEPTED)
+                    .orderStatus(ACCEPTED)
                     .progressStatus(ProgressStatus.RESERVED)
-                    .makerResponse("안녕하세요 고객님 :) 문의해주셔서 감사합니다. 해당 디자인으로 말씀하신 일정에 가능합니다!")
+                    .makerResponse("24500")
+                    .responseTime(LocalDateTime.of(2025, 5, 19, 12, 0))
+                    .responseStatus(UNRESPONSIVE)
                     .build();
 
             Message DUMMY_MESSAGE3 = Message.builder()
@@ -87,8 +92,10 @@ public class MessageInitializer implements ApplicationRunner {
                     .designType(STORE)
                     .requestDetailDesign(DESIGN8)
                     .requestDetailType(EVENT)
-                    .status(REJECTED)
+                    .orderStatus(REJECTED)
                     .makerResponse("디자인에 사용될 재료 부족 및 소진")
+                    .responseTime(LocalDateTime.of(2025, 5, 20, 12, 0))
+                    .responseStatus(UNRESPONSIVE)
                     .build();
 
             Message DUMMY_MESSAGE4 = Message.builder()
@@ -99,7 +106,8 @@ public class MessageInitializer implements ApplicationRunner {
                     .requestDetailDesign(DESIGN8)
                     .requestDetailType(EVENT)
                     .requestDetailDesign(DESIGN1)
-                    .status(PENDING)
+                    .orderStatus(PENDING)
+                    .responseStatus(UNRESPONSIVE)
                     .build();
 
             Message DUMMY_MESSAGE5 = Message.builder()
@@ -109,9 +117,11 @@ public class MessageInitializer implements ApplicationRunner {
                     .designType(STORE)
                     .requestDetailDesign(DESIGN1)
                     .requestDetailType(EVENT)
-                    .status(ACCEPTED)
+                    .orderStatus(ACCEPTED)
+                    .makerResponse("38000")
+                    .responseTime(LocalDateTime.of(2025, 5, 21, 17, 0))
                     .progressStatus(ProgressStatus.BAKING)
-                    .makerResponse("안녕하세요 고객님 :) 문의해주셔서 감사합니다. 해당 디자인으로 말씀하신 일정에 가능합니다!")
+                    .responseStatus(UNRESPONSIVE)
                     .build();
 
             Message DUMMY_MESSAGE6 = Message.builder()
@@ -121,8 +131,10 @@ public class MessageInitializer implements ApplicationRunner {
                     .designType(STORE)
                     .requestDetailDesign(DESIGN8)
                     .requestDetailType(EVENT)
-                    .status(REJECTED)
+                    .orderStatus(REJECTED)
                     .makerResponse("기간 내 제작 불가")
+                    .responseTime(LocalDateTime.of(2025, 5, 18, 14, 0))
+                    .responseStatus(UNRESPONSIVE)
                     .build();
 
             Message DUMMY_MESSAGE7 = Message.builder()
@@ -132,8 +144,9 @@ public class MessageInitializer implements ApplicationRunner {
                     .designUrl(designImageUrl + "/bear.png")
                     .requestDetailType(RequestDetailType.CUSTOM)
                     .requestDetailImageUrl(designImageUrl+"/heart.png")
-                    .status(ACCEPTED)
+                    .orderStatus(ACCEPTED)
                     .progressStatus(ProgressStatus.PICKUP_DONE)
+                    .responseStatus(UNRESPONSIVE)
                     .build();
 
             Message DUMMY_MESSAGE8 = Message.builder()
@@ -143,7 +156,36 @@ public class MessageInitializer implements ApplicationRunner {
                     .designType(STORE)
                     .requestDetailType(RequestDetailType.CUSTOM)
                     .requestDetailImageUrl(designImageUrl+"/friend_picture.png")
-                    .status(PENDING)
+                    .orderStatus(ACCEPTED)
+                    .makerResponse("50000")
+                    .responseTime(LocalDateTime.of(2025, 5, 19, 10, 0))
+                    .responseStatus(UNRESPONSIVE)
+                    .build();
+
+            Message DUMMY_MESSAGE9 = Message.builder()
+                    .user(USER1)
+                    .store(STORE1)
+                    .design(DESIGN1)
+                    .designType(STORE)
+                    .requestDetailType(EVENT)
+                    .requestDetailDesign(DESIGN2)
+                    .makerResponse("26500")
+                    .orderStatus(ACCEPTED)
+                    .responseTime(LocalDateTime.of(2025, 5, 18, 11, 0))
+                    .responseStatus(UNRESPONSIVE)
+                    .build();
+
+            Message DUMMY_MESSAGE10 = Message.builder()
+                    .user(USER1)
+                    .store(STORE1)
+                    .design(DESIGN8)
+                    .designType(STORE)
+                    .requestDetailType(EVENT)
+                    .requestDetailDesign(DESIGN3)
+                    .makerResponse("34500")
+                    .orderStatus(ACCEPTED)
+                    .responseTime(LocalDateTime.of(2025, 5, 20, 13, 0))
+                    .responseStatus(UNRESPONSIVE)
                     .build();
 
             messageList.add(DUMMY_MESSAGE1);
@@ -154,6 +196,8 @@ public class MessageInitializer implements ApplicationRunner {
             messageList.add(DUMMY_MESSAGE6);
             messageList.add(DUMMY_MESSAGE7);
             messageList.add(DUMMY_MESSAGE8);
+            messageList.add(DUMMY_MESSAGE9);
+            messageList.add(DUMMY_MESSAGE10);
 
             messageRepository.saveAll(messageList);
         }

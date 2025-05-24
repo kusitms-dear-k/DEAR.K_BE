@@ -18,7 +18,7 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-@Order(4)
+@Order(5)
 @DummyDataInit
 public class SheetInitializer implements ApplicationRunner {
 
