@@ -9,7 +9,8 @@ public record LoginResponse(
         Role role,
         Long userId,
         String profileImageUrl,
-        String nickname
+        String nickname,
+        String phoneNumber
 ) {
     public static LoginResponse from(User user) {
         return LoginResponse.builder()
@@ -17,6 +18,7 @@ public record LoginResponse(
                 .userId(user.getId())
                 .profileImageUrl(user.getProfileImageUrl())
                 .nickname(user.getNickname())
+                .phoneNumber(user.getPhone())
                 .build();
     }
 }
