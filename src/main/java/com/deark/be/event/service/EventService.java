@@ -81,16 +81,6 @@ public class EventService {
                 )).toList();
     }
 
-    public List<StoreInEventResponse> getStoresInEvent(Long eventId, Long userId) {
-        Event event = getValidatedEvent(eventId, userId);
-
-        return event.getEventStoreList().stream()
-                .map(eventStore -> StoreInEventResponse.from(
-                        eventStore,
-                        eventStore.getStore()
-                )).toList();
-    }
-
     public void resolveAndUpdateThumbnail(Event event) {
         Optional<EventDesign> firstDesignOpt = eventDesignRepository
                 .findTopByEventIdOrderByCreatedAtAsc(event.getId());

@@ -40,4 +40,8 @@ public class EventDesign extends BaseTimeEntity{
     public void assignEvent(Event event) {
         this.event = event;
     }
+
+    public void updateMemo(String memo){
+        this.memo = memo;
+    }
 }

@@ -115,4 +115,12 @@ public class EventDesignService {
         }
     }
 
+    @Transactional
+    public void updateMemo(Long eventId, Long designId, Long userId, String memo){
+        eventService.getValidatedEvent(eventId, userId);
+        EventDesign eventDesign = eventDesignRepository.findByEventIdAndDesignId(eventId, designId)
+                .orElseThrow(() -> new EventException(EVENT_DESIGN_NOT_FOUND));
+        eventDesign.updateMemo(memo);
+    }
+
 }
