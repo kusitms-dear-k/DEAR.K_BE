@@ -32,7 +32,7 @@ public class SecurityConfig {
             "/error",
             "/swagger-ui/**",
             "/v3/api-docs/**",
-            "/swagger-resources/*",
+            "/swagger-resources/**",
             "/webjars/**",
             "/auth/**",
             "/global/health-check",

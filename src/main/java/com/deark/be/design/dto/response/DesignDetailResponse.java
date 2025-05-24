@@ -7,6 +7,8 @@ import java.util.List;
 
 @Builder
 public record DesignDetailResponse(
+        @Schema(description = "가게 ID", example = "1")
+        Long storeId,
         @Schema(description = "가게 이름", example = "디어케이 케이크")
         String storeName,
         @Schema(description = "디자인 이름", example = "루피 케이크")
