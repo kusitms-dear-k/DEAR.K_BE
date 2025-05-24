@@ -33,7 +33,8 @@ public class AlarmRepositoryImpl implements AlarmRepositoryCustom {
                         alarm.message.orderStatus,
                         alarm.message.responseTime,
                         alarm.message.id,
-                        alarm.isRead
+                        alarm.isRead,
+                        alarm.message.responseStatus
                 ))
                 .from(alarm)
                 .join(alarm.message)
