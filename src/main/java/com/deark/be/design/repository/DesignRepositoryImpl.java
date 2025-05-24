@@ -221,6 +221,7 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
 
         Tuple result = jpaQueryFactory
                 .select(
+                        design.store.id,
                         design.store.name,
                         design.name,
                         design.imageUrl,
@@ -254,6 +255,7 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                 .fetch();
 
         return DesignDetailResponse.builder()
+                .storeId(result.get(design.store.id))
                 .storeName(result.get(design.store.name))
                 .designName(result.get(design.name))
                 .designImageUrl(result.get(design.imageUrl))
