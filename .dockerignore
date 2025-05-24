@@ -1,0 +1,17 @@
+# Gradle
+.gradle
+
+# IDE
+.idea
+*.iml
+
+# Git
+.git
+.gitmodules
+
+# Logs
+*.log
+
+# 기타
+Dockerfile
+README.md
