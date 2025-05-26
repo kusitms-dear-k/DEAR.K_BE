@@ -37,7 +37,8 @@ public class MypageController {
                 .body(ResponseTemplate.from(responseList));
     }
 
-    @Operation(summary = "내 요청서 상태 별 전체 조회", description = "내 요청서의 응답 대기 / 수락 / 반려 각각의 상태별 모든 내 요청서를 조회합니다.")
+    @Operation(summary = "내 요청서 상태 별 전체 조회", description = "내 요청서의 응답 대기 / 수락 / 반려 각각의 상태별 모든 내 요청서를 조회합니다. <br><br>" +
+            "responseStatus -> CANCELED (피커 주문 취소) / PAID 또는 UNRESPONSIVE (피커 주문 취소 X)")
     @GetMapping("/request/status")
     public ResponseEntity<ResponseTemplate<MyOrderStatusResponseList>> getMyOrdersByStatus(
             @AuthenticationPrincipal Long userId,

@@ -1,6 +1,7 @@
 package com.deark.be.order.dto.response;
 
 import com.deark.be.order.domain.Message;
+import com.deark.be.order.domain.type.ResponseStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
@@ -20,6 +21,8 @@ public record MyOrderStatusResponse(
         String designName,
         @Schema(description = "디자인 이미지 URL", example = "https://deark.com/design/1/image")
         String designImageUrl,
+        @Schema(description = "피커 응답 상태", example = "CANCELED")
+        ResponseStatus responseStatus,
         @Schema(description = "주문서 질문 & 답", example = "[{\"title\": \"이름\", \"answer\": \"박지유\"}]")
         List<QAStatusResponse> qaDetails
 ) {
@@ -33,6 +36,7 @@ public record MyOrderStatusResponse(
                 .storeName(message.getStore().getName())
                 .designName(message.getDesignName())
                 .designImageUrl(message.getDesignImageUrl())
+                .responseStatus(message.getResponseStatus())
                 .qaDetails(qaDetails)
                 .build();
     }
