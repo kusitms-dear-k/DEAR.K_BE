@@ -1,5 +1,6 @@
 package com.deark.be.order.service;
 
+import com.deark.be.event.repository.EventRepository;
 import com.deark.be.order.domain.Message;
 import com.deark.be.order.domain.QA;
 import com.deark.be.order.domain.type.DesignType;
@@ -13,6 +14,7 @@ import com.deark.be.order.repository.QARepository;
 import com.deark.be.store.service.BusinessHoursService;
 import com.deark.be.user.domain.User;
 import com.deark.be.user.service.UserService;
+import java.time.temporal.ChronoUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -41,6 +43,7 @@ public class MypageService {
     private final QARepository qaRepository;
     private final UserService userService;
     private final BusinessHoursService businessHoursService;
+    private final EventRepository eventRepository;
 
     public MyOrderCountResponseList getAllCountByStatus(Long userId) {
         User user = userService.findUser(userId);
@@ -245,5 +248,15 @@ public class MypageService {
                 .toList();
 
         return OrderManagementResponseList.from(responses);
+    }
+
+    public UpcomingEventResponse getUpcomingEvent(Long userId) {
+        return eventRepository.findFirstUpcomingEvent(userId)
+                .map(event -> {
+                    Long dDay = ChronoUnit.DAYS.between(LocalDate.now(), event.getEventDate());
+                    return UpcomingEventResponse.of(event,dDay);
+                })
+                .orElse(null);
+
     }
 }
