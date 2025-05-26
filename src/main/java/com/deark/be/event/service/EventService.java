@@ -43,13 +43,13 @@ public class EventService {
         User user=getValidatedUser(userId);
         List<Event> events = user.getEventList();
         return events.stream()
-                .map(EventResponse::of)
+                .map(EventResponse::from)
                 .toList();
     }
 
     public EventResponse getEventDetail(Long eventId, Long userId) {
         Event event = getValidatedEvent(eventId,userId);
-        return EventResponse.of(event);
+        return EventResponse.from(event);
     }
 
     @Transactional
@@ -75,7 +75,7 @@ public class EventService {
         Event event = getValidatedEvent(eventId, userId);
 
         return event.getEventDesignList().stream()
-                .map(eventDesign -> DesignInEventResponse.from(
+                .map(eventDesign -> DesignInEventResponse.of(
                         eventDesign,
                         eventDesign.getDesign()
                 )).toList();
