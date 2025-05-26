@@ -18,7 +18,7 @@ public record EventResponse(
         @Schema(description = "대표 썸네일 이미지 URL", example = "https://cdn.deark.com/thumbnails/event_1.png")
         String thumbnailUrl
 ) {
-    public static EventResponse of(Event event) {
+    public static EventResponse from(Event event) {
         return EventResponse.builder()
                 .eventId(event.getId())
                 .title(event.getTitle())
