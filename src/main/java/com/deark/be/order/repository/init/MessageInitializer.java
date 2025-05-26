@@ -26,7 +26,7 @@ import static com.deark.be.order.domain.type.DesignType.CUSTOM;
 import static com.deark.be.order.domain.type.DesignType.STORE;
 import static com.deark.be.order.domain.type.RequestDetailType.EVENT;
 import static com.deark.be.order.domain.type.OrderStatus.*;
-import static com.deark.be.order.domain.type.ResponseStatus.UNRESPONSIVE;
+import static com.deark.be.order.domain.type.ResponseStatus.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -121,7 +121,7 @@ public class MessageInitializer implements ApplicationRunner {
                     .makerResponse("38000")
                     .responseTime(LocalDateTime.of(2025, 5, 21, 17, 0))
                     .progressStatus(ProgressStatus.BAKING)
-                    .responseStatus(UNRESPONSIVE)
+                    .responseStatus(PAID)
                     .build();
 
             Message DUMMY_MESSAGE6 = Message.builder()
@@ -146,7 +146,7 @@ public class MessageInitializer implements ApplicationRunner {
                     .requestDetailImageUrl(designImageUrl+"/heart.png")
                     .orderStatus(ACCEPTED)
                     .progressStatus(ProgressStatus.PICKUP_DONE)
-                    .responseStatus(UNRESPONSIVE)
+                    .responseStatus(PAID)
                     .build();
 
             Message DUMMY_MESSAGE8 = Message.builder()
@@ -172,7 +172,7 @@ public class MessageInitializer implements ApplicationRunner {
                     .makerResponse("26500")
                     .orderStatus(ACCEPTED)
                     .responseTime(LocalDateTime.of(2025, 5, 18, 11, 0))
-                    .responseStatus(UNRESPONSIVE)
+                    .responseStatus(CANCELED)
                     .build();
 
             Message DUMMY_MESSAGE10 = Message.builder()
@@ -185,7 +185,7 @@ public class MessageInitializer implements ApplicationRunner {
                     .makerResponse("34500")
                     .orderStatus(ACCEPTED)
                     .responseTime(LocalDateTime.of(2025, 5, 20, 13, 0))
-                    .responseStatus(UNRESPONSIVE)
+                    .responseStatus(CANCELED)
                     .build();
 
             messageList.add(DUMMY_MESSAGE1);

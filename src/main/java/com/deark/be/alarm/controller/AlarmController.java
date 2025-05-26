@@ -26,8 +26,10 @@ public class AlarmController {
 
     private final AlarmService alarmService;
 
-    @Operation(summary = "알림 전체 조회", description = "전체 알림을 조회 : Status를 null로 설정 <br>" +
-            "수락된 알림만 조회 : Status를 ACCEPTED로 설정 <br>")
+    @Operation(summary = "알림 전체 조회", description = "전체 알림을 조회 : orderStatus를 null로 설정 <br>" +
+            "수락된 알림만 조회 : orderStatus를 ACCEPTED로 설정 <br><br>" +
+            "responseStatus -> CANCELED (피커 주문 취소) / PAID 또는 UNRESPONSIVE (피커 주문 취소 X) <br><br>" +
+            "alarmDateTime 은 2025-05-01 12:00:00 형식으로 제공됩니다.")
     @GetMapping()
     public ResponseEntity<ResponseTemplate<AlarmResponseList>> getAlarmList(
             @AuthenticationPrincipal Long userId,
