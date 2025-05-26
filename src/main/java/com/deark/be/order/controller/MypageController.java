@@ -124,4 +124,15 @@ public class MypageController {
                 .status(HttpStatus.OK)
                 .body(EMPTY_RESPONSE);
     }
+
+    @Operation(summary = "다가오는 가장 가까운 이벤트 조회", description = "오늘 날짜 기준으로 가장 가까운 미래 또는 오늘의 이벤트를  D-day와 함께 마이페이지에 표시합니다. <br>"
+            + "다가오는 이벤트가 없으면 null을 반환합니다.")
+    @GetMapping("/event/upcoming")
+    public ResponseEntity<ResponseTemplate<UpcomingEventResponse>> getUpcomingEvent(
+            @AuthenticationPrincipal Long userId) {
+        UpcomingEventResponse response = mypageService.getUpcomingEvent(userId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseTemplate.from(response));
+    }
 }
