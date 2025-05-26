@@ -188,6 +188,45 @@ public class MessageInitializer implements ApplicationRunner {
                     .responseStatus(CANCELED)
                     .build();
 
+            Message DUMMY_MESSAGE11 = Message.builder()
+                    .user(USER1)
+                    .store(STORE2)
+                    .design(DESIGN2)
+                    .designType(STORE)
+                    .requestDetailType(EVENT)
+                    .requestDetailDesign(DESIGN1)
+                    .makerResponse("40000")
+                    .orderStatus(ACCEPTED)
+                    .responseTime(LocalDateTime.of(2025, 5, 22, 15, 0))
+                    .responseStatus(CANCELED)
+                    .build();
+
+            Message DUMMY_MESSAGE12 = Message.builder()
+                    .user(USER1)
+                    .store(STORE3)
+                    .design(DESIGN3)
+                    .designType(STORE)
+                    .requestDetailType(EVENT)
+                    .requestDetailDesign(DESIGN8)
+                    .makerResponse("55000")
+                    .orderStatus(ACCEPTED)
+                    .responseTime(LocalDateTime.of(2025, 5, 23, 16, 0))
+                    .responseStatus(CANCELED)
+                    .build();
+
+            Message DUMMY_MESSAGE13 = Message.builder()
+                    .user(USER1)
+                    .store(STORE1)
+                    .design(DESIGN1)
+                    .designType(STORE)
+                    .requestDetailType(EVENT)
+                    .requestDetailDesign(DESIGN2)
+                    .makerResponse("30000")
+                    .orderStatus(ACCEPTED)
+                    .responseTime(LocalDateTime.of(2025, 5, 24, 18, 0))
+                    .responseStatus(CANCELED)
+                    .build();
+
             messageList.add(DUMMY_MESSAGE1);
             messageList.add(DUMMY_MESSAGE2);
             messageList.add(DUMMY_MESSAGE3);
@@ -198,6 +237,9 @@ public class MessageInitializer implements ApplicationRunner {
             messageList.add(DUMMY_MESSAGE8);
             messageList.add(DUMMY_MESSAGE9);
             messageList.add(DUMMY_MESSAGE10);
+            messageList.add(DUMMY_MESSAGE11);
+            messageList.add(DUMMY_MESSAGE12);
+            messageList.add(DUMMY_MESSAGE13);
 
             messageRepository.saveAll(messageList);
         }

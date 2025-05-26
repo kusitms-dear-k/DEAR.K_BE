@@ -9,7 +9,6 @@ import com.deark.be.user.domain.User;
 import com.deark.be.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
@@ -29,9 +28,6 @@ public class AlarmInitializer implements ApplicationRunner {
     private final MessageRepository messageRepository;
     private final UserRepository userRepository;
 
-    @Value("${spring.cloud.aws.s3.url}/design")
-    private String designImageUrl;
-
     @Override
     public void run(ApplicationArguments args) {
         if (alarmRepository.count() > 0) {
@@ -46,6 +42,9 @@ public class AlarmInitializer implements ApplicationRunner {
             Message MESSAGE8 = messageRepository.findById(8L).orElseThrow();
             Message MESSAGE9 = messageRepository.findById(9L).orElseThrow();
             Message MESSAGE10 = messageRepository.findById(10L).orElseThrow();
+            Message MESSAGE11 = messageRepository.findById(11L).orElseThrow();
+            Message MESSAGE12 = messageRepository.findById(12L).orElseThrow();
+            Message MESSAGE13 = messageRepository.findById(13L).orElseThrow();
 
             List<Alarm> alarmList = new ArrayList<>();
 
@@ -105,6 +104,30 @@ public class AlarmInitializer implements ApplicationRunner {
                     .isDeleted(false)
                     .build();
 
+            Alarm DUMMY_ALARM8 = Alarm.builder()
+                    .user(USER1)
+                    .message(MESSAGE11)
+                    .type(ORDER)
+                    .isRead(false)
+                    .isDeleted(false)
+                    .build();
+
+            Alarm DUMMY_ALARM9 = Alarm.builder()
+                    .user(USER1)
+                    .message(MESSAGE12)
+                    .type(ORDER)
+                    .isRead(false)
+                    .isDeleted(false)
+                    .build();
+
+            Alarm DUMMY_ALARM10 = Alarm.builder()
+                    .user(USER1)
+                    .message(MESSAGE13)
+                    .type(ORDER)
+                    .isRead(false)
+                    .isDeleted(false)
+                    .build();
+
             alarmList.add(DUMMY_ALARM1);
             alarmList.add(DUMMY_ALARM2);
             alarmList.add(DUMMY_ALARM3);
@@ -112,6 +135,9 @@ public class AlarmInitializer implements ApplicationRunner {
             alarmList.add(DUMMY_ALARM5);
             alarmList.add(DUMMY_ALARM6);
             alarmList.add(DUMMY_ALARM7);
+            alarmList.add(DUMMY_ALARM8);
+            alarmList.add(DUMMY_ALARM9);
+            alarmList.add(DUMMY_ALARM10);
 
             alarmRepository.saveAll(alarmList);
         }
