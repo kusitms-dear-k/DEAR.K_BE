@@ -1,5 +1,6 @@
 package com.deark.be.store.service;
 
+import com.deark.be.design.domain.Size;
 import com.deark.be.design.repository.SizeRepository;
 import com.deark.be.event.repository.EventStoreRepository;
 import com.deark.be.global.service.S3Service;
@@ -73,9 +74,14 @@ public class StoreService {
     }
 
     public StoreDetailResponse getStoreDetail(Long storeId, Long userId) {
-        List<String> sizeNameList = sizeRepository.findSizeNamesByStoreId(storeId);
-        Long likeCount = eventStoreRepository.countByStoreId(storeId);
         Store store = getStoreByIdOrThrow(storeId);
+
+        List<String> sizeNameList = store.getSizeList().stream()
+                .map(Size::getName)
+                .distinct()
+                .toList();
+
+        Long likeCount = eventStoreRepository.countByStoreId(storeId);
 
         boolean is24hSelfService = Boolean.TRUE.equals(store.getIsSelfService()) &&
                 store.getBusinessHoursList().stream()

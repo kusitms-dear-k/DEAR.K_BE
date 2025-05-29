@@ -291,7 +291,8 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
         for (String token : tokens) {
             BooleanExpression tokenExpr = design.name.contains(token)
                     .or(design.description.contains(token))
-                    .or(store.address.contains(token));
+                    .or(store.address.contains(token))
+                    .or(store.name.contains(token));
 
             expr = (expr == null) ? tokenExpr : expr.or(tokenExpr);
         }
