@@ -31,7 +31,7 @@
 ![image](https://github.com/user-attachments/assets/2de8c9d4-0b89-4507-bb9a-6ffc94888187)
 
 ## 📢 API 명세서
-[디어케이 API 명세서](http://223.130.155.249:8080/swagger-ui/index.html)<br><br>
+[디어케이 API 명세서](https://deark.kr/swagger-ui/index.html)<br><br>
 
 ## ✅ Issue & PR
 `Code Review` & `Approve` 설정
