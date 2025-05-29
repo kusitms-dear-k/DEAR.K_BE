@@ -70,6 +70,7 @@ Body는 추가 설명 필요하면 사용
 - **컬럼명** : 스네이크 케이스 사용 `Ex) user_id` <br>
 
 ## 📦 Package
+```
 src
 ├── main
 │   ├── auth
@@ -92,6 +93,7 @@ src
 └── resources
     ├── application-dev.yml
     └── application-prod.yml
+```
 
 ## 📩 API Response
 ``` json
