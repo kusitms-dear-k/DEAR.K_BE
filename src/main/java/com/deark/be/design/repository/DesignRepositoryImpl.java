@@ -7,6 +7,9 @@ import com.deark.be.design.dto.response.StoreDesignResponse;
 import com.deark.be.store.domain.type.BusinessDay;
 import com.deark.be.store.domain.type.SortType;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.group.GroupBy;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
@@ -30,6 +33,7 @@ import static com.deark.be.event.domain.QEvent.event;
 import static com.deark.be.event.domain.QEventDesign.eventDesign;
 import static com.deark.be.store.domain.QBusinessHours.businessHours;
 import static com.deark.be.store.domain.QStore.store;
+import static com.querydsl.core.types.dsl.Expressions.numberTemplate;
 import static java.util.Optional.ofNullable;
 
 @Repository
@@ -46,16 +50,15 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
             Boolean isSelfService, Boolean isLunchBoxCake) {
 
         // --- 1) 공통 표현식들 ---
-        BooleanExpression keywordExpr  = keywordSearchExpression(keyword);
-        BooleanExpression sameDayExpr  = (isSameDayOrder != null) ? store.isSameDayOrder.eq(isSameDayOrder) : null;
+        BooleanExpression keywordExpr = keywordSearchExpression(keyword);
+        BooleanExpression sameDayExpr = isSameDayOrder != null ? store.isSameDayOrder.eq(isSameDayOrder) : null;
         BooleanExpression locationExpr = locationListExpression(locationList);
-        BooleanExpression priceExpr    = priceBetweenExpression(minPrice, maxPrice);
+        BooleanExpression priceExpr = priceBetweenExpression(minPrice, maxPrice);
 
-        List<BusinessDay> businessDays =
-                (startDate != null && endDate != null)
-                        ? getBusinessDayList(startDate, endDate)
-                        : Collections.emptyList();
-        BooleanExpression businessDayExpr = (!businessDays.isEmpty())
+        List<BusinessDay> businessDays = (startDate != null && endDate != null)
+                ? getBusinessDayList(startDate, endDate)
+                : Collections.emptyList();
+        BooleanExpression businessDayExpr = !businessDays.isEmpty()
                 ? businessHours.businessDay.in(businessDays)
                 : null;
 
@@ -63,100 +66,112 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                 ? store.isSelfService.eq(isSelfService)
                 : null;
 
-        BooleanExpression hasLunchBoxCakeSizeExpr = JPAExpressions
+        BooleanExpression hasLunchBoxCakeSizeExpr = Boolean.TRUE.equals(isLunchBoxCake)
+                ? JPAExpressions
                 .selectOne()
                 .from(size)
                 .join(size.design, design)
-                .where(design.store.eq(store)
-                        .and(size.name.contains("도시락")))
-                .exists();
+                .where(design.store.eq(store).and(size.name.contains("도시락")))
+                .exists()
+                : null;
 
-        NumberExpression<Long> likeCount = eventDesign.id.countDistinct().coalesce(0L);
+        BooleanExpression isLikedExpr = (userId != null && userId != 0L)
+                ? JPAExpressions
+                .selectOne()
+                .from(eventDesign)
+                .join(eventDesign.event, event)
+                .where(event.user.id.eq(userId)
+                        .and(eventDesign.design.eq(design)))
+                .exists()
+                : Expressions.FALSE;
 
-        NumberExpression<Long> likedSum = Expressions.numberTemplate(
-                Long.class,
-                "SUM(CASE WHEN {0} THEN 1 ELSE 0 END)",
-                event.user.id.eq(userId).and(eventDesign.design.eq(design))
+        NumberExpression<Long> likeCount = eventDesign.id.count().coalesce(0L);
+
+        Predicate filter = ExpressionUtils.allOf(
+                keywordExpr,
+                sameDayExpr,
+                locationExpr,
+                priceExpr,
+                businessDayExpr,
+                isSelfServiceExpr,
+                hasLunchBoxCakeSizeExpr
         );
 
-        BooleanExpression isLikedExpr = likedSum.gt(0L);
+        // --- 2) Count Query ---
+        Long total = jpaQueryFactory
+                .select(design.id.countDistinct())
+                .from(design)
+                .join(design.store, store)
+                .leftJoin(store.businessHoursList, businessHours)
+                .where(filter)
+                .fetchOne();
+        if (total == null) total = 0L;
 
-        JPAQuery<SearchDesignResponse> contentQuery = jpaQueryFactory
-                .select(Projections.constructor(
-                        SearchDesignResponse.class,
-                        design.id,
-                        design.name,
-                        design.imageUrl,
-                        store.id,
-                        store.name,
-                        design.price,
-                        store.address,
-                        store.isSameDayOrder,
-                        isLikedExpr,
-                        likeCount
-                ))
+        // --- 3) ID + Sort 기준으로 정렬된 디자인 ID 조회 ---
+        JPAQuery<Tuple> tuplesQuery = jpaQueryFactory
+                .select(design.id, likeCount)
                 .from(design)
                 .join(design.store, store)
                 .leftJoin(design.eventDesignList, eventDesign)
                 .leftJoin(eventDesign.event, event)
                 .leftJoin(store.businessHoursList, businessHours)
-                .where(
-                        keywordExpr,
-                        sameDayExpr,
-                        locationExpr,
-                        priceExpr,
-                        businessDayExpr,
-                        isSelfServiceExpr,
-                        Boolean.TRUE.equals(isLunchBoxCake)
-                                ? hasLunchBoxCakeSizeExpr
-                                : null
-                )
-                .groupBy(
-                        design.id,
-                        design.name,
-                        design.imageUrl,
-                        store.id,
-                        store.name,
-                        design.price,
-                        store.address,
-                        store.isSameDayOrder
-                )
+                .where(filter)
+                .groupBy(design.id)
                 .offset(page * count)
-                .limit(count + 1);
+                .limit(count);
 
         if (SortType.LATEST.equals(sortType)) {
-            contentQuery.orderBy(design.id.desc());
+            tuplesQuery.orderBy(design.id.desc());
         } else if (SortType.POPULARITY.equals(sortType)) {
-            contentQuery.orderBy(likeCount.desc());
+            tuplesQuery.orderBy(likeCount.desc(), design.id.desc());
         }
 
-        List<SearchDesignResponse> content = contentQuery.fetch();
+        List<Long> pagedIds = tuplesQuery.stream()
+                .map(t -> t.get(design.id))
+                .toList();
 
-        JPAQuery<Long> countQuery = jpaQueryFactory
-                .select(design.id.countDistinct())
+        boolean hasNext = (page + 1) * count < total;
+
+        // --- 4) 실제 디자인 상세 정보 조회 ---
+        Map<Long, SearchDesignResponse> resultMap = jpaQueryFactory
                 .from(design)
                 .join(design.store, store)
-                .leftJoin(store.businessHoursList, businessHours)
-                .where(
-                        keywordExpr,
-                        sameDayExpr,
-                        locationExpr,
-                        priceExpr,
-                        businessDayExpr,
-                        isSelfServiceExpr,
-                        Boolean.TRUE.equals(isLunchBoxCake)
-                                ? hasLunchBoxCakeSizeExpr
-                                : null
+                .leftJoin(design.eventDesignList, eventDesign)
+                .leftJoin(eventDesign.event, event)
+                .where(design.id.in(pagedIds))
+                .transform(
+                        GroupBy.groupBy(design.id).as(
+                                Projections.constructor(
+                                        SearchDesignResponse.class,
+                                        design.id,
+                                        design.name,
+                                        design.imageUrl,
+                                        store.id,
+                                        store.name,
+                                        design.price,
+                                        store.address,
+                                        store.isSameDayOrder,
+                                        isLikedExpr,
+                                        numberTemplate(
+                                                Long.class,
+                                                "(select count(ed) from EventDesign ed where ed.design = {0})",
+                                                design
+                                        )
+                                )
+                        )
                 );
 
-        Long total = ofNullable(countQuery.fetchOne()).orElse(0L);
+        List<SearchDesignResponse> content = pagedIds.stream()
+                .map(resultMap::get)
+                .filter(Objects::nonNull)
+                .toList();
 
         return SearchDesignPagedResult.of(total, content);
     }
 
     @Override
     public List<StoreDesignResponse> findAllDesignBySizeAndStoreId(Long userId, Long page, Long count, Long storeId, String sizeName) {
-        NumberExpression<Long> likedSum = Expressions.numberTemplate(
+        NumberExpression<Long> likedSum = numberTemplate(
                 Long.class,
                 "SUM(CASE WHEN {0} THEN 1 ELSE 0 END)",
                 event.user.id.eq(userId).and(eventDesign.design.eq(design))
