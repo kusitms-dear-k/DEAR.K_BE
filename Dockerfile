@@ -1,7 +1,8 @@
 FROM openjdk:17-jdk
-
 COPY build/libs/be-0.0.1-SNAPSHOT.jar app.jar
 
-COPY src/main/resources/secret/ src/main/resources/secret/
+ENV TZ Asia/Seoul
+ARG ENV
+ARG SPRING_PROFILES_ACTIVE
 
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+ENTRYPOINT ["java", "-Xms512m", "-jar","-Dspring.profiles.active=${SPRING_PROFILES_ACTIVE}", "-Dserver.env=${ENV}", "/app.jar"]
