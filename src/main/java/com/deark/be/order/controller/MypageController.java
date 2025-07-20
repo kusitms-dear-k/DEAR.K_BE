@@ -79,19 +79,6 @@ public class MypageController {
                 .body(ResponseTemplate.from(response));
     }
 
-    @Operation(summary = "수락된 주문서 상세 조회", description = "수락된 주문서의 메이커 답변, 견적서 상세 정보, 카카오톡 링크를 조회합니다. <br>" +
-            "테스트 하려면 ID : 2로 조회하면 됩니다.")
-    @GetMapping("/request/accepted/{messageId}")
-    public ResponseEntity<ResponseTemplate<MyOrderAcceptedResponse>> getAcceptedOrderDetail(
-            @PathVariable Long messageId) {
-
-        MyOrderAcceptedResponse response = mypageService.getAcceptedOrderDetail(messageId);
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(ResponseTemplate.from(response));
-    }
-
     @Operation(summary = "픽업 예정 주문서 조회", description = "로그인한 사용자의 픽업 예정(예약 완료, 베이킹 완료) 상태의 주문서 리스트를 조회합니다.")
     @GetMapping("/pickup/scheduled")
     public ResponseEntity<ResponseTemplate<OrderManagementResponseList>> getPickupScheduledMessages(

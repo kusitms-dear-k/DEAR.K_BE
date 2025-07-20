@@ -128,7 +128,7 @@ public class EventService {
 
         return events.stream()
                 .map(event -> {
-                    boolean isChecked = eventDesignRepository.existsByEventIdAndDesignId(event.getId(), designId);
+                    boolean isChecked = eventDesignRepository.existsByEventIdAndCakeDesignId(event.getId(), designId);
                     return EventWithCheckResponse.of(event, isChecked);
                 })
                 .collect(Collectors.toList());

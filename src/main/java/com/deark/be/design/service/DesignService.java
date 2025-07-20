@@ -5,7 +5,7 @@ import static com.deark.be.design.exception.errorcode.DesignErrorCode.DESIGN_NOT
 import com.deark.be.design.domain.CakeDesign;
 import com.deark.be.design.dto.response.*;
 import com.deark.be.design.exception.DesignException;
-import com.deark.be.design.repository.CakeCakeDesignRepository;
+import com.deark.be.design.repository.CakeDesignRepository;
 import com.deark.be.event.repository.EventDesignRepository;
 import com.deark.be.store.domain.type.SortType;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class DesignService {
 
-     private final CakeCakeDesignRepository cakeDesignRepository;
+     private final CakeDesignRepository cakeDesignRepository;
      private final EventDesignRepository eventDesignRepository;
 
      public SearchDesignResponseList getDesignList(Long userId, Long page, Long count, SortType sortType,
@@ -59,7 +59,7 @@ public class DesignService {
         List<RecommendDesignResponse> recommendDesigns = popularDesignIds.stream()
                 .map(designMap::get)
                 .map(design -> {
-                    boolean isLiked = eventDesignRepository.existsByEventUserIdAndDesignId(userId, design.getId());
+                    boolean isLiked = eventDesignRepository.existsByEventUserIdAndCakeDesignId(userId, design.getId());
                     return RecommendDesignResponse.of(design, isLiked);})
                 .toList();
 

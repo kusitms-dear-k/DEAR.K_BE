@@ -18,7 +18,7 @@ public class QA {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "message_id", nullable = false)
+    @JoinColumn(name = "order_request_form_id", nullable = false)
     private OrderRequestForm orderRequestForm;
 
     @Column(name = "question")

@@ -3,7 +3,7 @@ package com.deark.be.design.repository.init;
 import com.deark.be.design.domain.CakeDesign;
 import com.deark.be.design.domain.CakeDesignOption;
 import com.deark.be.design.domain.type.OptionCategory;
-import com.deark.be.design.repository.CakeCakeDesignRepository;
+import com.deark.be.design.repository.CakeDesignRepository;
 import com.deark.be.design.repository.CakeDesignOptionRepository;
 import com.deark.be.global.util.DummyDataInit;
 import com.deark.be.store.domain.Store;
@@ -23,7 +23,7 @@ import java.util.List;
 @DummyDataInit
 public class CakeDesignOptionInitializer implements ApplicationRunner {
 
-    private final CakeCakeDesignRepository cakeDesignRepository;
+    private final CakeDesignRepository cakeDesignRepository;
     private final StoreRepository storeRepository;
     private final CakeDesignOptionRepository cakeDesignOptionRepository;
 

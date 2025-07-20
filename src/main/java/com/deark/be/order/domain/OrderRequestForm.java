@@ -74,7 +74,7 @@ public class OrderRequestForm extends BaseTimeEntity {
     @Column(name = "maker_response")
     private String makerResponse;
 
-    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "orderRequestForm", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<QA> qaList = new ArrayList<>();
 
     @Builder

@@ -102,24 +102,6 @@ public class MypageService {
         return MyOrderDetailResponse.of(orderRequestForm, businessHourStr, qaResponses);
     }
 
-    public MyOrderAcceptedResponse getAcceptedOrderDetail(Long messageId) {
-        OrderRequestForm orderRequestForm = findMessage(messageId);
-
-        if (orderRequestForm.getOrderStatus() != OrderStatus.ACCEPTED) {
-            throw new OrderException(ORDER_NOT_ACCEPTED);
-        }
-
-        List<QA> qaList = qaRepository.findAllByOrderRequestForm(orderRequestForm);
-
-        String pickupTime = qaList.stream()
-                .filter(qa -> "픽업 희망 시간".equals(qa.getQuestion()))
-                .map(QA::getAnswer)
-                .findFirst()
-                .orElse("");
-
-        return MyOrderAcceptedResponse.of(orderRequestForm, pickupTime);
-    }
-
     @Transactional
     public void updateResponseStatus(Long messageId, ResponseStatus responseStatus) {
         OrderRequestForm orderRequestForm = findMessage(messageId);

@@ -13,11 +13,11 @@ public interface EventDesignRepository  extends JpaRepository<EventDesign, Long>
 
     Optional<EventDesign> findTopByEventIdOrderByCreatedAtAsc(Long eventId);
 
-    Optional<EventDesign> findByEventIdAndDesignId(Long eventId, Long designId);
+    Optional<EventDesign> findByEventIdAndCakeDesignId(Long eventId, Long designId);
 
-    List<EventDesign> findAllByDesign(CakeDesign cakeDesign);
+    List<EventDesign> findAllByCakeDesign(CakeDesign cakeDesign);
 
-    boolean existsByEventIdAndDesignId(Long eventId, Long designId);
+    boolean existsByEventIdAndCakeDesignId(Long eventId, Long designId);
 
-    Boolean existsByEventUserIdAndDesignId(Long userId, Long designId);
+    Boolean existsByEventUserIdAndCakeDesignId(Long userId, Long designId);
 }

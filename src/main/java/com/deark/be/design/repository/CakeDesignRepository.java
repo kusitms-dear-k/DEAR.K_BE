@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CakeCakeDesignRepository extends JpaRepository<CakeDesign, Long>, CakeDesignRepositoryCustom {
+public interface CakeDesignRepository extends JpaRepository<CakeDesign, Long>, CakeDesignRepositoryCustom {
 
     @Query("SELECT d.id FROM CakeDesign d LEFT JOIN d.eventDesignList ed GROUP BY d.id ORDER BY COUNT(ed) DESC")
     List<Long> findTopDesignIds(Pageable pageable);

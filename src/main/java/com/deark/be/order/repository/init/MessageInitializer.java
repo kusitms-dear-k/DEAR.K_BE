@@ -1,7 +1,7 @@
 package com.deark.be.order.repository.init;
 
 import com.deark.be.design.domain.CakeDesign;
-import com.deark.be.design.repository.CakeCakeDesignRepository;
+import com.deark.be.design.repository.CakeDesignRepository;
 import com.deark.be.global.util.DummyDataInit;
 import com.deark.be.order.domain.OrderRequestForm;
 import com.deark.be.order.domain.type.ProgressStatus;
@@ -37,7 +37,7 @@ public class MessageInitializer implements ApplicationRunner {
     private final MessageRepository messageRepository;
     private final UserRepository userRepository;
     private final StoreRepository storeRepository;
-    private final CakeCakeDesignRepository cakeDesignRepository;
+    private final CakeDesignRepository cakeDesignRepository;
 
     @Value("${spring.cloud.aws.s3.url}/design")
     private String designImageUrl;
