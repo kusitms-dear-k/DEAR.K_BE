@@ -2,7 +2,7 @@ package com.deark.be.alarm.domain;
 
 import com.deark.be.alarm.domain.type.Type;
 import com.deark.be.global.domain.BaseTimeEntity;
-import com.deark.be.order.domain.Message;
+import com.deark.be.order.domain.OrderRequestForm;
 import com.deark.be.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -27,7 +27,10 @@ public class Alarm extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "message_id", nullable = false)
-    private Message message;
+    private OrderRequestForm orderRequestForm;
+
+    @Column(name = "content", nullable = false)
+    String content;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
@@ -40,9 +43,10 @@ public class Alarm extends BaseTimeEntity {
     private Boolean isDeleted;
 
     @Builder
-    public Alarm(User user, Message message, Type type, Boolean isRead, Boolean isDeleted) {
+    public Alarm(User user, OrderRequestForm orderRequestForm, String content, Type type, Boolean isRead, Boolean isDeleted) {
         this.user = user;
-        this.message = message;
+        this.orderRequestForm = orderRequestForm;
+        this.content = content;
         this.type = type;
         this.isRead = isRead;
         this.isDeleted = isDeleted;

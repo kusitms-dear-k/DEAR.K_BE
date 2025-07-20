@@ -8,9 +8,7 @@ import com.deark.be.order.dto.response.OrderQuestionResponseList;
 import com.deark.be.order.dto.response.PickUpDateResponseList;
 import com.deark.be.order.service.OrderQuestionService;
 import com.deark.be.order.service.OrderService;
-import com.deark.be.store.dto.response.DesignCreamResponseList;
-import com.deark.be.store.dto.response.DesignSheetResponseList;
-import com.deark.be.store.dto.response.DesignSizeResponseList;
+import com.deark.be.store.dto.response.CakeDesignOptionResponseList;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -101,30 +99,30 @@ public class OrderController {
 
     @Operation(summary = "가게의 모든 디자인 사이즈 조회", description = "가게의 모든 디자인 사이즈를 조회합니다.")
     @GetMapping("/store/{storeId}/size")
-    public ResponseEntity<ResponseTemplate<DesignSizeResponseList>> getDesignSize(
-            @PathVariable Long storeId) {
-
-        DesignSizeResponseList designSize = orderService.getDesignSize(storeId);
+    public ResponseEntity<ResponseTemplate<?>> getDesignSize(
+            @PathVariable Long storeId
+    ) {
+        CakeDesignOptionResponseList designSize = orderService.getDesignSize(storeId);
 
         return ResponseEntity.ok(ResponseTemplate.from(designSize));
     }
 
     @Operation(summary = "가게의 모든 디자인 크림 조회", description = "가게의 모든 디자인 크림을 조회합니다.")
     @GetMapping("/store/{storeId}/cream")
-    public ResponseEntity<ResponseTemplate<DesignCreamResponseList>> getDesignCream(
-            @PathVariable Long storeId) {
-
-        DesignCreamResponseList designCream = orderService.getDesignCream(storeId);
+    public ResponseEntity<ResponseTemplate<?>> getDesignCream(
+            @PathVariable Long storeId
+    ) {
+        CakeDesignOptionResponseList designCream = orderService.getDesignCream(storeId);
 
         return ResponseEntity.ok(ResponseTemplate.from(designCream));
     }
 
     @Operation(summary = "가게의 모든 디자인 시트 조회", description = "가게의 모든 디자인 시트를 조회합니다.")
     @GetMapping("/store/{storeId}/sheet")
-    public ResponseEntity<ResponseTemplate<DesignSheetResponseList>> getDesignSheet(
-            @PathVariable Long storeId) {
-
-        DesignSheetResponseList designSheet = orderService.getDesignSheet(storeId);
+    public ResponseEntity<ResponseTemplate<?>> getDesignSheet(
+            @PathVariable Long storeId
+    ) {
+        CakeDesignOptionResponseList designSheet = orderService.getDesignSheet(storeId);
 
         return ResponseEntity.ok(ResponseTemplate.from(designSheet));
     }

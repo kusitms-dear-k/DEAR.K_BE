@@ -13,7 +13,6 @@ import com.deark.be.event.dto.request.EventUpdateRequest;
 import com.deark.be.event.dto.response.DesignInEventResponse;
 import com.deark.be.event.dto.response.EventResponse;
 import com.deark.be.event.dto.response.EventWithCheckResponse;
-import com.deark.be.event.dto.response.StoreInEventResponse;
 import com.deark.be.event.exception.EventException;
 import com.deark.be.event.repository.EventDesignRepository;
 import com.deark.be.event.repository.EventRepository;
@@ -77,7 +76,7 @@ public class EventService {
         return event.getEventDesignList().stream()
                 .map(eventDesign -> DesignInEventResponse.of(
                         eventDesign,
-                        eventDesign.getDesign()
+                        eventDesign.getCakeDesign()
                 )).toList();
     }
 
@@ -97,9 +96,9 @@ public class EventService {
             EventStore store = firstStoreOpt.get();
 
             if (design.getCreatedAt().isBefore(store.getCreatedAt())) {
-                imageUrl = design.getDesign().getImageUrl();
+                imageUrl = design.getCakeDesign().getImageUrl();
                 source = ThumbnailSource.DESIGN;
-                sourceId = design.getDesign().getId();
+                sourceId = design.getCakeDesign().getId();
             } else {
                 imageUrl = store.getStore().getImageUrl();
                 source = ThumbnailSource.STORE;
@@ -107,9 +106,9 @@ public class EventService {
             }
         } else if (firstDesignOpt.isPresent()) {
             EventDesign design = firstDesignOpt.get();
-            imageUrl = design.getDesign().getImageUrl();
+            imageUrl = design.getCakeDesign().getImageUrl();
             source = ThumbnailSource.DESIGN;
-            sourceId = design.getDesign().getId();
+            sourceId = design.getCakeDesign().getId();
         } else if (firstStoreOpt.isPresent()) {
             EventStore store = firstStoreOpt.get();
             imageUrl = store.getStore().getImageUrl();

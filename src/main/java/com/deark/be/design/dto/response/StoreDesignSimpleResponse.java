@@ -1,6 +1,6 @@
 package com.deark.be.design.dto.response;
 
-import com.deark.be.design.domain.Design;
+import com.deark.be.design.domain.CakeDesign;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
@@ -15,12 +15,12 @@ public record StoreDesignSimpleResponse(
         @Schema(description = "디자인 가격", example = "19000")
         Long price
 ) {
-    public static StoreDesignSimpleResponse from(Design design) {
+    public static StoreDesignSimpleResponse from(CakeDesign cakeDesign) {
         return StoreDesignSimpleResponse.builder()
-                .designId(design.getId())
-                .designName(design.getName())
-                .designImageUrl(design.getImageUrl())
-                .price(design.getPrice())
+                .designId(cakeDesign.getId())
+                .designName(cakeDesign.getName())
+                .designImageUrl(cakeDesign.getImageUrl())
+                .price(cakeDesign.getPrice())
                 .build();
     }
 }

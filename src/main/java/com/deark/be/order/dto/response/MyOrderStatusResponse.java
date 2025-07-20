@@ -1,6 +1,6 @@
 package com.deark.be.order.dto.response;
 
-import com.deark.be.order.domain.Message;
+import com.deark.be.order.domain.OrderRequestForm;
 import com.deark.be.order.domain.type.ResponseStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -26,17 +26,17 @@ public record MyOrderStatusResponse(
         @Schema(description = "주문서 질문 & 답", example = "[{\"title\": \"이름\", \"answer\": \"박지유\"}]")
         List<QAStatusResponse> qaDetails
 ) {
-    public static MyOrderStatusResponse of(Message message, List<QAStatusResponse> qaDetails) {
+    public static MyOrderStatusResponse of(OrderRequestForm orderRequestForm, List<QAStatusResponse> qaDetails) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd(E)", Locale.KOREAN);
-        String formattedDate = message.getCreatedAt().format(formatter);
+        String formattedDate = orderRequestForm.getCreatedAt().format(formatter);
 
         return MyOrderStatusResponse.builder()
-                .messageId(message.getId())
+                .messageId(orderRequestForm.getId())
                 .requestDate(formattedDate)
-                .storeName(message.getStore().getName())
-                .designName(message.getDesignName())
-                .designImageUrl(message.getDesignImageUrl())
-                .responseStatus(message.getResponseStatus())
+                .storeName(orderRequestForm.getStore().getName())
+                .designName(orderRequestForm.getDesignName())
+                .designImageUrl(orderRequestForm.getDesignImageUrl())
+                .responseStatus(orderRequestForm.getResponseStatus())
                 .qaDetails(qaDetails)
                 .build();
     }

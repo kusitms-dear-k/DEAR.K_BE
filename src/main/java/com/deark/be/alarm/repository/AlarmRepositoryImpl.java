@@ -29,15 +29,15 @@ public class AlarmRepositoryImpl implements AlarmRepositoryCustom {
                         AlarmResponse.class,
                         alarm.id,
                         selectDesignImageUrl(),
-                        alarm.message.store.name,
-                        alarm.message.orderStatus,
-                        alarm.message.responseTime,
-                        alarm.message.id,
+                        alarm.orderRequestForm.store.name,
+                        alarm.orderRequestForm.orderStatus,
+                        alarm.orderRequestForm.responseTime,
+                        alarm.orderRequestForm.id,
                         alarm.isRead,
-                        alarm.message.responseStatus
+                        alarm.orderRequestForm.responseStatus
                 ))
                 .from(alarm)
-                .join(alarm.message)
+                .join(alarm.orderRequestForm)
                 .where(
                         alarm.user.id.eq(userId),
                         alarm.isDeleted.isFalse(),
@@ -49,7 +49,7 @@ public class AlarmRepositoryImpl implements AlarmRepositoryCustom {
         Long count = jpaQueryFactory
                 .select(alarm.count())
                 .from(alarm)
-                .join(alarm.message)
+                .join(alarm.orderRequestForm)
                 .where(
                         alarm.user.id.eq(userId),
                         alarm.isDeleted.isFalse(),
@@ -65,16 +65,16 @@ public class AlarmRepositoryImpl implements AlarmRepositoryCustom {
 
     private Expression<String> selectDesignImageUrl() {
         return new CaseBuilder()
-                .when(alarm.message.designUrl.isNotNull())
-                .then(alarm.message.designUrl)
-                .otherwise(alarm.message.design.imageUrl);
+                .when(alarm.orderRequestForm.designUrl.isNotNull())
+                .then(alarm.orderRequestForm.designUrl)
+                .otherwise(alarm.orderRequestForm.cakeDesign.imageUrl);
     }
 
     private BooleanExpression buildStatusCondition(OrderStatus orderStatus) {
         if (ObjectUtils.isEmpty(orderStatus)) {
-            return alarm.message.orderStatus.in(OrderStatus.ACCEPTED, OrderStatus.REJECTED);
+            return alarm.orderRequestForm.orderStatus.in(OrderStatus.ACCEPTED, OrderStatus.REJECTED);
         } else {
-            return alarm.message.orderStatus.eq(orderStatus);
+            return alarm.orderRequestForm.orderStatus.eq(orderStatus);
         }
     }
 }

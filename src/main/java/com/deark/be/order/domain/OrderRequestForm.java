@@ -1,6 +1,6 @@
 package com.deark.be.order.domain;
 
-import com.deark.be.design.domain.Design;
+import com.deark.be.design.domain.CakeDesign;
 import com.deark.be.global.domain.BaseTimeEntity;
 import com.deark.be.order.domain.type.*;
 import com.deark.be.store.domain.Store;
@@ -15,11 +15,11 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Table(name = "message")
+@Table(name = "order_request_form")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Message extends BaseTimeEntity {
+public class OrderRequestForm extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,11 +36,11 @@ public class Message extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "design_id")
-    private Design design;
+    private CakeDesign cakeDesign;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "request_detail_design_id")
-    private Design requestDetailDesign;
+    private CakeDesign requestDetailCakeDesign;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status", nullable = false)
@@ -78,14 +78,14 @@ public class Message extends BaseTimeEntity {
     private List<QA> qaList = new ArrayList<>();
 
     @Builder
-    public Message(User user, Store store, Design design, Design requestDetailDesign, OrderStatus orderStatus,
-                   DesignType designType, String designUrl, RequestDetailType requestDetailType,
-                   String requestDetailImageUrl, LocalDateTime responseTime, String makerResponse,
-                   ProgressStatus progressStatus, ResponseStatus responseStatus) {
+    public OrderRequestForm(User user, Store store, CakeDesign cakeDesign, CakeDesign requestDetailCakeDesign, OrderStatus orderStatus,
+                            DesignType designType, String designUrl, RequestDetailType requestDetailType,
+                            String requestDetailImageUrl, LocalDateTime responseTime, String makerResponse,
+                            ProgressStatus progressStatus, ResponseStatus responseStatus) {
         this.user = user;
         this.store = store;
-        this.design = design;
-        this.requestDetailDesign = requestDetailDesign;
+        this.cakeDesign = cakeDesign;
+        this.requestDetailCakeDesign = requestDetailCakeDesign;
         this.orderStatus = orderStatus;
         this.designType = designType;
         this.designUrl = designUrl;
@@ -98,11 +98,11 @@ public class Message extends BaseTimeEntity {
     }
 
     public String getDesignName() {
-        return this.designType == DesignType.STORE ? design.getName() : "";
+        return this.designType == DesignType.STORE ? cakeDesign.getName() : "";
     }
 
     public String getDesignImageUrl() {
-        return this.designType == DesignType.STORE ? design.getImageUrl() : designUrl;
+        return this.designType == DesignType.STORE ? cakeDesign.getImageUrl() : designUrl;
     }
 
     public void addQA(QA qa) {

@@ -1,7 +1,7 @@
 package com.deark.be.order.service;
 
 import com.deark.be.event.repository.EventRepository;
-import com.deark.be.order.domain.Message;
+import com.deark.be.order.domain.OrderRequestForm;
 import com.deark.be.order.domain.QA;
 import com.deark.be.order.domain.type.DesignType;
 import com.deark.be.order.domain.type.OrderStatus;
@@ -61,11 +61,11 @@ public class MypageService {
     public MyOrderStatusResponseList getAllMyOrdersByStatus(Long userId, OrderStatus orderStatus) {
         User user = userService.findUser(userId);
 
-        List<Message> pendingMessages = messageRepository.findAllByUserAndOrderStatus(user, orderStatus);
+        List<OrderRequestForm> pendingOrderRequestForms = messageRepository.findAllByUserAndOrderStatus(user, orderStatus);
 
-        List<MyOrderStatusResponse> responseList =  pendingMessages.stream()
+        List<MyOrderStatusResponse> responseList =  pendingOrderRequestForms.stream()
                 .map(message -> {
-                    List<QA> qaList = qaRepository.findAllByMessage(message);
+                    List<QA> qaList = qaRepository.findAllByOrderRequestForm(message);
                     List<QAStatusResponse> qaStatusList = buildOrderedQaStatusList(qaList);
                     return MyOrderStatusResponse.of(message, qaStatusList);
                 })
@@ -75,19 +75,19 @@ public class MypageService {
     }
 
     public MyOrderRejectedResponse getRejectedOrderReason(Long messageId) {
-        Message message = findMessage(messageId);
+        OrderRequestForm orderRequestForm = findMessage(messageId);
 
-        if (message.getOrderStatus() != OrderStatus.REJECTED) {
+        if (orderRequestForm.getOrderStatus() != OrderStatus.REJECTED) {
             throw new OrderException(ORDER_NOT_REJECTED);
         }
 
-        return MyOrderRejectedResponse.from(message);
+        return MyOrderRejectedResponse.from(orderRequestForm);
     }
 
     public MyOrderDetailResponse getOrderDetail(Long messageId) {
-        Message message = findMessage(messageId);
+        OrderRequestForm orderRequestForm = findMessage(messageId);
 
-        List<QA> qaList = qaRepository.findAllByMessage(message);
+        List<QA> qaList = qaRepository.findAllByOrderRequestForm(orderRequestForm);
         List<QAResponse> qaResponses = buildOrderedQaList(qaList);
 
         String pickupDateStr = qaResponses.stream()
@@ -97,19 +97,19 @@ public class MypageService {
                 .orElse("");
 
         String dayName = extractDayName(pickupDateStr);
-        String businessHourStr = getBusinessHourStr(dayName, message);
+        String businessHourStr = getBusinessHourStr(dayName, orderRequestForm);
 
-        return MyOrderDetailResponse.of(message, businessHourStr, qaResponses);
+        return MyOrderDetailResponse.of(orderRequestForm, businessHourStr, qaResponses);
     }
 
     public MyOrderAcceptedResponse getAcceptedOrderDetail(Long messageId) {
-        Message message = findMessage(messageId);
+        OrderRequestForm orderRequestForm = findMessage(messageId);
 
-        if (message.getOrderStatus() != OrderStatus.ACCEPTED) {
+        if (orderRequestForm.getOrderStatus() != OrderStatus.ACCEPTED) {
             throw new OrderException(ORDER_NOT_ACCEPTED);
         }
 
-        List<QA> qaList = qaRepository.findAllByMessage(message);
+        List<QA> qaList = qaRepository.findAllByOrderRequestForm(orderRequestForm);
 
         String pickupTime = qaList.stream()
                 .filter(qa -> "픽업 희망 시간".equals(qa.getQuestion()))
@@ -117,13 +117,13 @@ public class MypageService {
                 .findFirst()
                 .orElse("");
 
-        return MyOrderAcceptedResponse.of(message, pickupTime);
+        return MyOrderAcceptedResponse.of(orderRequestForm, pickupTime);
     }
 
     @Transactional
     public void updateResponseStatus(Long messageId, ResponseStatus responseStatus) {
-        Message message = findMessage(messageId);
-        message.updateResponseStatus(responseStatus);
+        OrderRequestForm orderRequestForm = findMessage(messageId);
+        orderRequestForm.updateResponseStatus(responseStatus);
     }
 
     private static List<QAStatusResponse> buildOrderedQaStatusList(List<QA> qaList) {
@@ -189,11 +189,11 @@ public class MypageService {
         return null;
     }
 
-    private String getBusinessHourStr(String dayName, Message message) {
-        return businessHoursService.getBusinessHourForPickupDate(message.getStore(), dayName);
+    private String getBusinessHourStr(String dayName, OrderRequestForm orderRequestForm) {
+        return businessHoursService.getBusinessHourForPickupDate(orderRequestForm.getStore(), dayName);
     }
 
-    private Message findMessage(Long messageId) {
+    private OrderRequestForm findMessage(Long messageId) {
         return messageRepository.findById(messageId)
                 .orElseThrow(() -> new OrderException(ORDER_NOT_FOUND));
     }
@@ -209,19 +209,19 @@ public class MypageService {
     }
 
     private OrderManagementResponseList extractOrderManagementResponses(Long userId, List<ProgressStatus> statuses) {
-        List<Message> messages = messageRepository.findMessagesWithQAsByUserIdAndProgressStatusIn(userId, statuses);
+        List<OrderRequestForm> orderRequestForms = messageRepository.findMessagesWithQAsByUserIdAndProgressStatusIn(userId, statuses);
 
-        List<OrderManagementResponse> responses = messages.stream()
+        List<OrderManagementResponse> responses = orderRequestForms.stream()
                 .map(message -> {
                     String storeName = message.getStore().getName();
 
                     String designName = (message.getDesignType() == DesignType.CUSTOM)
                             ? "갤러리에서 추가한 디자인"
-                            : message.getDesign().getName();
+                            : message.getCakeDesign().getName();
 
                     String designUrl = (message.getDesignType() == DesignType.CUSTOM)
                             ? message.getDesignUrl()
-                            : message.getDesign().getImageUrl();
+                            : message.getCakeDesign().getImageUrl();
 
                     Map<String, String> answerMap = new HashMap<>();
                     for (QA qa : message.getQaList()) {

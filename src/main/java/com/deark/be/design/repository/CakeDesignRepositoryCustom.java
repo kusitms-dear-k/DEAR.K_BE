@@ -8,7 +8,7 @@ import com.deark.be.store.domain.type.SortType;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface DesignRepositoryCustom {
+public interface CakeDesignRepositoryCustom {
     SearchDesignPagedResult findAllDesignByCriteria(
             Long userId, Long page, Long count, SortType sortType,
             String keyword, Boolean isSameDayOrder, List<String> locationList,

@@ -17,7 +17,7 @@ public record QAResponse(
                 .title(qa.getQuestion())
                 .answer(qa.getAnswer())
                 .isRequired(qa.getIsRequired())
-                .requestDetailImageUrl("추가 요청사항".equals(qa.getQuestion()) ? qa.getMessage().getRequestDetailImageUrl() : null)
+                .requestDetailImageUrl("추가 요청사항".equals(qa.getQuestion()) ? qa.getOrderRequestForm().getRequestDetailImageUrl() : null)
                 .build();
     }
 }

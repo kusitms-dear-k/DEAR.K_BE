@@ -1,13 +1,14 @@
 package com.deark.be.order.dto.request;
 
-import com.deark.be.design.domain.Design;
-import com.deark.be.order.domain.Message;
+import com.deark.be.design.domain.CakeDesign;
+import com.deark.be.order.domain.OrderRequestForm;
 import com.deark.be.order.domain.type.DesignType;
 import com.deark.be.order.domain.type.OrderStatus;
 import com.deark.be.order.domain.type.RequestDetailType;
 import com.deark.be.store.domain.Store;
 import com.deark.be.user.domain.User;
 import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.List;
 
 
@@ -30,14 +31,15 @@ public record SubmitOrderRequest(
         @Schema(description = "질문 및 답변 리스트")
         List<QARequest> answers
 ) {
-    public Message toEntity(User user, Store store, Design design, Design requestDetailDesign, String requestDetailImageUrl, String designUrl) {
-        return Message.builder()
+    public OrderRequestForm toEntity(User user, Store store, CakeDesign cakeDesign, CakeDesign requestDetailCakeDesign,
+                                     String requestDetailImageUrl, String designUrl) {
+        return OrderRequestForm.builder()
                 .user(user)
                 .store(store)
                 .designType(designType)
                 .requestDetailType(requestDetailType)
-                .design(design)
-                .requestDetailDesign(requestDetailDesign)
+                .cakeDesign(cakeDesign)
+                .requestDetailCakeDesign(requestDetailCakeDesign)
                 .designUrl(designUrl)
                 .requestDetailImageUrl(requestDetailImageUrl)
                 .orderStatus(OrderStatus.PENDING)

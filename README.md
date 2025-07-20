@@ -57,7 +57,7 @@ Body는 추가 설명 필요하면 사용
 | `style` | 코드의 동작에는 영향을 주지 않는 포맷, 세미콜론 등 수정에 대한 커밋 |
 | `refactor` | 코드 리팩토링에 대한 커밋 |
 | `test` | 테스트 코드 수정에 대한 커밋 |
-| `design` | CSS 및 UI 수정에 대한 커밋 |
+| `cakeDesign` | CSS 및 UI 수정에 대한 커밋 |
 | `set` | 프로젝트 세팅 관련 커밋 |
 
 ## 📛 Naming
@@ -75,7 +75,7 @@ src
 ├── main
 │   ├── auth
 │   ├── alarm
-│   ├── design
+│   ├── cakeDesign
 │   ├── event
 │   ├── global
 │   ├── order
@@ -100,7 +100,7 @@ src
 {
   "isSuccess": true,
   "code": "REQUEST_OK",
-  "message": "요청이 승인되었습니다.",
+  "orderRequestForm": "요청이 승인되었습니다.",
   "results": {
     "storeId": 1,
     "storeName": "디어레터",
@@ -110,5 +110,5 @@ src
 ```
 - `isSuccess` : 성공 여부
 - `code` : 성공 코드, 커스텀 가능
-- `message` : 성공 메세지
+- `orderRequestForm` : 성공 메세지
 - `results` : 데이터가 들어가는 곳

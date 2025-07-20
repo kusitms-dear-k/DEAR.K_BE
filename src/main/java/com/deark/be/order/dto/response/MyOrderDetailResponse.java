@@ -1,6 +1,6 @@
 package com.deark.be.order.dto.response;
 
-import com.deark.be.order.domain.Message;
+import com.deark.be.order.domain.OrderRequestForm;
 import com.deark.be.order.domain.type.DesignType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -24,14 +24,14 @@ public record MyOrderDetailResponse(
         @Schema(description = "주문서 질문 & 답", example = "[{\"title\": \"이름\", \"answer\": \"박지유\", \"isRequired\": \"true\"}]")
         List<QAResponse> qaDetails
 ) {
-    public static MyOrderDetailResponse of(Message message, String operatingHours, List<QAResponse> qaDetails) {
+    public static MyOrderDetailResponse of(OrderRequestForm orderRequestForm, String operatingHours, List<QAResponse> qaDetails) {
         return MyOrderDetailResponse.builder()
-                .messageId(message.getId())
+                .messageId(orderRequestForm.getId())
                 .operatingHours(operatingHours)
-                .chattingUrl(message.getStore().getChattingUrl())
-                .designName(message.getDesignName())
-                .designImageUrl(message.getDesignImageUrl())
-                .designType(message.getDesignType())
+                .chattingUrl(orderRequestForm.getStore().getChattingUrl())
+                .designName(orderRequestForm.getDesignName())
+                .designImageUrl(orderRequestForm.getDesignImageUrl())
+                .designType(orderRequestForm.getDesignType())
                 .qaDetails(qaDetails)
                 .build();
     }

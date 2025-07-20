@@ -1,6 +1,6 @@
 package com.deark.be.event.repository;
 
-import com.deark.be.design.domain.Design;
+import com.deark.be.design.domain.CakeDesign;
 import com.deark.be.event.domain.EventDesign;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -15,7 +15,7 @@ public interface EventDesignRepository  extends JpaRepository<EventDesign, Long>
 
     Optional<EventDesign> findByEventIdAndDesignId(Long eventId, Long designId);
 
-    List<EventDesign> findAllByDesign(Design design);
+    List<EventDesign> findAllByDesign(CakeDesign cakeDesign);
 
     boolean existsByEventIdAndDesignId(Long eventId, Long designId);
 

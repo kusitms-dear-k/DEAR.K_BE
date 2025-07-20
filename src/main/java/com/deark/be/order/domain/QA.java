@@ -19,7 +19,7 @@ public class QA {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "message_id", nullable = false)
-    private Message message;
+    private OrderRequestForm orderRequestForm;
 
     @Column(name = "question")
     private String question;
@@ -30,13 +30,13 @@ public class QA {
     @Column(name = "is_required")
     private Boolean isRequired;
 
-    public void assignMessage(Message message) {
-        this.message = message;
+    public void assignMessage(OrderRequestForm orderRequestForm) {
+        this.orderRequestForm = orderRequestForm;
     }
 
     @Builder
-    public QA(Message message, String question, String answer, Boolean isRequired) {
-        this.message = message;
+    public QA(OrderRequestForm orderRequestForm, String question, String answer, Boolean isRequired) {
+        this.orderRequestForm = orderRequestForm;
         this.question = question;
         this.answer = answer;
         this.isRequired = isRequired;

@@ -1,5 +1,6 @@
 package com.deark.be.design.repository;
 
+import com.deark.be.design.domain.type.OptionCategory;
 import com.deark.be.design.dto.response.DesignDetailResponse;
 import com.deark.be.design.dto.response.SearchDesignPagedResult;
 import com.deark.be.design.dto.response.SearchDesignResponse;
@@ -25,20 +26,17 @@ import org.springframework.util.StringUtils;
 import java.time.LocalDate;
 import java.util.*;
 
-import static com.deark.be.design.domain.QCream.cream;
-import static com.deark.be.design.domain.QDesign.design;
-import static com.deark.be.design.domain.QSheet.sheet;
-import static com.deark.be.design.domain.QSize.size;
+import static com.deark.be.design.domain.QCakeDesign.cakeDesign;
+import static com.deark.be.design.domain.QCakeDesignOption.cakeDesignOption;
 import static com.deark.be.event.domain.QEvent.event;
 import static com.deark.be.event.domain.QEventDesign.eventDesign;
 import static com.deark.be.store.domain.QBusinessHours.businessHours;
 import static com.deark.be.store.domain.QStore.store;
 import static com.querydsl.core.types.dsl.Expressions.numberTemplate;
-import static java.util.Optional.ofNullable;
 
 @Repository
 @RequiredArgsConstructor
-public class DesignRepositoryImpl implements DesignRepositoryCustom {
+public class CakeDesignRepositoryImpl implements CakeDesignRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 
@@ -69,9 +67,9 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
         BooleanExpression hasLunchBoxCakeSizeExpr = Boolean.TRUE.equals(isLunchBoxCake)
                 ? JPAExpressions
                 .selectOne()
-                .from(size)
-                .join(size.design, design)
-                .where(design.store.eq(store).and(size.name.contains("도시락")))
+                .from(cakeDesignOption)
+                .join(cakeDesignOption.cakeDesign, cakeDesign)
+                .where(cakeDesign.store.eq(store).and(cakeDesignOption.name.contains("도시락")).and(cakeDesignOption.optionCategory.eq(OptionCategory.SIZE)))
                 .exists()
                 : null;
 
@@ -81,7 +79,7 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                 .from(eventDesign)
                 .join(eventDesign.event, event)
                 .where(event.user.id.eq(userId)
-                        .and(eventDesign.design.eq(design)))
+                        .and(eventDesign.cakeDesign.eq(cakeDesign)))
                 .exists()
                 : Expressions.FALSE;
 
@@ -99,9 +97,9 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
 
         // --- 2) Count Query ---
         Long total = jpaQueryFactory
-                .select(design.id.countDistinct())
-                .from(design)
-                .join(design.store, store)
+                .select(cakeDesign.id.countDistinct())
+                .from(cakeDesign)
+                .join(cakeDesign.store, store)
                 .leftJoin(store.businessHoursList, businessHours)
                 .where(filter)
                 .fetchOne();
@@ -109,53 +107,53 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
 
         // --- 3) ID + Sort 기준으로 정렬된 디자인 ID 조회 ---
         JPAQuery<Tuple> tuplesQuery = jpaQueryFactory
-                .select(design.id, likeCount)
-                .from(design)
-                .join(design.store, store)
-                .leftJoin(design.eventDesignList, eventDesign)
+                .select(cakeDesign.id, likeCount)
+                .from(cakeDesign)
+                .join(cakeDesign.store, store)
+                .leftJoin(cakeDesign.eventDesignList, eventDesign)
                 .leftJoin(eventDesign.event, event)
                 .leftJoin(store.businessHoursList, businessHours)
                 .where(filter)
-                .groupBy(design.id)
+                .groupBy(cakeDesign.id)
                 .offset(page * count)
                 .limit(count);
 
         if (SortType.LATEST.equals(sortType)) {
-            tuplesQuery.orderBy(design.id.desc());
+            tuplesQuery.orderBy(cakeDesign.id.desc());
         } else if (SortType.POPULARITY.equals(sortType)) {
-            tuplesQuery.orderBy(likeCount.desc(), design.id.desc());
+            tuplesQuery.orderBy(likeCount.desc(), cakeDesign.id.desc());
         }
 
         List<Long> pagedIds = tuplesQuery.stream()
-                .map(t -> t.get(design.id))
+                .map(t -> t.get(cakeDesign.id))
                 .toList();
 
         boolean hasNext = (page + 1) * count < total;
 
         // --- 4) 실제 디자인 상세 정보 조회 ---
         Map<Long, SearchDesignResponse> resultMap = jpaQueryFactory
-                .from(design)
-                .join(design.store, store)
-                .leftJoin(design.eventDesignList, eventDesign)
+                .from(cakeDesign)
+                .join(cakeDesign.store, store)
+                .leftJoin(cakeDesign.eventDesignList, eventDesign)
                 .leftJoin(eventDesign.event, event)
-                .where(design.id.in(pagedIds))
+                .where(cakeDesign.id.in(pagedIds))
                 .transform(
-                        GroupBy.groupBy(design.id).as(
+                        GroupBy.groupBy(cakeDesign.id).as(
                                 Projections.constructor(
                                         SearchDesignResponse.class,
-                                        design.id,
-                                        design.name,
-                                        design.imageUrl,
+                                        cakeDesign.id,
+                                        cakeDesign.name,
+                                        cakeDesign.imageUrl,
                                         store.id,
                                         store.name,
-                                        design.price,
+                                        cakeDesign.price,
                                         store.address,
                                         store.isSameDayOrder,
                                         isLikedExpr,
                                         numberTemplate(
                                                 Long.class,
                                                 "(select count(ed) from EventDesign ed where ed.design = {0})",
-                                                design
+                                                cakeDesign
                                         )
                                 )
                         )
@@ -174,42 +172,40 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
         NumberExpression<Long> likedSum = numberTemplate(
                 Long.class,
                 "SUM(CASE WHEN {0} THEN 1 ELSE 0 END)",
-                event.user.id.eq(userId).and(eventDesign.design.eq(design))
+                event.user.id.eq(userId).and(eventDesign.cakeDesign.eq(cakeDesign))
         );
 
         NumberExpression<Long> likeCount = eventDesign.id.countDistinct().coalesce(0L);
 
         BooleanExpression isLikedExpr = likedSum.gt(0L);
 
-        BooleanExpression sizeFilter = (sizeName != null && !sizeName.isBlank())
-                ? design.sizeList.any().name.eq(sizeName)
-                : null;
+        BooleanExpression sizeFilter = StringUtils.hasText(sizeName) ? cakeDesign.cakeDesignOptionList.any().name.eq(sizeName) : null;
 
         return jpaQueryFactory
                 .select(Projections.constructor(
                         StoreDesignResponse.class,
-                        design.id,
-                        design.name,
-                        design.imageUrl,
+                        cakeDesign.id,
+                        cakeDesign.name,
+                        cakeDesign.imageUrl,
                         store.name,
-                        design.price,
+                        cakeDesign.price,
                         isLikedExpr,
                         likeCount
                 ))
-                .from(design)
-                .join(design.store, store)
-                .leftJoin(design.eventDesignList, eventDesign)
+                .from(cakeDesign)
+                .join(cakeDesign.store, store)
+                .leftJoin(cakeDesign.eventDesignList, eventDesign)
                 .leftJoin(eventDesign.event, event)
                 .where(
-                        design.store.id.eq(storeId),
+                        cakeDesign.store.id.eq(storeId),
                         sizeFilter
                 )
                 .groupBy(
-                        design.id,
-                        design.name,
-                        design.imageUrl,
+                        cakeDesign.id,
+                        cakeDesign.name,
+                        cakeDesign.imageUrl,
                         store.name,
-                        design.price
+                        cakeDesign.price
                 )
                 .offset(page * count)
                 .limit(count + 1)
@@ -224,27 +220,27 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
                 .join(eventDesign.event, event)
                 .where(
                         event.user.id.eq(userId),
-                        eventDesign.design.id.eq(designId)
+                        eventDesign.cakeDesign.id.eq(designId)
                 )
                 .fetchFirst() != null;
 
         Long likeCount = jpaQueryFactory
                 .select(eventDesign.count())
                 .from(eventDesign)
-                .where(eventDesign.design.id.eq(designId))
+                .where(eventDesign.cakeDesign.id.eq(designId))
                 .fetchOne();
 
         Tuple result = jpaQueryFactory
                 .select(
-                        design.store.id,
-                        design.store.name,
-                        design.name,
-                        design.imageUrl,
-                        design.description,
-                        design.price
+                        cakeDesign.store.id,
+                        cakeDesign.store.name,
+                        cakeDesign.name,
+                        cakeDesign.imageUrl,
+                        cakeDesign.description,
+                        cakeDesign.price
                 )
-                .from(design)
-                .where(design.id.eq(designId))
+                .from(cakeDesign)
+                .where(cakeDesign.id.eq(designId))
                 .fetchOne();
 
         if (result == null) {
@@ -252,30 +248,30 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
         }
 
         List<String> sizeList = jpaQueryFactory
-                .select(size.name)
-                .from(size)
-                .where(size.design.id.eq(designId))
+                .select(cakeDesignOption.name)
+                .from(cakeDesignOption)
+                .where(cakeDesignOption.cakeDesign.id.eq(designId), cakeDesignOption.optionCategory.eq(OptionCategory.SIZE))
                 .fetch();
 
         List<String> creamList = jpaQueryFactory
-                .select(cream.name)
-                .from(cream)
-                .where(cream.design.id.eq(designId))
+                .select(cakeDesignOption.name)
+                .from(cakeDesignOption)
+                .where(cakeDesignOption.cakeDesign.id.eq(designId), cakeDesignOption.optionCategory.eq(OptionCategory.CREAM))
                 .fetch();
 
         List<String> sheetList = jpaQueryFactory
-                .select(sheet.name)
-                .from(sheet)
-                .where(sheet.design.id.eq(designId))
+                .select(cakeDesignOption.name)
+                .from(cakeDesignOption)
+                .where(cakeDesignOption.cakeDesign.id.eq(designId), cakeDesignOption.optionCategory.eq(OptionCategory.SHEET))
                 .fetch();
 
         return DesignDetailResponse.builder()
-                .storeId(result.get(design.store.id))
-                .storeName(result.get(design.store.name))
-                .designName(result.get(design.name))
-                .designImageUrl(result.get(design.imageUrl))
-                .description(result.get(design.description))
-                .price(result.get(design.price))
+                .storeId(result.get(cakeDesign.store.id))
+                .storeName(result.get(cakeDesign.store.name))
+                .designName(result.get(cakeDesign.name))
+                .designImageUrl(result.get(cakeDesign.imageUrl))
+                .description(result.get(cakeDesign.description))
+                .price(result.get(cakeDesign.price))
                 .isLiked(isLiked)
                 .likeCount(likeCount)
                 .sizeList(sizeList)
@@ -304,8 +300,8 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
         BooleanExpression expr = null;
 
         for (String token : tokens) {
-            BooleanExpression tokenExpr = design.name.contains(token)
-                    .or(design.description.contains(token))
+            BooleanExpression tokenExpr = cakeDesign.name.contains(token)
+                    .or(cakeDesign.description.contains(token))
                     .or(store.address.contains(token))
                     .or(store.name.contains(token));
 
@@ -329,11 +325,11 @@ public class DesignRepositoryImpl implements DesignRepositoryCustom {
 
     private BooleanExpression priceBetweenExpression(Long minPrice, Long maxPrice) {
         if (minPrice != null && maxPrice != null) {
-            return design.price.between(minPrice, maxPrice);
+            return cakeDesign.price.between(minPrice, maxPrice);
         } else if (minPrice != null) {
-            return design.price.goe(minPrice);
+            return cakeDesign.price.goe(minPrice);
         } else if (maxPrice != null) {
-            return design.price.loe(maxPrice);
+            return cakeDesign.price.loe(maxPrice);
         }
 
         return null;

@@ -1,6 +1,6 @@
 package com.deark.be.event.domain;
 
-import com.deark.be.design.domain.Design;
+import com.deark.be.design.domain.CakeDesign;
 import com.deark.be.global.domain.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -25,15 +25,15 @@ public class EventDesign extends BaseTimeEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "design_id", nullable = false)
-    private Design design;
+    private CakeDesign cakeDesign;
 
     @Column(name = "memo")
     private String memo;
 
     @Builder
-    public EventDesign(Event event, Design design, String memo) {
+    public EventDesign(Event event, CakeDesign cakeDesign, String memo) {
         this.event = event;
-        this.design = design;
+        this.cakeDesign = cakeDesign;
         this.memo = memo;
     }
 

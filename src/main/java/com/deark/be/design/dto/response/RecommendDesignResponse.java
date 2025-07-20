@@ -1,6 +1,6 @@
 package com.deark.be.design.dto.response;
 
-import com.deark.be.design.domain.Design;
+import com.deark.be.design.domain.CakeDesign;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
@@ -17,12 +17,12 @@ public record RecommendDesignResponse(
         @Schema(description = "찜하기 여부", example = "false")
         Boolean isLiked
 ) {
-    public static RecommendDesignResponse of(Design design, Boolean isLiked) {
+    public static RecommendDesignResponse of(CakeDesign cakeDesign, Boolean isLiked) {
         return RecommendDesignResponse.builder()
-                .designId(design.getId())
-                .designImageUrl(design.getImageUrl())
-                .designName(design.getName())
-                .storeName(design.getStore().getName())
+                .designId(cakeDesign.getId())
+                .designImageUrl(cakeDesign.getImageUrl())
+                .designName(cakeDesign.getName())
+                .storeName(cakeDesign.getStore().getName())
                 .isLiked(isLiked)
                 .build();
     }

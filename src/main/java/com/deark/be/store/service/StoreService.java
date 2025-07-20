@@ -1,7 +1,8 @@
 package com.deark.be.store.service;
 
-import com.deark.be.design.domain.Size;
-import com.deark.be.design.repository.SizeRepository;
+import com.deark.be.design.domain.CakeDesignOption;
+import com.deark.be.design.domain.type.OptionCategory;
+import com.deark.be.design.repository.CakeDesignOptionRepository;
 import com.deark.be.event.repository.EventStoreRepository;
 import com.deark.be.global.service.S3Service;
 import com.deark.be.store.domain.BusinessHours;
@@ -35,7 +36,7 @@ public class StoreService {
 
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
-    private final SizeRepository sizeRepository;
+    private final CakeDesignOptionRepository cakeDesignOptionRepository;
     private final EventStoreRepository eventStoreRepository;
 
     private final S3Service s3Service;
@@ -76,8 +77,9 @@ public class StoreService {
     public StoreDetailResponse getStoreDetail(Long storeId, Long userId) {
         Store store = getStoreByIdOrThrow(storeId);
 
-        List<String> sizeNameList = store.getSizeList().stream()
-                .map(Size::getName)
+        List<String> sizeNameList = store.getCakeDesignOptionList().stream()
+                .filter(option -> option.getOptionCategory() == OptionCategory.SIZE)
+                .map(CakeDesignOption::getName)
                 .distinct()
                 .toList();
 
@@ -87,7 +89,7 @@ public class StoreService {
                 store.getBusinessHoursList().stream()
                         .anyMatch(BusinessHours::getIsOpen24Hours);
 
-        boolean isLunchBoxCake = sizeRepository.existsByStoreIdAndNameContaining(storeId, "도시락");
+        boolean isLunchBoxCake = cakeDesignOptionRepository.existsByCakeDesignStoreIdAndNameIsContainingAndOptionCategory(storeId, "도시락", OptionCategory.SIZE);
         boolean isLiked = eventStoreRepository.existsByEventUserIdAndStoreId(userId, storeId);
         List<PickUpHourResponse> pickupHours = store.getBusinessHoursList().stream()
                 .map(PickUpHourResponse::from)

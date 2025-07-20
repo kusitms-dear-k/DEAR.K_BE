@@ -1,9 +1,7 @@
 package com.deark.be.store.domain;
 
-import com.deark.be.design.domain.Cream;
-import com.deark.be.design.domain.Design;
-import com.deark.be.design.domain.Sheet;
-import com.deark.be.design.domain.Size;
+import com.deark.be.design.domain.CakeDesignOption;
+import com.deark.be.design.domain.CakeDesign;
 import com.deark.be.global.domain.BaseTimeEntity;
 import com.deark.be.user.domain.User;
 import jakarta.persistence.*;
@@ -86,16 +84,10 @@ public class Store extends BaseTimeEntity {
     private List<BusinessHours> businessHoursList = new ArrayList<>();
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Size> sizeList = new ArrayList<>();
+    private List<CakeDesignOption> cakeDesignOptionList = new ArrayList<>();
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Cream> creamList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Sheet> sheetList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Design> designList = new ArrayList<>();
+    private List<CakeDesign> cakeDesignList = new ArrayList<>();
 
     @Builder
     public Store(User user, String name, String description, String phone, String address,
@@ -103,7 +95,7 @@ public class Store extends BaseTimeEntity {
                  Long averageResponseTime, String chattingUrl, Boolean isSameDayOrder,
                  String settlementAccount, String businessLicenseUrl, String businessPermitUrl, String ownerName,
                  String orderLink, Integer maxDailyOrders, Boolean isSelfService, List<BusinessHours> businessHoursList,
-                 List<Size> sizeList, List<Cream> creamList, List<Sheet> sheetList, List<Design> designList) {
+                 List<CakeDesignOption> cakeDesignOptionList, List<CakeDesign> cakeDesignList) {
         this.user = user;
         this.name = name;
         this.description = description;
@@ -123,10 +115,8 @@ public class Store extends BaseTimeEntity {
         this.maxDailyOrders = maxDailyOrders;
         this.isSelfService = isSelfService;
         this.businessHoursList = businessHoursList;
-        this.sizeList = sizeList;
-        this.creamList = creamList;
-        this.sheetList = sheetList;
-        this.designList = designList;
+        this.cakeDesignOptionList = cakeDesignOptionList;
+        this.cakeDesignList = cakeDesignList;
     }
 
     // Store 엔티티 내에 추가할 메서드

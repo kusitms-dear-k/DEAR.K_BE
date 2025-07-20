@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "design")
+@Table(name = "cake_design")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Design {
+public class CakeDesign {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +25,15 @@ public class Design {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
+
+    @OneToMany(mappedBy = "cakeDesign", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EventDesign> eventDesignList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "cakeDesign", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CakeDesignOption> cakeDesignOptionList = new ArrayList<>();
+
+    @Column(name = "is_fixed")
+    private Boolean isFixed;
 
     @Column(name = "name")
     private String name;
@@ -38,21 +47,15 @@ public class Design {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @OneToMany(mappedBy = "design", fetch = FetchType.LAZY)
-    private List<EventDesign> eventDesignList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "design", fetch = FetchType.LAZY)
-    private List<Size> sizeList = new ArrayList<>();
-
     @Builder
-    public Design(Store store, String name, String description, Long price, String imageUrl,
-                  List<EventDesign> eventDesignList, List<Size> sizeList) {
+    public CakeDesign(
+            Store store, Boolean isFixed, String name, String description, Long price, String imageUrl
+    ) {
         this.store = store;
+        this.isFixed = isFixed;
         this.name = name;
         this.description = description;
         this.price = price;
         this.imageUrl = imageUrl;
-        this.eventDesignList = eventDesignList;
-        this.sizeList = sizeList;
     }
 }

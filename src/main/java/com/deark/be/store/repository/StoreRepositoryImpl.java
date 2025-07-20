@@ -1,5 +1,6 @@
 package com.deark.be.store.repository;
 
+import com.deark.be.design.domain.type.OptionCategory;
 import com.deark.be.store.domain.type.BusinessDay;
 import com.deark.be.store.domain.type.SortType;
 import com.deark.be.store.dto.response.SearchStorePagedResult;
@@ -23,8 +24,8 @@ import org.springframework.util.StringUtils;
 import java.time.LocalDate;
 import java.util.*;
 
-import static com.deark.be.design.domain.QDesign.design;
-import static com.deark.be.design.domain.QSize.size;
+import static com.deark.be.design.domain.QCakeDesign.cakeDesign;
+import static com.deark.be.design.domain.QCakeDesignOption.cakeDesignOption;
 import static com.deark.be.event.domain.QEvent.event;
 import static com.deark.be.event.domain.QEventStore.eventStore;
 import static com.deark.be.store.domain.QBusinessHours.businessHours;
@@ -64,10 +65,10 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
 
         BooleanExpression hasLunchBoxCakeSizeExpr = JPAExpressions
                 .selectOne()
-                .from(size)
-                .join(size.design, design)
-                .where(design.store.eq(store)
-                        .and(size.name.contains("도시락")))
+                .from(cakeDesignOption)
+                .join(cakeDesignOption.cakeDesign, cakeDesign)
+                .where(cakeDesign.store.eq(store)
+                        .and(cakeDesign.name.contains("도시락")), cakeDesignOption.optionCategory.eq(OptionCategory.SIZE))
                 .exists();
 
         BooleanExpression isLikedExpr = (userId != null && userId != 0L)
@@ -126,7 +127,7 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
 
         Map<Long, SearchStoreResponse> resultMap = jpaQueryFactory
                 .from(store)
-                .leftJoin(store.designList, design)
+                .leftJoin(store.cakeDesignList, cakeDesign)
                 .where(store.id.in(pagedIds))
                 .transform(
                         GroupBy.groupBy(store.id).as(
@@ -145,7 +146,7 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
                                                 "(select count(es) from EventStore es where es.store = {0})",
                                                 store
                                         ),
-                                        GroupBy.list(design.imageUrl)
+                                        GroupBy.list(cakeDesign.imageUrl)
                                 )
                         )
                 );
@@ -180,7 +181,7 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
             BooleanExpression tokenExpr = store.name.contains(token)
                     .or(store.description.contains(token))
                     .or(store.address.contains(token))
-                    .or(store.designList.any().description.contains(token));
+                    .or(store.cakeDesignList.any().description.contains(token));
 
             expr = (expr == null) ? tokenExpr : expr.or(tokenExpr);
         }
@@ -202,11 +203,11 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
 
     private BooleanExpression priceBetweenExpression(Long minPrice, Long maxPrice) {
         if (minPrice != null && maxPrice != null) {
-            return store.designList.any().price.between(minPrice, maxPrice);
+            return store.cakeDesignList.any().price.between(minPrice, maxPrice);
         } else if (minPrice != null) {
-            return store.designList.any().price.goe(minPrice);
+            return store.cakeDesignList.any().price.goe(minPrice);
         } else if (maxPrice != null) {
-            return store.designList.any().price.loe(maxPrice);
+            return store.cakeDesignList.any().price.loe(maxPrice);
         }
 
         return null;

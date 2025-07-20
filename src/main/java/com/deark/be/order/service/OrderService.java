@@ -1,10 +1,11 @@
 package com.deark.be.order.service;
 
-import com.deark.be.design.domain.Design;
+import com.deark.be.design.domain.CakeDesign;
+import com.deark.be.design.domain.type.OptionCategory;
 import com.deark.be.design.dto.response.StoreDesignSimpleResponse;
 import com.deark.be.design.service.DesignService;
 import com.deark.be.global.service.S3Service;
-import com.deark.be.order.domain.Message;
+import com.deark.be.order.domain.OrderRequestForm;
 import com.deark.be.order.domain.QA;
 import com.deark.be.order.domain.type.DesignType;
 import com.deark.be.order.domain.type.RequestDetailType;
@@ -56,24 +57,24 @@ public class OrderService {
         validateDesignParams(request,designUrl);
         validateRequestDetailParams(request,requestDetailImageUrl);
 
-        Design design = request.designType() == DesignType.STORE
+        CakeDesign cakeDesign = request.designType() == DesignType.STORE
                 ? designService.getDesignByIdOrThrow(request.designId())
                 : null;
 
-        Design requestDetailDesign = request.requestDetailType() == RequestDetailType.EVENT
+        CakeDesign requestDetailCakeDesign = request.requestDetailType() == RequestDetailType.EVENT
                 ? designService.getDesignByIdOrThrow(request.requestDetailDesignId())
                 : null;
 
-        Message message = request.toEntity(user,store,design,requestDetailDesign,designUrl,requestDetailImageUrl);
+        OrderRequestForm orderRequestForm = request.toEntity(user,store, cakeDesign, requestDetailCakeDesign,designUrl,requestDetailImageUrl);
 
         request.answers().forEach(answerDto -> {
-            QA qa = answerDto.toEntity(message);
-            message.addQA(qa);
+            QA qa = answerDto.toEntity(orderRequestForm);
+            orderRequestForm.addQA(qa);
         });
 
-        messageRepository.save(message);
+        messageRepository.save(orderRequestForm);
 
-        return message.getId();
+        return orderRequestForm.getId();
     }
 
     public void validateDesignParams(SubmitOrderRequest request, String designUrl) {
@@ -118,37 +119,40 @@ public class OrderService {
         return BusinessHoursResponse.from(businessHours);
     }
 
-    public DesignSizeResponseList getDesignSize(Long storeId) {
+    public CakeDesignOptionResponseList getDesignSize(Long storeId) {
         Store store = storeService.getStoreByIdOrThrow(storeId);
 
-        List<DesignSizeResponse> designSizeResponses = store.getSizeList().stream()
+        List<CakeDesignOptionResponse> designSizeResponses = store.getCakeDesignOptionList().stream()
                 .distinct()
-                .map(DesignSizeResponse::from)
+                .filter(option -> option.getOptionCategory() == OptionCategory.SIZE)
+                .map(CakeDesignOptionResponse::from)
                 .toList();
 
-        return DesignSizeResponseList.from(designSizeResponses);
+        return CakeDesignOptionResponseList.from(designSizeResponses);
     }
 
-    public DesignCreamResponseList getDesignCream(Long storeId) {
+    public CakeDesignOptionResponseList getDesignCream(Long storeId) {
         Store store = storeService.getStoreByIdOrThrow(storeId);
 
-        List<DesignCreamResponse> designSizeResponses = store.getCreamList().stream()
+        List<CakeDesignOptionResponse> designSizeResponses = store.getCakeDesignOptionList().stream()
                 .distinct()
-                .map(DesignCreamResponse::from)
+                .filter(option -> option.getOptionCategory() == OptionCategory.CREAM)
+                .map(CakeDesignOptionResponse::from)
                 .toList();
 
-        return DesignCreamResponseList.from(designSizeResponses);
+        return CakeDesignOptionResponseList.from(designSizeResponses);
     }
 
-    public DesignSheetResponseList getDesignSheet(Long storeId) {
+    public CakeDesignOptionResponseList getDesignSheet(Long storeId) {
         Store store = storeService.getStoreByIdOrThrow(storeId);
 
-        List<DesignSheetResponse> designSheetResponses = store.getSheetList().stream()
+        List<CakeDesignOptionResponse> designSheetResponses = store.getCakeDesignOptionList().stream()
                 .distinct()
-                .map(DesignSheetResponse::from)
+                .filter(option -> option.getOptionCategory() == OptionCategory.SHEET)
+                .map(CakeDesignOptionResponse::from)
                 .toList();
 
-        return DesignSheetResponseList.from(designSheetResponses);
+        return CakeDesignOptionResponseList.from(designSheetResponses);
     }
 
     public List<StoreDesignSimpleResponse> getDesignListByStoreId(Long storeId) {

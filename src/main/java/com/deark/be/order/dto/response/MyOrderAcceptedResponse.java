@@ -1,6 +1,6 @@
 package com.deark.be.order.dto.response;
 
-import com.deark.be.order.domain.Message;
+import com.deark.be.order.domain.OrderRequestForm;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
@@ -17,13 +17,13 @@ public record MyOrderAcceptedResponse(
         @Schema(description = "계좌 번호", example = "123-456-789012")
         String account
 ) {
-    public static MyOrderAcceptedResponse of(Message message, String pickUpTime) {
+    public static MyOrderAcceptedResponse of(OrderRequestForm orderRequestForm, String pickUpTime) {
         return MyOrderAcceptedResponse.builder()
                 .pickUpTime(pickUpTime)
-                .price(message.getMakerResponse())
-                .bankImageUrl(message.getStore().getUser().getBank().getImageUrl())
-                .bankName(message.getStore().getUser().getBank().getName())
-                .account(message.getStore().getUser().getAccount())
+                .price(orderRequestForm.getMakerResponse())
+                .bankImageUrl(orderRequestForm.getStore().getUser().getBank().getImageUrl())
+                .bankName(orderRequestForm.getStore().getUser().getBank().getName())
+                .account(orderRequestForm.getStore().getUser().getAccount())
                 .build();
     }
 }

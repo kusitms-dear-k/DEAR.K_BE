@@ -1,9 +1,9 @@
 package com.deark.be.order.repository.init;
 
-import com.deark.be.design.domain.Design;
-import com.deark.be.design.repository.DesignRepository;
+import com.deark.be.design.domain.CakeDesign;
+import com.deark.be.design.repository.CakeCakeDesignRepository;
 import com.deark.be.global.util.DummyDataInit;
-import com.deark.be.order.domain.Message;
+import com.deark.be.order.domain.OrderRequestForm;
 import com.deark.be.order.domain.type.ProgressStatus;
 import com.deark.be.order.domain.type.RequestDetailType;
 import com.deark.be.order.repository.MessageRepository;
@@ -37,7 +37,7 @@ public class MessageInitializer implements ApplicationRunner {
     private final MessageRepository messageRepository;
     private final UserRepository userRepository;
     private final StoreRepository storeRepository;
-    private final DesignRepository designRepository;
+    private final CakeCakeDesignRepository cakeDesignRepository;
 
     @Value("${spring.cloud.aws.s3.url}/design")
     private String designImageUrl;
@@ -53,30 +53,30 @@ public class MessageInitializer implements ApplicationRunner {
             Store STORE2 = storeRepository.findById(2L).orElseThrow();
             Store STORE3 = storeRepository.findById(3L).orElseThrow();
 
-            Design DESIGN1 = designRepository.findById(1L).orElseThrow();
-            Design DESIGN2 = designRepository.findById(2L).orElseThrow();
-            Design DESIGN3 = designRepository.findById(3L).orElseThrow();
-            Design DESIGN8 = designRepository.findById(8L).orElseThrow();
+            CakeDesign CakeDESIGN1 = cakeDesignRepository.findById(1L).orElseThrow();
+            CakeDesign CakeDESIGN2 = cakeDesignRepository.findById(2L).orElseThrow();
+            CakeDesign CakeDESIGN3 = cakeDesignRepository.findById(3L).orElseThrow();
+            CakeDesign CakeDESIGN8 = cakeDesignRepository.findById(8L).orElseThrow();
 
-            List<Message> messageList = new ArrayList<>();
+            List<OrderRequestForm> orderRequestFormList = new ArrayList<>();
 
-            Message DUMMY_MESSAGE1 = Message.builder()
+            OrderRequestForm DUMMY_OrderRequestForm1 = OrderRequestForm.builder()
                     .user(USER1)
                     .store(STORE1)
-                    .design(DESIGN1)
+                    .cakeDesign(CakeDESIGN1)
                     .designType(STORE)
-                    .requestDetailDesign(DESIGN2)
+                    .requestDetailCakeDesign(CakeDESIGN2)
                     .requestDetailType(EVENT)
                     .orderStatus(PENDING)
                     .responseStatus(UNRESPONSIVE)
                     .build();
 
-            Message DUMMY_MESSAGE2 = Message.builder()
+            OrderRequestForm DUMMY_OrderRequestForm2 = OrderRequestForm.builder()
                     .user(USER1)
                     .store(STORE1)
-                    .design(DESIGN8)
+                    .cakeDesign(CakeDESIGN8)
                     .designType(STORE)
-                    .requestDetailDesign(DESIGN3)
+                    .requestDetailCakeDesign(CakeDESIGN3)
                     .requestDetailType(EVENT)
                     .orderStatus(ACCEPTED)
                     .progressStatus(ProgressStatus.RESERVED)
@@ -85,12 +85,12 @@ public class MessageInitializer implements ApplicationRunner {
                     .responseStatus(UNRESPONSIVE)
                     .build();
 
-            Message DUMMY_MESSAGE3 = Message.builder()
+            OrderRequestForm DUMMY_OrderRequestForm3 = OrderRequestForm.builder()
                     .user(USER1)
                     .store(STORE1)
-                    .design(DESIGN1)
+                    .cakeDesign(CakeDESIGN1)
                     .designType(STORE)
-                    .requestDetailDesign(DESIGN8)
+                    .requestDetailCakeDesign(CakeDESIGN8)
                     .requestDetailType(EVENT)
                     .orderStatus(REJECTED)
                     .makerResponse("디자인에 사용될 재료 부족 및 소진")
@@ -98,24 +98,23 @@ public class MessageInitializer implements ApplicationRunner {
                     .responseStatus(UNRESPONSIVE)
                     .build();
 
-            Message DUMMY_MESSAGE4 = Message.builder()
+            OrderRequestForm DUMMY_OrderRequestForm4 = OrderRequestForm.builder()
                     .user(USER1)
                     .store(STORE2)
-                    .design(DESIGN2)
+                    .cakeDesign(CakeDESIGN2)
                     .designType(STORE)
-                    .requestDetailDesign(DESIGN8)
+                    .requestDetailCakeDesign(CakeDESIGN8)
                     .requestDetailType(EVENT)
-                    .requestDetailDesign(DESIGN1)
                     .orderStatus(PENDING)
                     .responseStatus(UNRESPONSIVE)
                     .build();
 
-            Message DUMMY_MESSAGE5 = Message.builder()
+            OrderRequestForm DUMMY_OrderRequestForm5 = OrderRequestForm.builder()
                     .user(USER1)
                     .store(STORE2)
-                    .design(DESIGN2)
+                    .cakeDesign(CakeDESIGN2)
                     .designType(STORE)
-                    .requestDetailDesign(DESIGN1)
+                    .requestDetailCakeDesign(CakeDESIGN1)
                     .requestDetailType(EVENT)
                     .orderStatus(ACCEPTED)
                     .makerResponse("38000")
@@ -124,12 +123,12 @@ public class MessageInitializer implements ApplicationRunner {
                     .responseStatus(PAID)
                     .build();
 
-            Message DUMMY_MESSAGE6 = Message.builder()
+            OrderRequestForm DUMMY_OrderRequestForm6 = OrderRequestForm.builder()
                     .user(USER1)
                     .store(STORE2)
-                    .design(DESIGN2)
+                    .cakeDesign(CakeDESIGN2)
                     .designType(STORE)
-                    .requestDetailDesign(DESIGN8)
+                    .requestDetailCakeDesign(CakeDESIGN8)
                     .requestDetailType(EVENT)
                     .orderStatus(REJECTED)
                     .makerResponse("기간 내 제작 불가")
@@ -137,9 +136,10 @@ public class MessageInitializer implements ApplicationRunner {
                     .responseStatus(UNRESPONSIVE)
                     .build();
 
-            Message DUMMY_MESSAGE7 = Message.builder()
+            OrderRequestForm DUMMY_OrderRequestForm7 = OrderRequestForm.builder()
                     .user(USER1)
                     .store(STORE3)
+                    .cakeDesign(CakeDESIGN3)
                     .designType(CUSTOM)
                     .designUrl(designImageUrl + "/bear.png")
                     .requestDetailType(RequestDetailType.CUSTOM)
@@ -149,10 +149,10 @@ public class MessageInitializer implements ApplicationRunner {
                     .responseStatus(PAID)
                     .build();
 
-            Message DUMMY_MESSAGE8 = Message.builder()
+            OrderRequestForm DUMMY_OrderRequestForm8 = OrderRequestForm.builder()
                     .user(USER1)
                     .store(STORE3)
-                    .design(DESIGN3)
+                    .cakeDesign(CakeDESIGN3)
                     .designType(STORE)
                     .requestDetailType(RequestDetailType.CUSTOM)
                     .requestDetailImageUrl(designImageUrl+"/friend_picture.png")
@@ -162,86 +162,86 @@ public class MessageInitializer implements ApplicationRunner {
                     .responseStatus(UNRESPONSIVE)
                     .build();
 
-            Message DUMMY_MESSAGE9 = Message.builder()
+            OrderRequestForm DUMMY_OrderRequestForm9 = OrderRequestForm.builder()
                     .user(USER1)
                     .store(STORE1)
-                    .design(DESIGN1)
+                    .cakeDesign(CakeDESIGN1)
                     .designType(STORE)
                     .requestDetailType(EVENT)
-                    .requestDetailDesign(DESIGN2)
+                    .requestDetailCakeDesign(CakeDESIGN2)
                     .makerResponse("26500")
                     .orderStatus(ACCEPTED)
                     .responseTime(LocalDateTime.of(2025, 5, 18, 11, 0))
                     .responseStatus(CANCELED)
                     .build();
 
-            Message DUMMY_MESSAGE10 = Message.builder()
+            OrderRequestForm DUMMY_OrderRequestForm10 = OrderRequestForm.builder()
                     .user(USER1)
                     .store(STORE1)
-                    .design(DESIGN8)
+                    .cakeDesign(CakeDESIGN8)
                     .designType(STORE)
                     .requestDetailType(EVENT)
-                    .requestDetailDesign(DESIGN3)
+                    .requestDetailCakeDesign(CakeDESIGN3)
                     .makerResponse("34500")
                     .orderStatus(ACCEPTED)
                     .responseTime(LocalDateTime.of(2025, 5, 20, 13, 0))
                     .responseStatus(CANCELED)
                     .build();
 
-            Message DUMMY_MESSAGE11 = Message.builder()
+            OrderRequestForm DUMMY_OrderRequestForm11 = OrderRequestForm.builder()
                     .user(USER1)
                     .store(STORE2)
-                    .design(DESIGN2)
+                    .cakeDesign(CakeDESIGN2)
                     .designType(STORE)
                     .requestDetailType(EVENT)
-                    .requestDetailDesign(DESIGN1)
+                    .requestDetailCakeDesign(CakeDESIGN1)
                     .makerResponse("40000")
                     .orderStatus(ACCEPTED)
                     .responseTime(LocalDateTime.of(2025, 5, 22, 15, 0))
                     .responseStatus(CANCELED)
                     .build();
 
-            Message DUMMY_MESSAGE12 = Message.builder()
+            OrderRequestForm DUMMY_OrderRequestForm12 = OrderRequestForm.builder()
                     .user(USER1)
                     .store(STORE3)
-                    .design(DESIGN3)
+                    .cakeDesign(CakeDESIGN3)
                     .designType(STORE)
                     .requestDetailType(EVENT)
-                    .requestDetailDesign(DESIGN8)
+                    .requestDetailCakeDesign(CakeDESIGN8)
                     .makerResponse("55000")
                     .orderStatus(ACCEPTED)
                     .responseTime(LocalDateTime.of(2025, 5, 23, 16, 0))
                     .responseStatus(CANCELED)
                     .build();
 
-            Message DUMMY_MESSAGE13 = Message.builder()
+            OrderRequestForm DUMMY_OrderRequestForm13 = OrderRequestForm.builder()
                     .user(USER1)
                     .store(STORE1)
-                    .design(DESIGN1)
+                    .cakeDesign(CakeDESIGN1)
                     .designType(STORE)
                     .requestDetailType(EVENT)
-                    .requestDetailDesign(DESIGN2)
+                    .requestDetailCakeDesign(CakeDESIGN2)
                     .makerResponse("30000")
                     .orderStatus(ACCEPTED)
                     .responseTime(LocalDateTime.of(2025, 5, 24, 18, 0))
                     .responseStatus(CANCELED)
                     .build();
 
-            messageList.add(DUMMY_MESSAGE1);
-            messageList.add(DUMMY_MESSAGE2);
-            messageList.add(DUMMY_MESSAGE3);
-            messageList.add(DUMMY_MESSAGE4);
-            messageList.add(DUMMY_MESSAGE5);
-            messageList.add(DUMMY_MESSAGE6);
-            messageList.add(DUMMY_MESSAGE7);
-            messageList.add(DUMMY_MESSAGE8);
-            messageList.add(DUMMY_MESSAGE9);
-            messageList.add(DUMMY_MESSAGE10);
-            messageList.add(DUMMY_MESSAGE11);
-            messageList.add(DUMMY_MESSAGE12);
-            messageList.add(DUMMY_MESSAGE13);
+            orderRequestFormList.add(DUMMY_OrderRequestForm1);
+            orderRequestFormList.add(DUMMY_OrderRequestForm2);
+            orderRequestFormList.add(DUMMY_OrderRequestForm3);
+            orderRequestFormList.add(DUMMY_OrderRequestForm4);
+            orderRequestFormList.add(DUMMY_OrderRequestForm5);
+            orderRequestFormList.add(DUMMY_OrderRequestForm6);
+            orderRequestFormList.add(DUMMY_OrderRequestForm7);
+            orderRequestFormList.add(DUMMY_OrderRequestForm8);
+            orderRequestFormList.add(DUMMY_OrderRequestForm9);
+            orderRequestFormList.add(DUMMY_OrderRequestForm10);
+            orderRequestFormList.add(DUMMY_OrderRequestForm11);
+            orderRequestFormList.add(DUMMY_OrderRequestForm12);
+            orderRequestFormList.add(DUMMY_OrderRequestForm13);
 
-            messageRepository.saveAll(messageList);
+            messageRepository.saveAll(orderRequestFormList);
         }
     }
 }

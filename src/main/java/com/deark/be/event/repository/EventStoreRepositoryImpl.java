@@ -9,9 +9,10 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+
+import static com.deark.be.design.domain.QCakeDesign.cakeDesign;
 import static com.deark.be.store.domain.QStore.store;
 import static com.deark.be.event.domain.QEventStore.eventStore;
-import static com.deark.be.design.domain.QDesign.design;
 import static com.deark.be.event.domain.QEvent.event;
 
 @Repository
@@ -28,17 +29,17 @@ public class EventStoreRepositoryImpl implements EventStoreRepositoryCustom{
                         store.name,
                         store.address,
                         eventStore.memo,
-                        design.imageUrl
+                        cakeDesign.imageUrl
                 )
                 .from(eventStore)
                 .join(eventStore.event, event)
                 .join(eventStore.store, store)
-                .leftJoin(store.designList, design)
+                .leftJoin(store.cakeDesignList, cakeDesign)
                 .where(
                         event.id.eq(eventId),
                         event.user.id.eq(userId)
                 )
-                .orderBy(design.id.asc()) // 디자인 순서는 커스터마이징 가능
+                .orderBy(cakeDesign.id.asc()) // 디자인 순서는 커스터마이징 가능
                 .fetch();
 
         // storeId -> StoreInEventResponse
@@ -49,7 +50,7 @@ public class EventStoreRepositoryImpl implements EventStoreRepositoryCustom{
             String storeName = tuple.get(store.name);
             String address = tuple.get(store.address);
             String memo = tuple.get(eventStore.memo);
-            String imageUrl = tuple.get(design.imageUrl);
+            String imageUrl = tuple.get(cakeDesign.imageUrl);
 
             resultMap.compute(storeId, (id, dto) -> {
                 if (dto == null) {

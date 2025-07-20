@@ -3,7 +3,7 @@ package com.deark.be.alarm.repository.init;
 import com.deark.be.alarm.domain.Alarm;
 import com.deark.be.alarm.repository.AlarmRepository;
 import com.deark.be.global.util.DummyDataInit;
-import com.deark.be.order.domain.Message;
+import com.deark.be.order.domain.OrderRequestForm;
 import com.deark.be.order.repository.MessageRepository;
 import com.deark.be.user.domain.User;
 import com.deark.be.user.repository.UserRepository;
@@ -35,22 +35,23 @@ public class AlarmInitializer implements ApplicationRunner {
         } else {
             User USER1 = userRepository.findById(1L).orElseThrow();
 
-            Message MESSAGE2 = messageRepository.findById(2L).orElseThrow();
-            Message MESSAGE3 = messageRepository.findById(3L).orElseThrow();
-            Message MESSAGE5 = messageRepository.findById(5L).orElseThrow();
-            Message MESSAGE6 = messageRepository.findById(6L).orElseThrow();
-            Message MESSAGE8 = messageRepository.findById(8L).orElseThrow();
-            Message MESSAGE9 = messageRepository.findById(9L).orElseThrow();
-            Message MESSAGE10 = messageRepository.findById(10L).orElseThrow();
-            Message MESSAGE11 = messageRepository.findById(11L).orElseThrow();
-            Message MESSAGE12 = messageRepository.findById(12L).orElseThrow();
-            Message MESSAGE13 = messageRepository.findById(13L).orElseThrow();
+            OrderRequestForm ORDER_REQUEST_FORM2 = messageRepository.findById(2L).orElseThrow();
+            OrderRequestForm ORDER_REQUEST_FORM3 = messageRepository.findById(3L).orElseThrow();
+            OrderRequestForm ORDER_REQUEST_FORM5 = messageRepository.findById(5L).orElseThrow();
+            OrderRequestForm ORDER_REQUEST_FORM6 = messageRepository.findById(6L).orElseThrow();
+            OrderRequestForm ORDER_REQUEST_FORM8 = messageRepository.findById(8L).orElseThrow();
+            OrderRequestForm ORDER_REQUEST_FORM9 = messageRepository.findById(9L).orElseThrow();
+            OrderRequestForm ORDER_REQUEST_FORM10 = messageRepository.findById(10L).orElseThrow();
+            OrderRequestForm ORDER_REQUEST_FORM11 = messageRepository.findById(11L).orElseThrow();
+            OrderRequestForm ORDER_REQUEST_FORM12 = messageRepository.findById(12L).orElseThrow();
+            OrderRequestForm ORDER_REQUEST_FORM13 = messageRepository.findById(13L).orElseThrow();
 
             List<Alarm> alarmList = new ArrayList<>();
 
             Alarm DUMMY_ALARM1 = Alarm.builder()
                     .user(USER1)
-                    .message(MESSAGE2)
+                    .orderRequestForm(ORDER_REQUEST_FORM2)
+                    .content("주문 요청이 접수되었습니다.")
                     .type(ORDER)
                     .isRead(false)
                     .isDeleted(false)
@@ -58,7 +59,8 @@ public class AlarmInitializer implements ApplicationRunner {
 
             Alarm DUMMY_ALARM2 = Alarm.builder()
                     .user(USER1)
-                    .message(MESSAGE3)
+                    .orderRequestForm(ORDER_REQUEST_FORM3)
+                    .content("주문 요청이 접수되었습니다.")
                     .type(ORDER)
                     .isRead(false)
                     .isDeleted(false)
@@ -66,7 +68,8 @@ public class AlarmInitializer implements ApplicationRunner {
 
             Alarm DUMMY_ALARM3 = Alarm.builder()
                     .user(USER1)
-                    .message(MESSAGE5)
+                    .orderRequestForm(ORDER_REQUEST_FORM5)
+                    .content("주문 요청이 접수되었습니다.")
                     .type(ORDER)
                     .isRead(false)
                     .isDeleted(false)
@@ -74,7 +77,8 @@ public class AlarmInitializer implements ApplicationRunner {
 
             Alarm DUMMY_ALARM4 = Alarm.builder()
                     .user(USER1)
-                    .message(MESSAGE6)
+                    .orderRequestForm(ORDER_REQUEST_FORM6)
+                    .content("주문 요청이 접수되었습니다.")
                     .type(ORDER)
                     .isRead(false)
                     .isDeleted(false)
@@ -82,7 +86,8 @@ public class AlarmInitializer implements ApplicationRunner {
 
             Alarm DUMMY_ALARM5 = Alarm.builder()
                     .user(USER1)
-                    .message(MESSAGE8)
+                    .orderRequestForm(ORDER_REQUEST_FORM8)
+                    .content("주문 요청이 접수되었습니다.")
                     .type(ORDER)
                     .isRead(false)
                     .isDeleted(false)
@@ -90,7 +95,8 @@ public class AlarmInitializer implements ApplicationRunner {
 
             Alarm DUMMY_ALARM6 = Alarm.builder()
                     .user(USER1)
-                    .message(MESSAGE9)
+                    .orderRequestForm(ORDER_REQUEST_FORM9)
+                    .content("주문 요청이 접수되었습니다.")
                     .type(ORDER)
                     .isRead(false)
                     .isDeleted(false)
@@ -98,7 +104,8 @@ public class AlarmInitializer implements ApplicationRunner {
 
             Alarm DUMMY_ALARM7 = Alarm.builder()
                     .user(USER1)
-                    .message(MESSAGE10)
+                    .orderRequestForm(ORDER_REQUEST_FORM10)
+                    .content("주문 요청이 접수되었습니다.")
                     .type(ORDER)
                     .isRead(false)
                     .isDeleted(false)
@@ -106,7 +113,8 @@ public class AlarmInitializer implements ApplicationRunner {
 
             Alarm DUMMY_ALARM8 = Alarm.builder()
                     .user(USER1)
-                    .message(MESSAGE11)
+                    .orderRequestForm(ORDER_REQUEST_FORM11)
+                    .content("주문 요청이 접수되었습니다.")
                     .type(ORDER)
                     .isRead(false)
                     .isDeleted(false)
@@ -114,7 +122,8 @@ public class AlarmInitializer implements ApplicationRunner {
 
             Alarm DUMMY_ALARM9 = Alarm.builder()
                     .user(USER1)
-                    .message(MESSAGE12)
+                    .orderRequestForm(ORDER_REQUEST_FORM12)
+                    .content("주문 요청이 접수되었습니다.")
                     .type(ORDER)
                     .isRead(false)
                     .isDeleted(false)
@@ -122,7 +131,8 @@ public class AlarmInitializer implements ApplicationRunner {
 
             Alarm DUMMY_ALARM10 = Alarm.builder()
                     .user(USER1)
-                    .message(MESSAGE13)
+                    .orderRequestForm(ORDER_REQUEST_FORM13)
+                    .content("주문 요청이 접수되었습니다.")
                     .type(ORDER)
                     .isRead(false)
                     .isDeleted(false)
