@@ -19,7 +19,7 @@ public class CakeDesign {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "design_id")
+    @Column(name = "cake_design_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

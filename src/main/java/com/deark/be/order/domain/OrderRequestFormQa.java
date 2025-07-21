@@ -6,11 +6,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Table(name = "qa")
+@Table(name = "order_request_form_qa")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class QA {
+public class OrderRequestFormQa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +35,7 @@ public class QA {
     }
 
     @Builder
-    public QA(OrderRequestForm orderRequestForm, String question, String answer, Boolean isRequired) {
+    public OrderRequestFormQa(OrderRequestForm orderRequestForm, String question, String answer, Boolean isRequired) {
         this.orderRequestForm = orderRequestForm;
         this.question = question;
         this.answer = answer;

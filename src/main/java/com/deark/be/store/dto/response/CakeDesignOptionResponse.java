@@ -9,6 +9,6 @@ public record CakeDesignOptionResponse(
 ) {
 
     public static CakeDesignOptionResponse from(CakeDesignOption cakeDesignOption) {
-        return new CakeDesignOptionResponse(cakeDesignOption.getOptionCategory(), cakeDesignOption.getName());
+        return new CakeDesignOptionResponse(cakeDesignOption.getOptionCategory(), cakeDesignOption.getValue());
     }
 }

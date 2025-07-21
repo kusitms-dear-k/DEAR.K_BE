@@ -2,7 +2,7 @@ package com.deark.be.order.repository.init;
 
 import com.deark.be.global.util.DummyDataInit;
 import com.deark.be.order.domain.OrderRequestForm;
-import com.deark.be.order.domain.QA;
+import com.deark.be.order.domain.OrderRequestFormQa;
 import com.deark.be.order.repository.MessageRepository;
 import com.deark.be.order.repository.QARepository;
 import lombok.RequiredArgsConstructor;
@@ -34,331 +34,331 @@ public class QAInitializer implements ApplicationRunner {
             OrderRequestForm OrderRequestForm5 = messageRepository.findById(5L).orElseThrow();
             OrderRequestForm OrderRequestForm7 = messageRepository.findById(7L).orElseThrow();
 
-            QA DUMMY_QA1 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa1 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm1)
                     .question("이름")
                     .answer("김혜연")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA2 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa2 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm1)
                     .question("전화번호")
                     .answer("010-4037-2419")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA3 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa3 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm1)
                     .question("픽업 희망 일자")
                     .answer("2025년 5월 30일 금요일")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA4 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa4 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm1)
                     .question("픽업 희망 시간")
                     .answer("14시 30분")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA5 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa5 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm1)
                     .question("기타 요청사항")
                     .answer("주차증 발급해주세요.")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA6 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa6 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm1)
                     .question("추가 요청사항")
                     .answer("문구를 생일축하해! 로 넣어주세요. 사진 속 리본 3개를 곰돌이 위에 올려주세요.")
                     .isRequired(false)
                     .build();
 
-            QA DUMMY_QA7 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa7 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm1)
                     .question("크기")
                     .answer("도시락 케이크")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA8 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa8 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm1)
                     .question("크림 맛")
                     .answer("블루베리 크림")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA9 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa9 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm1)
                     .question("시트 맛")
                     .answer("바닐라 시트")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA10 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa10 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm2)
                     .question("이름")
                     .answer("박소윤")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA11 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa11 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm2)
                     .question("전화번호")
                     .answer("010-1234-5678")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA12 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa12 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm2)
                     .question("픽업 희망 일자")
                     .answer("2025년 6월 1일 일요일")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA13 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa13 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm2)
                     .question("픽업 희망 시간")
                     .answer("15시 00분")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA14 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa14 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm2)
                     .question("기타 요청사항")
                     .answer("없습니다.")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA15 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa15 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm2)
                     .question("추가 요청사항")
                     .answer("문구를 생일축하해! 로 넣어주세요. 사진 속 리본 3개를 곰돌이 위에 올려주세요.")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA16 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa16 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm2)
                     .question("크기")
                     .answer("도시락 케이크")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA17 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa17 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm2)
                     .question("크림 맛")
                     .answer("생크림")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA18 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa18 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm2)
                     .question("시트 맛")
                     .answer("초코")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA19 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa19 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm4)
                     .question("이름")
                     .answer("이지은")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA20 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa20 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm4)
                     .question("전화번호")
                     .answer("010-9876-5432")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA21 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa21 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm4)
                     .question("픽업 희망 일자")
                     .answer("2025년 6월 17일 화요일")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA22 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa22 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm4)
                     .question("픽업 희망 시간")
                     .answer("16시 00분")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA23 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa23 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm4)
                     .question("기타 요청사항")
                     .answer("보냉백 추가할게요!")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA24 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa24 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm4)
                     .question("추가 요청사항")
                     .answer("곰돌이 눈을 더 크게 해주세요. 초코시트로 해주세요.")
                     .isRequired(false)
                     .build();
 
-            QA DUMMY_QA25 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa25 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm4)
                     .question("크기")
                     .answer("도시락 케이크")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA26 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa26 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm4)
                     .question("크림 맛")
                     .answer("딸기")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA27 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa27 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm4)
                     .question("시트 맛")
                     .answer("초코")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA28 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa28 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm7)
                     .question("이름")
                     .answer("최유진")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA29 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa29 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm7)
                     .question("전화번호")
                     .answer("010-5555-6666")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA30 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa30 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm7)
                     .question("픽업 희망 일자")
                     .answer("2025년 6월 20일 금요일")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA31 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa31 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm7)
                     .question("픽업 희망 시간")
                     .answer("13시 30분")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA32 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa32 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm7)
                     .question("기타 요청사항")
                     .answer("없습니다.")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA33 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa33 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm7)
                     .question("추가 요청사항")
                     .answer("하트 모양을 더 선명하게 해주세요. 핑크색 크림으로 해주세요.")
                     .isRequired(false)
                     .build();
 
-            QA DUMMY_QA34 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa34 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm7)
                     .question("크기")
                     .answer("1호 케이크")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA35 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa35 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm7)
                     .question("크림 맛")
                     .answer("바닐라")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA36 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa36 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm7)
                     .question("시트 맛")
                     .answer("바닐라")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA37 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa37 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm5)
                     .question("이름")
                     .answer("정아린")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA38 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa38 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm5)
                     .question("전화번호")
                     .answer("010-5643-4254")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA39 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa39 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm5)
                     .question("픽업 희망 일자")
                     .answer("2025년 6월 20일 금요일")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA40 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa40 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm5)
                     .question("픽업 희망 시간")
                     .answer("21시 00분")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA41 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa41 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm5)
                     .question("기타 요청사항")
                     .answer("없습니다.")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA42 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa42 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm5)
                     .question("추가 요청사항")
                     .answer("배경색은 보라색으로 해주세요")
                     .isRequired(false)
                     .build();
 
-            QA DUMMY_QA43 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa43 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm5)
                     .question("크기")
                     .answer("2호")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA44 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa44 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm5)
                     .question("크림 맛")
                     .answer("바닐라")
                     .isRequired(true)
                     .build();
 
-            QA DUMMY_QA45 = QA.builder()
+            OrderRequestFormQa DUMMY_OrderRequestFormQa45 = OrderRequestFormQa.builder()
                     .orderRequestForm(OrderRequestForm5)
                     .question("시트 맛")
                     .answer("초콜릿")
                     .isRequired(true)
                     .build();
 
-            List<QA> qaList = new ArrayList<>(List.of(
-                    DUMMY_QA1, DUMMY_QA2, DUMMY_QA3, DUMMY_QA4, DUMMY_QA6, DUMMY_QA7, DUMMY_QA8, DUMMY_QA9,
-                    DUMMY_QA10, DUMMY_QA11, DUMMY_QA12, DUMMY_QA13, DUMMY_QA15, DUMMY_QA16, DUMMY_QA17, DUMMY_QA18,
-                    DUMMY_QA19, DUMMY_QA20, DUMMY_QA21, DUMMY_QA22, DUMMY_QA24, DUMMY_QA25, DUMMY_QA26, DUMMY_QA27,
-                    DUMMY_QA28, DUMMY_QA29, DUMMY_QA30, DUMMY_QA31, DUMMY_QA33, DUMMY_QA34, DUMMY_QA35, DUMMY_QA36,
-                    DUMMY_QA5, DUMMY_QA14, DUMMY_QA23, DUMMY_QA32,DUMMY_QA37,DUMMY_QA38,DUMMY_QA39,DUMMY_QA40,DUMMY_QA41,
-                    DUMMY_QA42,DUMMY_QA43,DUMMY_QA44,DUMMY_QA45
+            List<OrderRequestFormQa> orderRequestFormQaList = new ArrayList<>(List.of(
+                    DUMMY_OrderRequestFormQa1, DUMMY_OrderRequestFormQa2, DUMMY_OrderRequestFormQa3, DUMMY_OrderRequestFormQa4, DUMMY_OrderRequestFormQa6, DUMMY_OrderRequestFormQa7, DUMMY_OrderRequestFormQa8, DUMMY_OrderRequestFormQa9,
+                    DUMMY_OrderRequestFormQa10, DUMMY_OrderRequestFormQa11, DUMMY_OrderRequestFormQa12, DUMMY_OrderRequestFormQa13, DUMMY_OrderRequestFormQa15, DUMMY_OrderRequestFormQa16, DUMMY_OrderRequestFormQa17, DUMMY_OrderRequestFormQa18,
+                    DUMMY_OrderRequestFormQa19, DUMMY_OrderRequestFormQa20, DUMMY_OrderRequestFormQa21, DUMMY_OrderRequestFormQa22, DUMMY_OrderRequestFormQa24, DUMMY_OrderRequestFormQa25, DUMMY_OrderRequestFormQa26, DUMMY_OrderRequestFormQa27,
+                    DUMMY_OrderRequestFormQa28, DUMMY_OrderRequestFormQa29, DUMMY_OrderRequestFormQa30, DUMMY_OrderRequestFormQa31, DUMMY_OrderRequestFormQa33, DUMMY_OrderRequestFormQa34, DUMMY_OrderRequestFormQa35, DUMMY_OrderRequestFormQa36,
+                    DUMMY_OrderRequestFormQa5, DUMMY_OrderRequestFormQa14, DUMMY_OrderRequestFormQa23, DUMMY_OrderRequestFormQa32, DUMMY_OrderRequestFormQa37, DUMMY_OrderRequestFormQa38, DUMMY_OrderRequestFormQa39, DUMMY_OrderRequestFormQa40, DUMMY_OrderRequestFormQa41,
+                    DUMMY_OrderRequestFormQa42, DUMMY_OrderRequestFormQa43, DUMMY_OrderRequestFormQa44, DUMMY_OrderRequestFormQa45
             ));
 
-            qaRepository.saveAll(qaList);
+            qaRepository.saveAll(orderRequestFormQaList);
         }
     }
 }

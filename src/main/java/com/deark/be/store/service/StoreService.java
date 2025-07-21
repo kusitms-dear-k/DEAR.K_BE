@@ -79,7 +79,7 @@ public class StoreService {
 
         List<String> sizeNameList = store.getCakeDesignOptionList().stream()
                 .filter(option -> option.getOptionCategory() == OptionCategory.SIZE)
-                .map(CakeDesignOption::getName)
+                .map(CakeDesignOption::getValue)
                 .distinct()
                 .toList();
 

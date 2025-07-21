@@ -1,6 +1,6 @@
 package com.deark.be.order.dto.response;
 
-import com.deark.be.order.domain.QA;
+import com.deark.be.order.domain.OrderRequestFormQa;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 
@@ -12,12 +12,12 @@ public record QAResponse(
         @JsonInclude(JsonInclude.Include.NON_NULL)
         String requestDetailImageUrl
 ) {
-    public static QAResponse from(QA qa) {
+    public static QAResponse from(OrderRequestFormQa orderRequestFormQa) {
         return QAResponse.builder()
-                .title(qa.getQuestion())
-                .answer(qa.getAnswer())
-                .isRequired(qa.getIsRequired())
-                .requestDetailImageUrl("추가 요청사항".equals(qa.getQuestion()) ? qa.getOrderRequestForm().getRequestDetailImageUrl() : null)
+                .title(orderRequestFormQa.getQuestion())
+                .answer(orderRequestFormQa.getAnswer())
+                .isRequired(orderRequestFormQa.getIsRequired())
+                .requestDetailImageUrl("추가 요청사항".equals(orderRequestFormQa.getQuestion()) ? orderRequestFormQa.getOrderRequestForm().getCakeDesign().getImageUrl() : null)
                 .build();
     }
 }

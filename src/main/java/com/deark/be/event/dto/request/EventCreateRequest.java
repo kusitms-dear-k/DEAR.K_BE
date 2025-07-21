@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 
 
@@ -22,13 +23,19 @@ public record EventCreateRequest(
 
         @Schema(description = "이벤트 장소", example = "서울시 강남구")
         @NotBlank(message = "이벤트 장소는 필수입니다.")
-        String address
+        String address,
+
+        @Schema(description = "이벤트 위치 좌표 (위도, 경도)", example = "37.5665, 126.978")
+        double latitude,
+        double longitude
 ) {
     public Event toEntity(User user) {
         return Event.builder()
                 .user(user)
                 .title(title)
                 .address(address)
+                .latitude(latitude)
+                .longitude(longitude)
                 .eventDate(eventDate)
                 .build();
     }

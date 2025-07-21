@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum ProgressStatus {
+public enum MakeStatus {
     RESERVED("예약 완료"),
     BAKING("베이킹 완료"),
     PICKUP_DONE("픽업 완료"),

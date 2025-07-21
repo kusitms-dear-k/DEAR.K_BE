@@ -46,147 +46,147 @@ public class CakeDesignOptionInitializer implements ApplicationRunner {
                     .cakeDesign(CakeDESIGN1)
                     .store(STORE1)
                     .optionCategory(OptionCategory.CREAM)
-                    .name("바닐라 크림")
+                    .value("바닐라 크림")
                     .build();
             CakeDesignOption DUMMY_CREAM2 = CakeDesignOption.builder()
                     .cakeDesign(CakeDESIGN1)
                     .store(STORE1)
                     .optionCategory(OptionCategory.CREAM)
-                    .name("초코 크림")
+                    .value("초코 크림")
                     .build();
             CakeDesignOption DUMMY_CREAM3 = CakeDesignOption.builder()
                     .cakeDesign(CakeDESIGN1)
                     .store(STORE1)
                     .optionCategory(OptionCategory.CREAM)
-                    .name("딸기 크림")
+                    .value("딸기 크림")
                     .build();
 
             CakeDesignOption DUMMY_CREAM4 = CakeDesignOption.builder()
                     .cakeDesign(CakeDESIGN2)
                     .store(STORE2)
                     .optionCategory(OptionCategory.CREAM)
-                    .name("생크림")
+                    .value("생크림")
                     .build();
             CakeDesignOption DUMMY_CREAM5 = CakeDesignOption.builder()
                     .cakeDesign(CakeDESIGN2)
                     .store(STORE2)
                     .optionCategory(OptionCategory.CREAM)
-                    .name("초코 크림")
+                    .value("초코 크림")
                     .build();
             CakeDesignOption DUMMY_CREAM6 = CakeDesignOption.builder()
                     .cakeDesign(CakeDESIGN2)
                     .store(STORE2)
                     .optionCategory(OptionCategory.CREAM)
-                    .name("블루베리 크림")
+                    .value("블루베리 크림")
                     .build();
 
             CakeDesignOption DUMMY_CREAM7 = CakeDesignOption.builder()
                     .cakeDesign(CakeDESIGN3)
                     .store(STORE3)
                     .optionCategory(OptionCategory.CREAM)
-                    .name("딸기 크림")
+                    .value("딸기 크림")
                     .build();
             CakeDesignOption DUMMY_CREAM8 = CakeDesignOption.builder()
                     .cakeDesign(CakeDESIGN3)
                     .store(STORE3)
                     .optionCategory(OptionCategory.CREAM)
-                    .name("초코 크림")
+                    .value("초코 크림")
                     .build();
 
             CakeDesignOption DUMMY_SIZE1 = CakeDesignOption.builder()
                     .cakeDesign(CakeDESIGN1)
                     .store(STORE1)
                     .optionCategory(OptionCategory.SIZE)
-                    .name("도시락 케이크")
+                    .value("도시락 케이크")
                     .build();
             CakeDesignOption DUMMY_SIZE2 = CakeDesignOption.builder()
                     .cakeDesign(CakeDESIGN1)
                     .store(STORE1)
                     .optionCategory(OptionCategory.SIZE)
-                    .name("1호 케이크")
+                    .value("1호 케이크")
                     .build();
             CakeDesignOption DUMMY_SIZE3 = CakeDesignOption.builder()
                     .cakeDesign(CakeDESIGN1)
                     .store(STORE1)
                     .optionCategory(OptionCategory.SIZE)
-                    .name("2호 케이크")
+                    .value("2호 케이크")
                     .build();
 
             CakeDesignOption DUMMY_SIZE4 = CakeDesignOption.builder()
                     .cakeDesign(CakeDESIGN2)
                     .store(STORE2)
                     .optionCategory(OptionCategory.SIZE)
-                    .name("도시락 케이크")
+                    .value("도시락 케이크")
                     .build();
             CakeDesignOption DUMMY_SIZE5 = CakeDesignOption.builder()
                     .cakeDesign(CakeDESIGN2)
                     .store(STORE2)
                     .optionCategory(OptionCategory.SIZE)
-                    .name("1호 케이크")
+                    .value("1호 케이크")
                     .build();
             CakeDesignOption DUMMY_SIZE6 = CakeDesignOption.builder()
                     .cakeDesign(CakeDESIGN2)
                     .store(STORE2)
                     .optionCategory(OptionCategory.SIZE)
-                    .name("2호 케이크")
+                    .value("2호 케이크")
                     .build();
 
             CakeDesignOption DUMMY_SIZE7 = CakeDesignOption.builder()
                     .cakeDesign(CakeDESIGN3)
                     .store(STORE3)
                     .optionCategory(OptionCategory.SIZE)
-                    .name("도시락 케이크")
+                    .value("도시락 케이크")
                     .build();
             CakeDesignOption DUMMY_SIZE8 = CakeDesignOption.builder()
                     .cakeDesign(CakeDESIGN3)
                     .store(STORE3)
                     .optionCategory(OptionCategory.SIZE)
-                    .name("1호 케이크")
+                    .value("1호 케이크")
                     .build();
 
             CakeDesignOption DUMMY_SHEET1 = CakeDesignOption.builder()
                     .cakeDesign(CakeDESIGN1)
                     .store(STORE1)
                     .optionCategory(OptionCategory.SHEET)
-                    .name("바닐라")
+                    .value("바닐라")
                     .build();
             CakeDesignOption DUMMY_SHEET2 = CakeDesignOption.builder()
                     .cakeDesign(CakeDESIGN1)
                     .store(STORE1)
                     .optionCategory(OptionCategory.SHEET)
-                    .name("초코")
+                    .value("초코")
                     .build();
             CakeDesignOption DUMMY_SHEET3 = CakeDesignOption.builder()
                     .cakeDesign(CakeDESIGN1)
                     .store(STORE1)
                     .optionCategory(OptionCategory.SHEET)
-                    .name("딸기")
+                    .value("딸기")
                     .build();
 
             CakeDesignOption DUMMY_SHEET4 = CakeDesignOption.builder()
                     .cakeDesign(CakeDESIGN2)
                     .store(STORE2)
                     .optionCategory(OptionCategory.SHEET)
-                    .name("바닐라")
+                    .value("바닐라")
                     .build();
             CakeDesignOption DUMMY_SHEET5 = CakeDesignOption.builder()
                     .cakeDesign(CakeDESIGN2)
                     .store(STORE2)
                     .optionCategory(OptionCategory.SHEET)
-                    .name("바나나")
+                    .value("바나나")
                     .build();
 
             CakeDesignOption DUMMY_SHEET6 = CakeDesignOption.builder()
                     .cakeDesign(CakeDESIGN3)
                     .store(STORE3)
                     .optionCategory(OptionCategory.SHEET)
-                    .name("초코")
+                    .value("초코")
                     .build();
             CakeDesignOption DUMMY_SHEET7 = CakeDesignOption.builder()
                     .cakeDesign(CakeDESIGN3)
                     .store(STORE3)
                     .optionCategory(OptionCategory.SHEET)
-                    .name("얼그레이")
+                    .value("얼그레이")
                     .build();
 
             cakeDesignOptionList.add(DUMMY_CREAM1);

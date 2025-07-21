@@ -75,6 +75,7 @@ dependencies {
 
 	// Hibernate Spatial
 	implementation 'org.locationtech.jts:jts-core:1.20.0'
+	implementation 'org.hibernate:hibernate-spatial:6.4.4.Final'
 
 	//prometheus, actuator
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'

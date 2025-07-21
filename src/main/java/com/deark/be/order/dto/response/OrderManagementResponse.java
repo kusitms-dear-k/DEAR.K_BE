@@ -1,6 +1,6 @@
 package com.deark.be.order.dto.response;
 
-import com.deark.be.order.domain.type.ProgressStatus;
+import com.deark.be.order.domain.type.MakeStatus;
 import lombok.Builder;
 
 @Builder
@@ -12,7 +12,7 @@ public record OrderManagementResponse(
         String size,
         String cream,
         String sheet,
-        ProgressStatus progressStatus,
+        MakeStatus makeStatus,
         String pickupDate,
         String pickupTime
 ) {

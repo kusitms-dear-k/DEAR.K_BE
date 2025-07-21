@@ -35,6 +35,7 @@ public class AlarmRepositoryImpl implements AlarmRepositoryCustom {
                         alarm.orderRequestForm.id,
                         alarm.isRead,
                         alarm.orderRequestForm.responseStatus
+                        //TODO: responseStatus 뭔지
                 ))
                 .from(alarm)
                 .join(alarm.orderRequestForm)
