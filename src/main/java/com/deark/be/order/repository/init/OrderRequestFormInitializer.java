@@ -1,11 +1,11 @@
 package com.deark.be.order.repository.init;
 
 import com.deark.be.design.domain.CakeDesign;
-import com.deark.be.design.repository.CakeCakeDesignRepository;
+import com.deark.be.design.repository.CakeDesignRepository;
 import com.deark.be.global.util.DummyDataInit;
 import com.deark.be.order.domain.OrderRequestForm;
-import com.deark.be.order.domain.type.ProgressStatus;
-import com.deark.be.order.domain.type.RequestDetailType;
+import com.deark.be.order.domain.type.DesignType;
+import com.deark.be.order.domain.type.ResponseStatus;
 import com.deark.be.order.repository.MessageRepository;
 import com.deark.be.store.domain.Store;
 import com.deark.be.store.repository.StoreRepository;
@@ -22,22 +22,18 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.deark.be.order.domain.type.DesignType.CUSTOM;
-import static com.deark.be.order.domain.type.DesignType.STORE;
-import static com.deark.be.order.domain.type.RequestDetailType.EVENT;
 import static com.deark.be.order.domain.type.OrderStatus.*;
-import static com.deark.be.order.domain.type.ResponseStatus.*;
 
 @Slf4j
 @RequiredArgsConstructor
 @Order(5)
 @DummyDataInit
-public class MessageInitializer implements ApplicationRunner {
+public class OrderRequestFormInitializer implements ApplicationRunner {
 
     private final MessageRepository messageRepository;
     private final UserRepository userRepository;
     private final StoreRepository storeRepository;
-    private final CakeCakeDesignRepository cakeDesignRepository;
+    private final CakeDesignRepository cakeDesignRepository;
 
     @Value("${spring.cloud.aws.s3.url}/design")
     private String designImageUrl;
@@ -64,167 +60,137 @@ public class MessageInitializer implements ApplicationRunner {
                     .user(USER1)
                     .store(STORE1)
                     .cakeDesign(CakeDESIGN1)
-                    .designType(STORE)
-                    .requestDetailCakeDesign(CakeDESIGN2)
-                    .requestDetailType(EVENT)
+                    .designType(DesignType.CUSTOM)
+                    .responseStatus(ResponseStatus.PAID)
                     .orderStatus(PENDING)
-                    .responseStatus(UNRESPONSIVE)
                     .build();
 
             OrderRequestForm DUMMY_OrderRequestForm2 = OrderRequestForm.builder()
                     .user(USER1)
                     .store(STORE1)
                     .cakeDesign(CakeDESIGN8)
-                    .designType(STORE)
-                    .requestDetailCakeDesign(CakeDESIGN3)
-                    .requestDetailType(EVENT)
+                    .designType(DesignType.CUSTOM)
                     .orderStatus(ACCEPTED)
-                    .progressStatus(ProgressStatus.RESERVED)
+                    .responseStatus(ResponseStatus.PAID)
                     .makerResponse("24500")
                     .responseTime(LocalDateTime.of(2025, 5, 19, 12, 0))
-                    .responseStatus(UNRESPONSIVE)
                     .build();
 
             OrderRequestForm DUMMY_OrderRequestForm3 = OrderRequestForm.builder()
                     .user(USER1)
                     .store(STORE1)
                     .cakeDesign(CakeDESIGN1)
-                    .designType(STORE)
-                    .requestDetailCakeDesign(CakeDESIGN8)
-                    .requestDetailType(EVENT)
+                    .responseStatus(ResponseStatus.PAID)
+                    .designType(DesignType.CUSTOM)
                     .orderStatus(REJECTED)
                     .makerResponse("디자인에 사용될 재료 부족 및 소진")
                     .responseTime(LocalDateTime.of(2025, 5, 20, 12, 0))
-                    .responseStatus(UNRESPONSIVE)
                     .build();
 
             OrderRequestForm DUMMY_OrderRequestForm4 = OrderRequestForm.builder()
                     .user(USER1)
                     .store(STORE2)
                     .cakeDesign(CakeDESIGN2)
-                    .designType(STORE)
-                    .requestDetailCakeDesign(CakeDESIGN8)
-                    .requestDetailType(EVENT)
+                    .designType(DesignType.CUSTOM)
+                    .responseStatus(ResponseStatus.PAID)
                     .orderStatus(PENDING)
-                    .responseStatus(UNRESPONSIVE)
                     .build();
 
             OrderRequestForm DUMMY_OrderRequestForm5 = OrderRequestForm.builder()
                     .user(USER1)
                     .store(STORE2)
                     .cakeDesign(CakeDESIGN2)
-                    .designType(STORE)
-                    .requestDetailCakeDesign(CakeDESIGN1)
-                    .requestDetailType(EVENT)
+                    .designType(DesignType.CUSTOM)
+                    .responseStatus(ResponseStatus.PAID)
                     .orderStatus(ACCEPTED)
                     .makerResponse("38000")
                     .responseTime(LocalDateTime.of(2025, 5, 21, 17, 0))
-                    .progressStatus(ProgressStatus.BAKING)
-                    .responseStatus(PAID)
                     .build();
 
             OrderRequestForm DUMMY_OrderRequestForm6 = OrderRequestForm.builder()
                     .user(USER1)
                     .store(STORE2)
                     .cakeDesign(CakeDESIGN2)
-                    .designType(STORE)
-                    .requestDetailCakeDesign(CakeDESIGN8)
-                    .requestDetailType(EVENT)
+                    .designType(DesignType.CUSTOM)
                     .orderStatus(REJECTED)
+                    .responseStatus(ResponseStatus.PAID)
                     .makerResponse("기간 내 제작 불가")
                     .responseTime(LocalDateTime.of(2025, 5, 18, 14, 0))
-                    .responseStatus(UNRESPONSIVE)
                     .build();
 
             OrderRequestForm DUMMY_OrderRequestForm7 = OrderRequestForm.builder()
                     .user(USER1)
                     .store(STORE3)
                     .cakeDesign(CakeDESIGN3)
-                    .designType(CUSTOM)
-                    .designUrl(designImageUrl + "/bear.png")
-                    .requestDetailType(RequestDetailType.CUSTOM)
-                    .requestDetailImageUrl(designImageUrl+"/heart.png")
+                    .designType(DesignType.CUSTOM)
+                    .responseStatus(ResponseStatus.PAID)
                     .orderStatus(ACCEPTED)
-                    .progressStatus(ProgressStatus.PICKUP_DONE)
-                    .responseStatus(PAID)
                     .build();
 
             OrderRequestForm DUMMY_OrderRequestForm8 = OrderRequestForm.builder()
                     .user(USER1)
                     .store(STORE3)
                     .cakeDesign(CakeDESIGN3)
-                    .designType(STORE)
-                    .requestDetailType(RequestDetailType.CUSTOM)
-                    .requestDetailImageUrl(designImageUrl+"/friend_picture.png")
+                    .designType(DesignType.CUSTOM)
+                    .responseStatus(ResponseStatus.PAID)
                     .orderStatus(ACCEPTED)
                     .makerResponse("50000")
                     .responseTime(LocalDateTime.of(2025, 5, 19, 10, 0))
-                    .responseStatus(UNRESPONSIVE)
                     .build();
 
             OrderRequestForm DUMMY_OrderRequestForm9 = OrderRequestForm.builder()
                     .user(USER1)
                     .store(STORE1)
                     .cakeDesign(CakeDESIGN1)
-                    .designType(STORE)
-                    .requestDetailType(EVENT)
-                    .requestDetailCakeDesign(CakeDESIGN2)
+                    .designType(DesignType.CUSTOM)
+                    .responseStatus(ResponseStatus.PAID)
                     .makerResponse("26500")
                     .orderStatus(ACCEPTED)
                     .responseTime(LocalDateTime.of(2025, 5, 18, 11, 0))
-                    .responseStatus(CANCELED)
                     .build();
 
             OrderRequestForm DUMMY_OrderRequestForm10 = OrderRequestForm.builder()
                     .user(USER1)
                     .store(STORE1)
+                    .designType(DesignType.CUSTOM)
                     .cakeDesign(CakeDESIGN8)
-                    .designType(STORE)
-                    .requestDetailType(EVENT)
-                    .requestDetailCakeDesign(CakeDESIGN3)
+                    .responseStatus(ResponseStatus.PAID)
                     .makerResponse("34500")
                     .orderStatus(ACCEPTED)
                     .responseTime(LocalDateTime.of(2025, 5, 20, 13, 0))
-                    .responseStatus(CANCELED)
                     .build();
 
             OrderRequestForm DUMMY_OrderRequestForm11 = OrderRequestForm.builder()
                     .user(USER1)
                     .store(STORE2)
                     .cakeDesign(CakeDESIGN2)
-                    .designType(STORE)
-                    .requestDetailType(EVENT)
-                    .requestDetailCakeDesign(CakeDESIGN1)
+                    .designType(DesignType.CUSTOM)
+                    .responseStatus(ResponseStatus.PAID)
                     .makerResponse("40000")
                     .orderStatus(ACCEPTED)
                     .responseTime(LocalDateTime.of(2025, 5, 22, 15, 0))
-                    .responseStatus(CANCELED)
                     .build();
 
             OrderRequestForm DUMMY_OrderRequestForm12 = OrderRequestForm.builder()
                     .user(USER1)
                     .store(STORE3)
+                    .designType(DesignType.CUSTOM)
+                    .responseStatus(ResponseStatus.PAID)
                     .cakeDesign(CakeDESIGN3)
-                    .designType(STORE)
-                    .requestDetailType(EVENT)
-                    .requestDetailCakeDesign(CakeDESIGN8)
                     .makerResponse("55000")
                     .orderStatus(ACCEPTED)
                     .responseTime(LocalDateTime.of(2025, 5, 23, 16, 0))
-                    .responseStatus(CANCELED)
                     .build();
 
             OrderRequestForm DUMMY_OrderRequestForm13 = OrderRequestForm.builder()
                     .user(USER1)
                     .store(STORE1)
                     .cakeDesign(CakeDESIGN1)
-                    .designType(STORE)
-                    .requestDetailType(EVENT)
-                    .requestDetailCakeDesign(CakeDESIGN2)
+                    .designType(DesignType.CUSTOM)
+                    .responseStatus(ResponseStatus.PAID)
                     .makerResponse("30000")
                     .orderStatus(ACCEPTED)
                     .responseTime(LocalDateTime.of(2025, 5, 24, 18, 0))
-                    .responseStatus(CANCELED)
                     .build();
 
             orderRequestFormList.add(DUMMY_OrderRequestForm1);

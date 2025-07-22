@@ -1,7 +1,7 @@
 package com.deark.be.order.dto.request;
 
 import com.deark.be.order.domain.OrderRequestForm;
-import com.deark.be.order.domain.QA;
+import com.deark.be.order.domain.OrderRequestFormQa;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "주문서 질문과 답변에 대한 정보")
@@ -10,10 +10,12 @@ public record QARequest(
         String title,
 
         @Schema(description = "답변", example = "김혜연")
-        String answer
+        String answer,
+
+        Boolean isRequired
 ) {
-    public QA toEntity(OrderRequestForm orderRequestForm) {
-        return QA.builder()
+    public OrderRequestFormQa toEntity(OrderRequestForm orderRequestForm) {
+        return OrderRequestFormQa.builder()
                 .orderRequestForm(orderRequestForm)
                 .question(title)
                 .answer(answer)

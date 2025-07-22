@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CakeDesignOptionRepository extends JpaRepository<CakeDesignOption, Long> {
-    boolean existsByCakeDesignStoreIdAndNameIsContainingAndOptionCategory(Long storeId, String keyword, OptionCategory optionCategory);
+    boolean existsByCakeDesignStoreIdAndValueIsContainingAndOptionCategory(Long storeId, String keyword, OptionCategory optionCategory);
 }

@@ -7,7 +7,7 @@ import static com.deark.be.event.exception.errorcode.EventErrorCode.NO_PERMISSIO
 
 import com.deark.be.design.domain.CakeDesign;
 import com.deark.be.design.exception.DesignException;
-import com.deark.be.design.repository.CakeCakeDesignRepository;
+import com.deark.be.design.repository.CakeDesignRepository;
 import com.deark.be.event.domain.Event;
 import com.deark.be.event.domain.EventDesign;
 import com.deark.be.event.domain.type.ThumbnailSource;
@@ -32,7 +32,7 @@ public class EventDesignService {
 
     private final EventDesignRepository eventDesignRepository;
     private final EventRepository eventRepository;
-    private final CakeCakeDesignRepository cakeDesignRepository;
+    private final CakeDesignRepository cakeDesignRepository;
     private final EventService eventService;
 
     @Transactional
@@ -56,7 +56,7 @@ public class EventDesignService {
 
     // 현재 로그인한 사용자가 소유한 해당 디자인의 EventDesign 매핑 목록을 가져옴
     private List<EventDesign> getUserOwnedDesignMappings(CakeDesign cakeDesign, Long userId) {
-        return eventDesignRepository.findAllByDesign(cakeDesign).stream()
+        return eventDesignRepository.findAllByCakeDesign(cakeDesign).stream()
                 .filter(ed -> ed.getEvent().getUser().getId().equals(userId))
                 .toList();
     }
@@ -104,7 +104,7 @@ public class EventDesignService {
 
         Event event = eventService.getValidatedEvent(eventId,userId);
 
-        EventDesign eventDesign = eventDesignRepository.findByEventIdAndDesignId(eventId, designId)
+        EventDesign eventDesign = eventDesignRepository.findByEventIdAndCakeDesignId(eventId, designId)
                 .orElseThrow(() -> new EventException(EVENT_DESIGN_NOT_FOUND));
 
         event.getEventDesignList().remove(eventDesign);
@@ -118,7 +118,7 @@ public class EventDesignService {
     @Transactional
     public void updateMemo(Long eventId, Long designId, Long userId, String memo){
         eventService.getValidatedEvent(eventId, userId);
-        EventDesign eventDesign = eventDesignRepository.findByEventIdAndDesignId(eventId, designId)
+        EventDesign eventDesign = eventDesignRepository.findByEventIdAndCakeDesignId(eventId, designId)
                 .orElseThrow(() -> new EventException(EVENT_DESIGN_NOT_FOUND));
         eventDesign.updateMemo(memo);
     }

@@ -69,7 +69,7 @@ public class CakeDesignRepositoryImpl implements CakeDesignRepositoryCustom {
                 .selectOne()
                 .from(cakeDesignOption)
                 .join(cakeDesignOption.cakeDesign, cakeDesign)
-                .where(cakeDesign.store.eq(store).and(cakeDesignOption.name.contains("도시락")).and(cakeDesignOption.optionCategory.eq(OptionCategory.SIZE)))
+                .where(cakeDesign.store.eq(store).and(cakeDesignOption.value.contains("도시락")).and(cakeDesignOption.optionCategory.eq(OptionCategory.SIZE)))
                 .exists()
                 : null;
 
@@ -179,7 +179,7 @@ public class CakeDesignRepositoryImpl implements CakeDesignRepositoryCustom {
 
         BooleanExpression isLikedExpr = likedSum.gt(0L);
 
-        BooleanExpression sizeFilter = StringUtils.hasText(sizeName) ? cakeDesign.cakeDesignOptionList.any().name.eq(sizeName) : null;
+        BooleanExpression sizeFilter = StringUtils.hasText(sizeName) ? cakeDesign.cakeDesignOptionList.any().value.eq(sizeName) : null;
 
         return jpaQueryFactory
                 .select(Projections.constructor(
@@ -248,19 +248,19 @@ public class CakeDesignRepositoryImpl implements CakeDesignRepositoryCustom {
         }
 
         List<String> sizeList = jpaQueryFactory
-                .select(cakeDesignOption.name)
+                .select(cakeDesignOption.value)
                 .from(cakeDesignOption)
                 .where(cakeDesignOption.cakeDesign.id.eq(designId), cakeDesignOption.optionCategory.eq(OptionCategory.SIZE))
                 .fetch();
 
         List<String> creamList = jpaQueryFactory
-                .select(cakeDesignOption.name)
+                .select(cakeDesignOption.value)
                 .from(cakeDesignOption)
                 .where(cakeDesignOption.cakeDesign.id.eq(designId), cakeDesignOption.optionCategory.eq(OptionCategory.CREAM))
                 .fetch();
 
         List<String> sheetList = jpaQueryFactory
-                .select(cakeDesignOption.name)
+                .select(cakeDesignOption.value)
                 .from(cakeDesignOption)
                 .where(cakeDesignOption.cakeDesign.id.eq(designId), cakeDesignOption.optionCategory.eq(OptionCategory.SHEET))
                 .fetch();

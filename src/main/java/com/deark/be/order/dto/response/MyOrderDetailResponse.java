@@ -1,7 +1,6 @@
 package com.deark.be.order.dto.response;
 
 import com.deark.be.order.domain.OrderRequestForm;
-import com.deark.be.order.domain.type.DesignType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
@@ -19,8 +18,6 @@ public record MyOrderDetailResponse(
         String designName,
         @Schema(description = "디자인 이미지 URL", example = "https://deark.com/design/1/image")
         String designImageUrl,
-        @Schema(description = "디자인 타입", example = "STORE")
-        DesignType designType,
         @Schema(description = "주문서 질문 & 답", example = "[{\"title\": \"이름\", \"answer\": \"박지유\", \"isRequired\": \"true\"}]")
         List<QAResponse> qaDetails
 ) {
@@ -29,9 +26,8 @@ public record MyOrderDetailResponse(
                 .messageId(orderRequestForm.getId())
                 .operatingHours(operatingHours)
                 .chattingUrl(orderRequestForm.getStore().getChattingUrl())
-                .designName(orderRequestForm.getDesignName())
-                .designImageUrl(orderRequestForm.getDesignImageUrl())
-                .designType(orderRequestForm.getDesignType())
+                .designName(orderRequestForm.getCakeDesign().getName())
+                .designImageUrl(orderRequestForm.getCakeDesign().getImageUrl())
                 .qaDetails(qaDetails)
                 .build();
     }

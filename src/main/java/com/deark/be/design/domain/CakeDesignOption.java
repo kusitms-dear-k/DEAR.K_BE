@@ -20,7 +20,7 @@ public class CakeDesignOption {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "design_id", nullable = false)
+    @JoinColumn(name = "cake_design_id", nullable = false)
     private CakeDesign cakeDesign;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,14 +31,14 @@ public class CakeDesignOption {
     @Enumerated(EnumType.STRING)
     private OptionCategory optionCategory;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "value", length = 1023)
+    private String value;
 
     @Builder
-    public CakeDesignOption(CakeDesign cakeDesign, Store store, OptionCategory optionCategory, String name) {
+    public CakeDesignOption(CakeDesign cakeDesign, Store store, OptionCategory optionCategory, String value) {
         this.cakeDesign = cakeDesign;
         this.store = store;
         this.optionCategory = optionCategory;
-        this.name = name;
+        this.value = value;
     }
 }

@@ -23,16 +23,9 @@ public class OrderQuestion {
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "common_question_id")
-    private CommonQuestion commonQuestion;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "question_type", nullable = false)
     private QuestionType questionType;
-
-    @Column(name = "title")
-    private String title;
 
     @Column(name = "content")
     private String content;
@@ -41,11 +34,9 @@ public class OrderQuestion {
     private Boolean isRequired;
 
     @Builder
-    public OrderQuestion(Store store, CommonQuestion commonQuestion, QuestionType questionType, String title, String content, Boolean isRequired) {
+    public OrderQuestion(Store store, QuestionType questionType, String content, Boolean isRequired) {
         this.store = store;
-        this.commonQuestion = commonQuestion;
         this.questionType = questionType;
-        this.title = title;
         this.content = content;
         this.isRequired = isRequired;
     }

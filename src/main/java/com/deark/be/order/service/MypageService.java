@@ -2,10 +2,10 @@ package com.deark.be.order.service;
 
 import com.deark.be.event.repository.EventRepository;
 import com.deark.be.order.domain.OrderRequestForm;
-import com.deark.be.order.domain.QA;
+import com.deark.be.order.domain.OrderRequestFormQa;
 import com.deark.be.order.domain.type.DesignType;
+import com.deark.be.order.domain.type.MakeStatus;
 import com.deark.be.order.domain.type.OrderStatus;
-import com.deark.be.order.domain.type.ProgressStatus;
 import com.deark.be.order.domain.type.ResponseStatus;
 import com.deark.be.order.dto.response.*;
 import com.deark.be.order.exception.OrderException;
@@ -65,8 +65,8 @@ public class MypageService {
 
         List<MyOrderStatusResponse> responseList =  pendingOrderRequestForms.stream()
                 .map(message -> {
-                    List<QA> qaList = qaRepository.findAllByOrderRequestForm(message);
-                    List<QAStatusResponse> qaStatusList = buildOrderedQaStatusList(qaList);
+                    List<OrderRequestFormQa> orderRequestFormQaList = qaRepository.findAllByOrderRequestForm(message);
+                    List<QAStatusResponse> qaStatusList = buildOrderedQaStatusList(orderRequestFormQaList);
                     return MyOrderStatusResponse.of(message, qaStatusList);
                 })
                 .toList();
@@ -87,8 +87,8 @@ public class MypageService {
     public MyOrderDetailResponse getOrderDetail(Long messageId) {
         OrderRequestForm orderRequestForm = findMessage(messageId);
 
-        List<QA> qaList = qaRepository.findAllByOrderRequestForm(orderRequestForm);
-        List<QAResponse> qaResponses = buildOrderedQaList(qaList);
+        List<OrderRequestFormQa> orderRequestFormQaList = qaRepository.findAllByOrderRequestForm(orderRequestForm);
+        List<QAResponse> qaResponses = buildOrderedQaList(orderRequestFormQaList);
 
         String pickupDateStr = qaResponses.stream()
                 .filter(q -> "픽업 희망 일자".equals(q.title()))
@@ -102,33 +102,14 @@ public class MypageService {
         return MyOrderDetailResponse.of(orderRequestForm, businessHourStr, qaResponses);
     }
 
-    public MyOrderAcceptedResponse getAcceptedOrderDetail(Long messageId) {
-        OrderRequestForm orderRequestForm = findMessage(messageId);
-
-        if (orderRequestForm.getOrderStatus() != OrderStatus.ACCEPTED) {
-            throw new OrderException(ORDER_NOT_ACCEPTED);
-        }
-
-        List<QA> qaList = qaRepository.findAllByOrderRequestForm(orderRequestForm);
-
-        String pickupTime = qaList.stream()
-                .filter(qa -> "픽업 희망 시간".equals(qa.getQuestion()))
-                .map(QA::getAnswer)
-                .findFirst()
-                .orElse("");
-
-        return MyOrderAcceptedResponse.of(orderRequestForm, pickupTime);
-    }
-
     @Transactional
     public void updateResponseStatus(Long messageId, ResponseStatus responseStatus) {
         OrderRequestForm orderRequestForm = findMessage(messageId);
-        orderRequestForm.updateResponseStatus(responseStatus);
     }
 
-    private static List<QAStatusResponse> buildOrderedQaStatusList(List<QA> qaList) {
-        Map<String, QA> rawMap = qaList.stream()
-                .collect(Collectors.toMap(QA::getQuestion, Function.identity(), (a, b) -> b));
+    private static List<QAStatusResponse> buildOrderedQaStatusList(List<OrderRequestFormQa> orderRequestFormQaList) {
+        Map<String, OrderRequestFormQa> rawMap = orderRequestFormQaList.stream()
+                .collect(Collectors.toMap(OrderRequestFormQa::getQuestion, Function.identity(), (a, b) -> b));
 
         List<QAStatusResponse> orderedList = new ArrayList<>();
 
@@ -147,9 +128,9 @@ public class MypageService {
     }
 
 
-    private static List<QAResponse> buildOrderedQaList(List<QA> qaList) {
-        Map<String, QA> qaMap = qaList.stream()
-                .collect(Collectors.toMap(QA::getQuestion, Function.identity(), (a, b) -> b));
+    private static List<QAResponse> buildOrderedQaList(List<OrderRequestFormQa> orderRequestFormQaList) {
+        Map<String, OrderRequestFormQa> qaMap = orderRequestFormQaList.stream()
+                .collect(Collectors.toMap(OrderRequestFormQa::getQuestion, Function.identity(), (a, b) -> b));
 
         List<QAResponse> orderedList = new ArrayList<>();
 
@@ -200,15 +181,15 @@ public class MypageService {
 
     @Transactional(readOnly = true)
     public OrderManagementResponseList getPickupScheduledOrders(Long userId) {
-        return extractOrderManagementResponses(userId, List.of(ProgressStatus.RESERVED, ProgressStatus.BAKING));
+        return extractOrderManagementResponses(userId, List.of(MakeStatus.RESERVED, MakeStatus.BAKING));
     }
 
     @Transactional(readOnly = true)
     public OrderManagementResponseList getPickupCompletedOrders(Long userId) {
-        return extractOrderManagementResponses(userId, List.of(ProgressStatus.PICKUP_DONE));
+        return extractOrderManagementResponses(userId, List.of(MakeStatus.PICKUP_DONE));
     }
 
-    private OrderManagementResponseList extractOrderManagementResponses(Long userId, List<ProgressStatus> statuses) {
+    private OrderManagementResponseList extractOrderManagementResponses(Long userId, List<MakeStatus> statuses) {
         List<OrderRequestForm> orderRequestForms = messageRepository.findMessagesWithQAsByUserIdAndProgressStatusIn(userId, statuses);
 
         List<OrderManagementResponse> responses = orderRequestForms.stream()
@@ -224,7 +205,7 @@ public class MypageService {
                             : message.getCakeDesign().getImageUrl();
 
                     Map<String, String> answerMap = new HashMap<>();
-                    for (QA qa : message.getQaList()) {
+                    for (OrderRequestFormQa qa : message.getOrderRequestFormQaList()) {
                         String question = qa.getQuestion();
                         String answer = qa.getAnswer();
                         if (!answerMap.containsKey(question)) {
@@ -242,7 +223,7 @@ public class MypageService {
                             .sheet(answerMap.get("시트 맛"))
                             .pickupDate(answerMap.get("픽업 희망 일자"))
                             .pickupTime(answerMap.get("픽업 희망 시간"))
-                            .progressStatus(message.getProgressStatus())
+                            .makeStatus(message.getMakeStatus())
                             .build();
                 })
                 .toList();

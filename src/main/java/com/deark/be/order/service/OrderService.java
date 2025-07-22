@@ -6,15 +6,13 @@ import com.deark.be.design.dto.response.StoreDesignSimpleResponse;
 import com.deark.be.design.service.DesignService;
 import com.deark.be.global.service.S3Service;
 import com.deark.be.order.domain.OrderRequestForm;
-import com.deark.be.order.domain.QA;
+import com.deark.be.order.domain.OrderRequestFormQa;
 import com.deark.be.order.domain.type.DesignType;
-import com.deark.be.order.domain.type.RequestDetailType;
 import com.deark.be.order.dto.request.SubmitOrderRequest;
 import com.deark.be.order.dto.response.*;
 import com.deark.be.order.exception.OrderException;
 import com.deark.be.order.exception.errorcode.OrderErrorCode;
 import com.deark.be.order.repository.MessageRepository;
-import com.deark.be.order.repository.QARepository;
 import com.deark.be.store.domain.BusinessHours;
 import com.deark.be.store.domain.Store;
 import com.deark.be.store.dto.response.*;
@@ -29,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
@@ -38,7 +37,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class OrderService {
 
     private final MessageRepository messageRepository;
-    private final QARepository qaRepository;
 
     private final S3Service s3Service;
     private final UserService userService;
@@ -54,22 +52,18 @@ public class OrderService {
         String designUrl = (designImage != null) ? s3Service.uploadFile(designImage) : null;
         String requestDetailImageUrl = (requestDetailImage != null) ? s3Service.uploadFile(requestDetailImage) : null;
 
-        validateDesignParams(request,designUrl);
-        validateRequestDetailParams(request,requestDetailImageUrl);
+        validateDesignParams(request, designUrl);
+        validateRequestDetailParams(request, requestDetailImageUrl);
 
-        CakeDesign cakeDesign = request.designType() == DesignType.STORE
-                ? designService.getDesignByIdOrThrow(request.designId())
-                : null;
+        CakeDesign cakeDesign = designService.getDesignByIdOrThrow(request.designId());
 
-        CakeDesign requestDetailCakeDesign = request.requestDetailType() == RequestDetailType.EVENT
-                ? designService.getDesignByIdOrThrow(request.requestDetailDesignId())
-                : null;
+        CakeDesign requestDetailCakeDesign = designService.getDesignByIdOrThrow(request.requestDetailDesignId());
 
-        OrderRequestForm orderRequestForm = request.toEntity(user,store, cakeDesign, requestDetailCakeDesign,designUrl,requestDetailImageUrl);
+        OrderRequestForm orderRequestForm = request.toEntity(user, store, cakeDesign, designUrl);
 
         request.answers().forEach(answerDto -> {
-            QA qa = answerDto.toEntity(orderRequestForm);
-            orderRequestForm.addQA(qa);
+            OrderRequestFormQa orderRequestFormQa = answerDto.toEntity(orderRequestForm);
+            orderRequestForm.addQA(orderRequestFormQa);
         });
 
         messageRepository.save(orderRequestForm);
@@ -83,18 +77,18 @@ public class OrderService {
                 throw new OrderException(OrderErrorCode.INVALID_STORE_DESIGN_CONFLICT);
             }
         } else if (request.designType() == DesignType.CUSTOM) {
-            if (designUrl == null || designUrl.isBlank() || request.designId()  != null) {
+            if (designUrl == null || designUrl.isBlank() || request.designId() != null) {
                 throw new OrderException(OrderErrorCode.INVALID_CUSTOM_DESIGN_CONFLICT);
             }
         }
     }
 
     public void validateRequestDetailParams(SubmitOrderRequest request, String requestDetailImageUrl) {
-        if (request.requestDetailType() == RequestDetailType.EVENT) {
+        if (request.designType() == DesignType.STORE) {
             if (request.requestDetailDesignId() == null || requestDetailImageUrl != null) {
                 throw new OrderException(OrderErrorCode.INVALID_EVENT_REQUEST_DETAIL_CONFLICT);
             }
-        } else if (request.requestDetailType() == RequestDetailType.CUSTOM) {
+        } else if (request.designType() == DesignType.CUSTOM) {
             if (requestDetailImageUrl == null || requestDetailImageUrl.isBlank() || request.requestDetailDesignId() != null) {
                 throw new OrderException(OrderErrorCode.INVALID_CUSTOM_REQUEST_DETAIL_CONFLICT);
             }

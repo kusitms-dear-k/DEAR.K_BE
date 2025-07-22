@@ -1,7 +1,7 @@
 package com.deark.be.design.repository.init;
 
 import com.deark.be.design.domain.CakeDesign;
-import com.deark.be.design.repository.CakeCakeDesignRepository;
+import com.deark.be.design.repository.CakeDesignRepository;
 import com.deark.be.global.util.DummyDataInit;
 import com.deark.be.store.domain.Store;
 import com.deark.be.store.repository.StoreRepository;
@@ -21,7 +21,7 @@ import java.util.List;
 @DummyDataInit
 public class DesignInitializer implements ApplicationRunner {
 
-    private final CakeCakeDesignRepository cakeDesignRepository;
+    private final CakeDesignRepository cakeDesignRepository;
     private final StoreRepository storeRepository;
 
     @Value("${spring.cloud.aws.s3.url}/design")

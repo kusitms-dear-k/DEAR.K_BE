@@ -4,13 +4,18 @@ import com.deark.be.event.domain.type.ThumbnailSource;
 import com.deark.be.global.domain.BaseTimeEntity;
 import com.deark.be.user.domain.User;
 import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 
 @Table(name = "event")
 @Getter
@@ -36,6 +41,9 @@ public class Event extends BaseTimeEntity {
     @Column(name = "event_date")
     private LocalDate eventDate;
 
+    @Column(name = "location", nullable = false, columnDefinition = "geometry(Point,4326)")
+    private Point location;
+
     @Column(name = "thumbnail_url")
     private String thumbnailUrl;
 
@@ -55,17 +63,25 @@ public class Event extends BaseTimeEntity {
     private List<EventDesign> eventDesignList = new ArrayList<>();
 
     @Builder
-    public Event(User user, String title, String address, LocalDate eventDate, String thumbnailUrl,
+    public Event(User user, String title, String address, LocalDate eventDate, String thumbnailUrl, double latitude, double longitude,
                  ThumbnailSource thumbnailSource, Long thumbnailSourceId, List<EventStore> eventStoreList, List<EventDesign> eventDesignList) {
         this.user = user;
         this.title = title;
         this.address = address;
         this.eventDate = eventDate;
+        this.location = createPoint(latitude, longitude);
         this.thumbnailUrl = thumbnailUrl;
         this.thumbnailSource = thumbnailSource;
         this.thumbnailSourceId = thumbnailSourceId;
         this.eventStoreList = eventStoreList;
         this.eventDesignList = eventDesignList;
+    }
+
+    private Point createPoint(double latitude, double longitude) {
+        GeometryFactory geometryFactory = new GeometryFactory();
+        Point point = geometryFactory.createPoint(new Coordinate(longitude, latitude));
+        point.setSRID(4326); // SRID를 4326으로 설정
+        return point;
     }
 
     public void addEventStore(EventStore eventStore) {

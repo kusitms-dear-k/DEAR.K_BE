@@ -6,8 +6,10 @@ import com.deark.be.order.domain.type.*;
 import com.deark.be.store.domain.Store;
 import com.deark.be.user.domain.User;
 import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,7 +25,7 @@ public class OrderRequestForm extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "message_id")
+    @Column(name = "order_request_form_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -35,38 +37,26 @@ public class OrderRequestForm extends BaseTimeEntity {
     private Store store;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "design_id")
+    @JoinColumn(name = "cake_design_id")
     private CakeDesign cakeDesign;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "request_detail_design_id")
-    private CakeDesign requestDetailCakeDesign;
+    @Column(name = "design_url")
+    private String designUrl;
+
+    @OneToMany(mappedBy = "orderRequestForm", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderRequestFormQa> orderRequestFormQaList = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status", nullable = false)
     private OrderStatus orderStatus;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "progress_status")
-    private ProgressStatus progressStatus;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "response_status", nullable = false)
-    private ResponseStatus responseStatus;
-
-    @Enumerated(EnumType.STRING)
     @Column(name = "design_type", nullable = false)
     private DesignType designType;
 
-    @Column(name = "design_url")
-    private String designUrl;
-
     @Enumerated(EnumType.STRING)
-    @Column(name = "request_detail_type", nullable = false)
-    private RequestDetailType requestDetailType;
-
-    @Column(name = "request_detail_url")
-    private String requestDetailImageUrl;
+    @Column(name = "make_status")
+    private MakeStatus makeStatus;
 
     @Column(name = "response_time")
     private LocalDateTime responseTime;
@@ -74,43 +64,41 @@ public class OrderRequestForm extends BaseTimeEntity {
     @Column(name = "maker_response")
     private String makerResponse;
 
-    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<QA> qaList = new ArrayList<>();
+    @Column(name = "is_store_design")
+    private Boolean isStoreDesign;
+
+    @Column(name = "custom_design_image_url")
+    private String customDesignImageUrl;
+
+    @Column(name = "additional_request")
+    private String additionalRequest;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "response_status", nullable = false)
+    private ResponseStatus responseStatus;
 
     @Builder
-    public OrderRequestForm(User user, Store store, CakeDesign cakeDesign, CakeDesign requestDetailCakeDesign, OrderStatus orderStatus,
-                            DesignType designType, String designUrl, RequestDetailType requestDetailType,
-                            String requestDetailImageUrl, LocalDateTime responseTime, String makerResponse,
-                            ProgressStatus progressStatus, ResponseStatus responseStatus) {
+    public OrderRequestForm(
+            User user, Store store, CakeDesign cakeDesign, OrderStatus orderStatus, LocalDateTime responseTime, String designUrl, DesignType designType,
+            String makerResponse, MakeStatus makeStatus, Boolean isStoreDesign, String customDesignImageUrl, String additionalRequest, ResponseStatus responseStatus
+    ) {
         this.user = user;
         this.store = store;
         this.cakeDesign = cakeDesign;
-        this.requestDetailCakeDesign = requestDetailCakeDesign;
-        this.orderStatus = orderStatus;
         this.designType = designType;
-        this.designUrl = designUrl;
-        this.requestDetailType = requestDetailType;
-        this.requestDetailImageUrl = requestDetailImageUrl;
+        this.orderStatus = orderStatus;
         this.responseTime = responseTime;
+        this.designUrl = designUrl;
         this.makerResponse = makerResponse;
-        this.progressStatus = progressStatus;
+        this.makeStatus = makeStatus;
+        this.isStoreDesign = isStoreDesign;
+        this.customDesignImageUrl = customDesignImageUrl;
+        this.additionalRequest = additionalRequest;
         this.responseStatus = responseStatus;
     }
 
-    public String getDesignName() {
-        return this.designType == DesignType.STORE ? cakeDesign.getName() : "";
-    }
-
-    public String getDesignImageUrl() {
-        return this.designType == DesignType.STORE ? cakeDesign.getImageUrl() : designUrl;
-    }
-
-    public void addQA(QA qa) {
-        qaList.add(qa);
-        qa.assignMessage(this);
-    }
-
-    public void updateResponseStatus(ResponseStatus responseStatus) {
-        this.responseStatus = responseStatus;
+    public void addQA(OrderRequestFormQa orderRequestFormQa) {
+        orderRequestFormQaList.add(orderRequestFormQa);
+        orderRequestFormQa.assignMessage(this);
     }
 }

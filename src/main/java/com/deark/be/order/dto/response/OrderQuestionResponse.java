@@ -1,6 +1,5 @@
 package com.deark.be.order.dto.response;
 
-import com.deark.be.order.domain.CommonQuestion;
 import com.deark.be.order.domain.OrderQuestion;
 import com.deark.be.order.domain.type.QuestionType;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,16 +21,9 @@ public record OrderQuestionResponse(
         QuestionType questionType
 ) {
     public static OrderQuestionResponse from(OrderQuestion q) {
-        String questionText;
-        String hint;
-        if (q.getQuestionType() == QuestionType.COMMON) {
-            CommonQuestion cq = q.getCommonQuestion();
-            questionText = cq.getTitle();
-            hint = cq.getHint();
-        } else {
-            questionText = q.getContent(); // 커스텀은 content가 질문
-            hint = null;
-        }
+        String questionText = q.getContent();
+        String hint = null;
+
         return OrderQuestionResponse.builder()
                 .question(questionText)
                 .hint(hint)

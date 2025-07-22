@@ -1,14 +1,14 @@
 package com.deark.be.order.repository;
 
 import com.deark.be.order.domain.OrderRequestForm;
-import com.deark.be.order.domain.QA;
+import com.deark.be.order.domain.OrderRequestFormQa;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface QARepository extends JpaRepository<QA, Long> {
+public interface QARepository extends JpaRepository<OrderRequestFormQa, Long> {
 
-    List<QA> findAllByOrderRequestForm(OrderRequestForm orderRequestForm);
+    List<OrderRequestFormQa> findAllByOrderRequestForm(OrderRequestForm orderRequestForm);
 }
