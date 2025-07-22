@@ -9,6 +9,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -80,6 +83,9 @@ public class Store extends BaseTimeEntity {
     @Column(name = "is_self_service")
     private Boolean isSelfService;
 
+    @Column(name = "location", nullable = false, columnDefinition = "geometry(Point,4326)")
+    private Point location;
+
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BusinessHours> businessHoursList = new ArrayList<>();
 
@@ -95,7 +101,7 @@ public class Store extends BaseTimeEntity {
                  Long averageResponseTime, String chattingUrl, Boolean isSameDayOrder,
                  String settlementAccount, String businessLicenseUrl, String businessPermitUrl, String ownerName,
                  String orderLink, Integer maxDailyOrders, Boolean isSelfService, List<BusinessHours> businessHoursList,
-                 List<CakeDesignOption> cakeDesignOptionList, List<CakeDesign> cakeDesignList) {
+                 List<CakeDesignOption> cakeDesignOptionList, List<CakeDesign> cakeDesignList, double latitude, double longitude) {
         this.user = user;
         this.name = name;
         this.description = description;
@@ -106,6 +112,7 @@ public class Store extends BaseTimeEntity {
         this.imageUrl = imageUrl;
         this.averageResponseTime = averageResponseTime;
         this.chattingUrl = chattingUrl;
+        this.location = createPoint(latitude, longitude);
         this.isSameDayOrder = isSameDayOrder;
         this.settlementAccount = settlementAccount;
         this.businessLicenseUrl = businessLicenseUrl;
@@ -117,6 +124,13 @@ public class Store extends BaseTimeEntity {
         this.businessHoursList = businessHoursList;
         this.cakeDesignOptionList = cakeDesignOptionList;
         this.cakeDesignList = cakeDesignList;
+    }
+
+    private Point createPoint(double latitude, double longitude) {
+        GeometryFactory geometryFactory = new GeometryFactory();
+        Point point = geometryFactory.createPoint(new Coordinate(longitude, latitude));
+        point.setSRID(4326); // SRID를 4326으로 설정
+        return point;
     }
 
     // Store 엔티티 내에 추가할 메서드

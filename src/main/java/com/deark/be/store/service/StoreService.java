@@ -89,7 +89,7 @@ public class StoreService {
                 store.getBusinessHoursList().stream()
                         .anyMatch(BusinessHours::getIsOpen24Hours);
 
-        boolean isLunchBoxCake = cakeDesignOptionRepository.existsByCakeDesignStoreIdAndNameIsContainingAndOptionCategory(storeId, "도시락", OptionCategory.SIZE);
+        boolean isLunchBoxCake = cakeDesignOptionRepository.existsByCakeDesignStoreIdAndValueIsContainingAndOptionCategory(storeId, "도시락", OptionCategory.SIZE);
         boolean isLiked = eventStoreRepository.existsByEventUserIdAndStoreId(userId, storeId);
         List<PickUpHourResponse> pickupHours = store.getBusinessHoursList().stream()
                 .map(PickUpHourResponse::from)

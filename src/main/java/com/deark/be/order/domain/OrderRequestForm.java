@@ -43,8 +43,6 @@ public class OrderRequestForm extends BaseTimeEntity {
     @Column(name = "design_url")
     private String designUrl;
 
-    //TODO: 찜하기 CakeDesign 추가 맞는지 확인
-
     @OneToMany(mappedBy = "orderRequestForm", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderRequestFormQa> orderRequestFormQaList = new ArrayList<>();
 
@@ -75,10 +73,14 @@ public class OrderRequestForm extends BaseTimeEntity {
     @Column(name = "additional_request")
     private String additionalRequest;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "response_status", nullable = false)
+    private ResponseStatus responseStatus;
+
     @Builder
     public OrderRequestForm(
             User user, Store store, CakeDesign cakeDesign, OrderStatus orderStatus, LocalDateTime responseTime, String designUrl, DesignType designType,
-            String makerResponse, MakeStatus makeStatus, Boolean isStoreDesign, String customDesignImageUrl, String additionalRequest
+            String makerResponse, MakeStatus makeStatus, Boolean isStoreDesign, String customDesignImageUrl, String additionalRequest, ResponseStatus responseStatus
     ) {
         this.user = user;
         this.store = store;
@@ -92,6 +94,7 @@ public class OrderRequestForm extends BaseTimeEntity {
         this.isStoreDesign = isStoreDesign;
         this.customDesignImageUrl = customDesignImageUrl;
         this.additionalRequest = additionalRequest;
+        this.responseStatus = responseStatus;
     }
 
     public void addQA(OrderRequestFormQa orderRequestFormQa) {

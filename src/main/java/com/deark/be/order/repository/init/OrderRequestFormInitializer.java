@@ -4,6 +4,8 @@ import com.deark.be.design.domain.CakeDesign;
 import com.deark.be.design.repository.CakeDesignRepository;
 import com.deark.be.global.util.DummyDataInit;
 import com.deark.be.order.domain.OrderRequestForm;
+import com.deark.be.order.domain.type.DesignType;
+import com.deark.be.order.domain.type.ResponseStatus;
 import com.deark.be.order.repository.MessageRepository;
 import com.deark.be.store.domain.Store;
 import com.deark.be.store.repository.StoreRepository;
@@ -26,7 +28,7 @@ import static com.deark.be.order.domain.type.OrderStatus.*;
 @RequiredArgsConstructor
 @Order(5)
 @DummyDataInit
-public class MessageInitializer implements ApplicationRunner {
+public class OrderRequestFormInitializer implements ApplicationRunner {
 
     private final MessageRepository messageRepository;
     private final UserRepository userRepository;
@@ -58,6 +60,8 @@ public class MessageInitializer implements ApplicationRunner {
                     .user(USER1)
                     .store(STORE1)
                     .cakeDesign(CakeDESIGN1)
+                    .designType(DesignType.CUSTOM)
+                    .responseStatus(ResponseStatus.PAID)
                     .orderStatus(PENDING)
                     .build();
 
@@ -65,7 +69,9 @@ public class MessageInitializer implements ApplicationRunner {
                     .user(USER1)
                     .store(STORE1)
                     .cakeDesign(CakeDESIGN8)
+                    .designType(DesignType.CUSTOM)
                     .orderStatus(ACCEPTED)
+                    .responseStatus(ResponseStatus.PAID)
                     .makerResponse("24500")
                     .responseTime(LocalDateTime.of(2025, 5, 19, 12, 0))
                     .build();
@@ -74,6 +80,8 @@ public class MessageInitializer implements ApplicationRunner {
                     .user(USER1)
                     .store(STORE1)
                     .cakeDesign(CakeDESIGN1)
+                    .responseStatus(ResponseStatus.PAID)
+                    .designType(DesignType.CUSTOM)
                     .orderStatus(REJECTED)
                     .makerResponse("디자인에 사용될 재료 부족 및 소진")
                     .responseTime(LocalDateTime.of(2025, 5, 20, 12, 0))
@@ -83,6 +91,8 @@ public class MessageInitializer implements ApplicationRunner {
                     .user(USER1)
                     .store(STORE2)
                     .cakeDesign(CakeDESIGN2)
+                    .designType(DesignType.CUSTOM)
+                    .responseStatus(ResponseStatus.PAID)
                     .orderStatus(PENDING)
                     .build();
 
@@ -90,6 +100,8 @@ public class MessageInitializer implements ApplicationRunner {
                     .user(USER1)
                     .store(STORE2)
                     .cakeDesign(CakeDESIGN2)
+                    .designType(DesignType.CUSTOM)
+                    .responseStatus(ResponseStatus.PAID)
                     .orderStatus(ACCEPTED)
                     .makerResponse("38000")
                     .responseTime(LocalDateTime.of(2025, 5, 21, 17, 0))
@@ -99,7 +111,9 @@ public class MessageInitializer implements ApplicationRunner {
                     .user(USER1)
                     .store(STORE2)
                     .cakeDesign(CakeDESIGN2)
+                    .designType(DesignType.CUSTOM)
                     .orderStatus(REJECTED)
+                    .responseStatus(ResponseStatus.PAID)
                     .makerResponse("기간 내 제작 불가")
                     .responseTime(LocalDateTime.of(2025, 5, 18, 14, 0))
                     .build();
@@ -108,6 +122,8 @@ public class MessageInitializer implements ApplicationRunner {
                     .user(USER1)
                     .store(STORE3)
                     .cakeDesign(CakeDESIGN3)
+                    .designType(DesignType.CUSTOM)
+                    .responseStatus(ResponseStatus.PAID)
                     .orderStatus(ACCEPTED)
                     .build();
 
@@ -115,6 +131,8 @@ public class MessageInitializer implements ApplicationRunner {
                     .user(USER1)
                     .store(STORE3)
                     .cakeDesign(CakeDESIGN3)
+                    .designType(DesignType.CUSTOM)
+                    .responseStatus(ResponseStatus.PAID)
                     .orderStatus(ACCEPTED)
                     .makerResponse("50000")
                     .responseTime(LocalDateTime.of(2025, 5, 19, 10, 0))
@@ -124,6 +142,8 @@ public class MessageInitializer implements ApplicationRunner {
                     .user(USER1)
                     .store(STORE1)
                     .cakeDesign(CakeDESIGN1)
+                    .designType(DesignType.CUSTOM)
+                    .responseStatus(ResponseStatus.PAID)
                     .makerResponse("26500")
                     .orderStatus(ACCEPTED)
                     .responseTime(LocalDateTime.of(2025, 5, 18, 11, 0))
@@ -132,7 +152,9 @@ public class MessageInitializer implements ApplicationRunner {
             OrderRequestForm DUMMY_OrderRequestForm10 = OrderRequestForm.builder()
                     .user(USER1)
                     .store(STORE1)
+                    .designType(DesignType.CUSTOM)
                     .cakeDesign(CakeDESIGN8)
+                    .responseStatus(ResponseStatus.PAID)
                     .makerResponse("34500")
                     .orderStatus(ACCEPTED)
                     .responseTime(LocalDateTime.of(2025, 5, 20, 13, 0))
@@ -142,6 +164,8 @@ public class MessageInitializer implements ApplicationRunner {
                     .user(USER1)
                     .store(STORE2)
                     .cakeDesign(CakeDESIGN2)
+                    .designType(DesignType.CUSTOM)
+                    .responseStatus(ResponseStatus.PAID)
                     .makerResponse("40000")
                     .orderStatus(ACCEPTED)
                     .responseTime(LocalDateTime.of(2025, 5, 22, 15, 0))
@@ -150,6 +174,8 @@ public class MessageInitializer implements ApplicationRunner {
             OrderRequestForm DUMMY_OrderRequestForm12 = OrderRequestForm.builder()
                     .user(USER1)
                     .store(STORE3)
+                    .designType(DesignType.CUSTOM)
+                    .responseStatus(ResponseStatus.PAID)
                     .cakeDesign(CakeDESIGN3)
                     .makerResponse("55000")
                     .orderStatus(ACCEPTED)
@@ -160,6 +186,8 @@ public class MessageInitializer implements ApplicationRunner {
                     .user(USER1)
                     .store(STORE1)
                     .cakeDesign(CakeDESIGN1)
+                    .designType(DesignType.CUSTOM)
+                    .responseStatus(ResponseStatus.PAID)
                     .makerResponse("30000")
                     .orderStatus(ACCEPTED)
                     .responseTime(LocalDateTime.of(2025, 5, 24, 18, 0))
