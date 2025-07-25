@@ -36,42 +36,54 @@ public class EventInitializer implements ApplicationRunner {
             Event DUMMY_EVENT0 = Event.builder()
                     .user(USER1)
                     .title("남자친구 생일")
-                    .address("서울특별시 송파구 백제고분로 123")
+                    .address("서울특별시 송파구 백제고분로 400 (송파동)")
+                    .latitude(37.506955073)
+                    .longitude(127.111247229)
                     .eventDate(LocalDate.now().plusDays(3))
                     .build();
 
             Event DUMMY_EVENT1 = Event.builder()
                     .user(USER1)
                     .title("친구 결혼 축하")
-                    .address("서울특별시 강남구 논현로 508")
+                    .address("서울특별시 강남구 논현로 803 (신사동)")
+                    .latitude(37.520287261)
+                    .longitude(127.027741936)
                     .eventDate(LocalDate.now().plusWeeks(2))
                     .build();
 
             Event DUMMY_EVENT2 = Event.builder()
                     .user(USER1)
                     .title("전역 축하")
-                    .address("서울특별시 중랑구 망우로 300")
+                    .address("서울특별시 중랑구 망우로 165 (중화동)")
+                    .latitude(37.593018547)
+                    .longitude(127.071368341)
                     .eventDate(LocalDate.now().plusMonths(1))
                     .build();
 
             Event BIRTHDAY_PARTY = Event.builder()
                     .user(USER1)
                     .title("아이 생일 파티")
-                    .address("서울시 강남구 테헤란로 123")
+                    .address("서울특별시 강남구 테헤란로 203 (역삼동)")
+                    .latitude(37.501610831)
+                    .longitude(127.037716435)
                     .eventDate(LocalDate.now().plusDays(7))
                     .build();
 
             Event WEDDING = Event.builder()
                     .user(USER1)
                     .title("결혼식")
-                    .address("서울시 서초구 서초대로 456")
+                    .address("서울특별시 서초구 서초대로 101 (방배동)")
+                    .latitude(37.487885181)
+                    .longitude(126.993190752)
                     .eventDate(LocalDate.now().plusDays(14))
                     .build();
 
             Event CORPORATE_EVENT = Event.builder()
                     .user(USER1)
                     .title("기업 창립 기념일")
-                    .address("서울시 송파구 올림픽로 789")
+                    .address("서울특별시 송파구 올림픽로 319 (신천동)")
+                    .latitude(37.515631027)
+                    .longitude(127.105601028)
                     .eventDate(LocalDate.now().plusDays(21))
                     .build();
 

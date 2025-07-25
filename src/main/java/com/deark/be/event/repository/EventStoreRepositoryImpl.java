@@ -29,6 +29,7 @@ public class EventStoreRepositoryImpl implements EventStoreRepositoryCustom{
                         store.name,
                         store.address,
                         eventStore.memo,
+                        //TODO: 거리 계산 로직 추가 필요
                         cakeDesign.imageUrl
                 )
                 .from(eventStore)
