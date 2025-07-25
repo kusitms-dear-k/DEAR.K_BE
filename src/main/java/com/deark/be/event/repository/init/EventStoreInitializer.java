@@ -33,6 +33,8 @@ public class EventStoreInitializer implements ApplicationRunner {
         } else {
             Event DUMMY_EVENT1 = eventRepository.findById(1L).orElseThrow();
             Event DUMMY_EVENT2 = eventRepository.findById(2L).orElseThrow();
+            Event DUMMY_EVENT3 = eventRepository.findById(3L).orElseThrow();
+
 
             Store DUMMY_STORE1 = storeRepository.findById(1L).orElseThrow();
             Store DUMMY_STORE2 = storeRepository.findById(2L).orElseThrow();
@@ -59,11 +61,23 @@ public class EventStoreInitializer implements ApplicationRunner {
                     .store(DUMMY_STORE2)
                     .memo("블루베리의 아이 생일 파티 이벤트")
                     .build();
+            EventStore DUMMY_EVENT_STORE5 = EventStore.builder()
+                    .event(DUMMY_EVENT3)
+                    .store(DUMMY_STORE1)
+                    .memo("디어레터의 졸업식 이벤트")
+                    .build();
+            EventStore DUMMY_EVENT_STORE6 = EventStore.builder()
+                    .event(DUMMY_EVENT3)
+                    .store(DUMMY_STORE2)
+                    .memo("블루베리의 이사 이벤트")
+                    .build();
 
             eventStoreList.add(DUMMY_EVENT_STORE1);
             eventStoreList.add(DUMMY_EVENT_STORE2);
             eventStoreList.add(DUMMY_EVENT_STORE3);
             eventStoreList.add(DUMMY_EVENT_STORE4);
+            eventStoreList.add(DUMMY_EVENT_STORE5);
+            eventStoreList.add(DUMMY_EVENT_STORE6);
 
             eventStoreRepository.saveAll(eventStoreList);
         }

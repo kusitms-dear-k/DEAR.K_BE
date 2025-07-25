@@ -14,8 +14,8 @@ public record StoreInEventResponse(
         String storeAddress,
         @Schema(description = "해당 스토어에 대한 메모", example = "추천받은 가게")
         String memo,
-//        @Schema(description = "이벤트 - 스토어간 거리", example = "2300")
-//        Long distance,
+        @Schema(description = "이벤트 - 스토어간 거리", example = "2300")
+        Long distance,
         @Schema(description = "스토어 디자인 URL 리스트(최대 4개)")
         List<String> designImageUrls
 

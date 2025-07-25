@@ -54,9 +54,9 @@ public class EventInitializer implements ApplicationRunner {
             Event DUMMY_EVENT2 = Event.builder()
                     .user(USER1)
                     .title("전역 축하")
-                    .address("서울특별시 중랑구 망우로 165 (중화동)")
-                    .latitude(37.593018547)
-                    .longitude(127.071368341)
+                    .address("서울특별시 강남구 역삼동 601")
+                    .latitude(37.504544396967)
+                    .longitude(127.025570660563)
                     .eventDate(LocalDate.now().plusMonths(1))
                     .build();
 
