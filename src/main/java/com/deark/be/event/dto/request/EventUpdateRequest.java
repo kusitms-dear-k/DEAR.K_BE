@@ -1,14 +1,11 @@
 package com.deark.be.event.dto.request;
 
 import com.deark.be.event.domain.Event;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record EventUpdateRequest(
         @Schema(description = "수정할 이벤트 제목", example = "송년회 모임")
         @NotBlank(message = "이벤트 이름은 필수입니다.")

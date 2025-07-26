@@ -1,11 +1,8 @@
 package com.deark.be.event.dto.request;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record UpdateStoreMappingRequest(
         @Schema(description = "스토어 ID", example = "55")
         Long storeId,
